@@ -67,34 +67,40 @@ The retrieval logic is written **once** in `retriever.py` and consumed two ways 
 
 The ED edge: much ground truth is **structured**, not prose. Trust accordingly.
 
-- **Tier 0 — canonical/structured:** Coriolis-data JSON (every ship/module stat), EDCD `FDevIDs`, EDSM / Spansh / INARA APIs, **Frontier patch notes & GalNet** (the version anchor).
-- **Tier 1 — authoritative prose:** INARA guides, official forum dev posts.
+- **Tier 0 — canonical/structured:** Coriolis-data JSON (every ship/module stat), EDCD `FDevIDs`, EDSM API, **Spansh** API + galaxy dumps (bodies/bio-signal counts, neutron + carrier routing, colonisation candidates), **Canonn** (`api.canonn.tech` — Guardian sites, Thargoid structures/spawns, biological signal locations), **Frontier patch notes & GalNet** (the version anchor).
+- **Tier 1 — authoritative prose:** INARA (`inara.cz` — engineers, blueprints, commodities, CGs; **community-contributed, rate-limited 25 req / 15 min → needs a dedicated rate-limiter + cache**), official forum dev posts.
 - **Tier 2 — community curated:** Fandom wiki, established guide sites.
 - **Tier 3 — anecdotal:** Reddit (r/EliteDangerous, r/EliteOdyssey, r/EliteExobiology, r/EliteMiners, r/EliteExplorers, r/EliteCQC), YouTube guides (transcribed), forum posts. Kept, but must be corroborated to graduate.
 
-Confidence = source tier × corroboration count × version recency.
+> **EDDB is dead (offline since 2023) — do not use.** Trust is carried by discrete fields (`tier` + `availability` + `source_count`), **not** a composite score. The original multiplicative "tier × corroboration × recency" formula is dropped (it was undefined and tier-inverted).
 
 ---
 
 ## Fact metadata (frontmatter on every claim/summary)
 
+**Authoring is page-level; trust resolves at the chunk level** (see Council §A). A page's frontmatter holds *defaults* inherited by its chunks; an H2/H3 section may override via an inline `<!-- tier:3 src:reddit -->` directive for the mixed-trust case (a Tier-0 Coriolis stat sitting next to a Tier-3 Reddit tip on the same page). The chunker resolves per-chunk metadata into the vector payload.
+
 ```yaml
+# page-level defaults
 ---
 source_url: <url>
-source_type: <coriolis|edsm|spansh|inara|patch-notes|fandom|reddit|youtube|forum|...>
+source_type: <coriolis|edsm|spansh|canonn|inara|patch-notes|fandom|reddit|youtube|forum|...>
 source_tier: <0|1|2|3>
 captured_at: <ISO>
-confidence: <high|medium|low|single-source>
 source_count: <int>          # independent corroborating sources
 verified: <true|false>       # promoted in Phase 2
-version_epoch: <horizons|odyssey|u14|powerplay-2.0|thargoid-war-end|colonisation-2025|unknown>
-availability: <current|limited-time|missed-permanent|unknown>
-relates_to: <kb path(s)>
-key_entities: [list]
+availability: <live|superseded|removed|seasonal>
+content_epoch: <horizons|odyssey|trailblazers|post-war-ax|unknown>   # real ED vocabulary
 ---
 ```
 
-`availability` is a first-class field: the copilot never recommends chasing content that has ended (e.g., the concluded Thargoid war's rewards, past CGs, limited decals) and always flags what is still obtainable.
+`availability` is a mandatory v1 correctness floor — the copilot never recommends chasing content that has ended and always flags what is still obtainable:
+- `live` — currently obtainable (e.g. post-war AX combat, Spire sites, Titan-wreck diving, exobiology).
+- `superseded` — replaced and gone (e.g. **Powerplay 1 → Powerplay 2** modules/ranks).
+- `removed` — permanently missed (e.g. the concluded Thargoid *war's* hearts/Titan-active rewards, past CGs, limited decals).
+- `seasonal` / time-limited — recurring or windowed.
+
+**Mandatory v1 epoch correctness:** Thargoid content is SPLIT — war-era rewards are `removed`, but AX combat/Spire/Titan-diving are `live` (`content_epoch: post-war-ax`). Colonisation uses the live term **Trailblazers** (Feb 2025). Deferred to v2: `unlock_chain`/`prerequisite` as structured fields (carried in body text for v1), finer `version_epoch` granularity, `relates_to`, `key_entities`.
 
 ---
 
@@ -177,15 +183,62 @@ EliteDangerousKB/
 ## Testing / verification
 
 - **Retriever:** golden-question set (e.g. "Farseer unlock requirement," "meta exploration FSD roll") with known KB answers → assert correct chunks retrieved.
-- **Copilot anti-hallucination gate:** assert it refuses to answer when retrieved context is empty.
+- **Copilot anti-hallucination gate:** refusal-calibration fixtures — refuses on empty context AND on non-empty-but-irrelevant context below τ (the dangerous case).
 - **Loop dry-run:** single iteration advances `STATE.toml` and produces a git commit.
-- **MCP parity:** `ed_kb_search` returns identical results to the local retriever for the same query.
+- **Index consistency:** `reindex --from-kb` output equals the incrementally-maintained index.
+- **MCP parity:** `ed_kb_search` returns an identical `list[Chunk]` to the local retriever for the same query (compare structured chunks, not assembled prose).
 
 ---
 
 ## Out of scope (YAGNI for v1)
 
 - No fine-tuning / Modelfile-baked KB (retrieval beats baking; cited and updatable).
-- No live EDDN firehose consumption (complex; periodic API pulls cover live needs).
+- No live EDDN firehose consumption (complex; pull from Spansh colonisation + PP2 trackers on a short cycle instead).
 - No GUI — terminal REPL + MCP only.
 - No voice I/O (despite the COVAS name) — text only for v1.
+- No `graph.json` (deleted — no consumer).
+- No CAPI/EDMC integration in v1 (OAuth + Frontier approval is real scope) — v2.
+
+---
+
+## Council Review Resolutions & v1 Build Contract (2026-06-01)
+
+A 4-member adversarial council (Opus = architecture, Sonnet = ED domain, Haiku = pragmatism, qwen3-coder:30b = implementation) reviewed this spec over two rounds and argued the conflicts to convergence. The resolutions below **supersede** any conflicting text above. (Note: Ollama crashed under the 30B mid-review — see §Runtime; qwen's implementation claims were adjudicated by the architecture lens.)
+
+### §A — Granularity (RESOLVED)
+Page-level **authoring**, chunk-level **trust**. Chunker emits H2/H3 sections, 128–512 tokens, ~15% overlap, with a heading breadcrumb prepended to the embedded text. `chunk_id = sha256(kb_path + heading_path)`. Each chunk inherits page frontmatter; inline `<!-- tier: src: -->` overrides per section. **Strip frontmatter + wikilinks + raw URLs before embedding**; store all filterable metadata (tier, availability, source_url, source_count, verified) in the **vector payload**. Citation = `chunk_id + source_url`. Index is a **derived, rebuildable artifact**: `indexes/manifest.json` maps `chunk_id → {content_hash, kb_path, heading_path, payload}`; each loop diffs by content_hash → upsert changed, **tombstone removed**. A `reindex --from-kb` command + test ("rebuilt index == incremental index") is the consistency contract.
+
+### §B — Anti-hallucination gate (RESOLVED, v1)
+1. **Empty-context refusal.**
+2. **τ retrieval-score floor** — if top-k max cosine < τ (in `config.toml`), refuse *even when context is non-empty*. Guards the dangerous "confident answer from garbage retrieval" case. (Judgment call: included in v1 over two members' deferral — it is a one-line check and directly serves the no-BS mandate.)
+3. **Forced per-claim citation with one regen** — every factual claim carries `[chunk_id]`; a cheap post-hoc check rejects+regenerates once if any claim is uncited.
+4. **Refusal-calibration fixtures** — golden questions with *deliberately irrelevant* retrieval that MUST trigger refusal. This is the acceptance gate that proves τ is tuned (not a magic number).
+
+Deferred to v1.1: cited-span validation (verify the quoted span exists in the cited chunk).
+
+### §C — Personalization / Journal ingest (RESOLVED)
+Does **not** block day-1 chat. `profile.py` exposes a `ProfileSource` interface (`get_state() -> CmdrState`) from commit 1. v1 implementation = hand-seeded `cmdr/duvrazh.md` (template in repo from the start); answers drawn from it are **labeled as unverified/manual state**, never presented as live truth. **Journal-watcher** (polls `%USERPROFILE%\Saved Games\Frontier Developments\Elite Dangerous\Journal.*.log`) is a drop-in second `ProfileSource` — lands **v1.1 / Sprint 2** (well-trodden via EDMC; before any feature claiming live loadout/carrier accuracy). CAPI/EDMC = v2.
+
+### §D — Availability/version + MCP (RESOLVED)
+The `availability` enum (`live | superseded | removed | seasonal`) and the Thargoid epoch split are a **mandatory v1 correctness floor** (recommending dead content == hallucination-class harm). Use real ED vocabulary. **MCP ships in v1** (user mandate) as a thin **FastMCP + stdio** wrapper over the pure retriever, registered via `.mcp.json`; sequenced after the copilot core but in the v1 release. Deferred: structured `unlock_chain`, deep-analysis mode, live-refresh automation, `graph.json` (deleted).
+
+### §E — Implementation (RESOLVED)
+- **Vector store:** numpy brute-force cosine for v1 (≈50k × 1024 float32 ≈ 200 MB, single matmul in ms; zero Windows install pain). Persist as `.npy` + `manifest.json`. **Switch threshold:** revisit `sqlite-vec` (pip-only, persistent) or `faiss-cpu` past ~100k chunks or if query latency > ~200 ms.
+- **Embeddings:** bge-m3 via Ollama, 1024-dim, **L2-normalize** vectors for cosine; batch + retry/backoff.
+- **Retriever contract:** `retriever.py` is pure — `retrieve(query, filters) -> list[Chunk]`. A separate `assemble.py` builds the qwen prompt (profile + chunks). REPL = retrieve→assemble→generate; MCP `ed_kb_search` returns raw `list[Chunk]` JSON. Parity test asserts identical `Chunk` lists, **not** identical assembled prose.
+- **Stream UX:** strip qwen3 `<think>…</think>` reasoning from the streamed `/api/chat` response (or disable thinking in the request). Clean copilot output only.
+
+### §F — Runtime / Ollama stability (NEW)
+The loop's heavy model (`qwen3-coder:30b`, 17 GB) crashed the local Ollama server during review when contended. The **copilot path uses only `qwen3:8b` + `bge-m3`** (lightweight). The loop's 30B offload must be **sequential**, and `keep_alive` managed so the 30B and 8B are not co-resident under memory pressure. Both REPL and MCP must degrade gracefully when Ollama is unreachable.
+
+### §G — Revised build order
+1. Scaffold + `cmdr/duvrazh.md` template + `ProfileSource` interface + `config.toml`/`STATE.toml` + git (master). `graph.json` removed.
+2. **Copilot core (chat day 1):** `retriever.py` (pure, chunk-level + numpy index) + `assemble.py` + `repl.py` + `launch-copilot.ps1`, against a small hand-seeded KB. Anti-hallucination gate §B included. Manual profile.
+3. **MCP server** (FastMCP/stdio) over the same retriever; `.mcp.json` registration.
+4. **The loop:** `ed-research-prompt.md` + `wrapper.ps1`; **Tier-0 structured ingest first** (Coriolis / EDSM / Spansh / Canonn), then web fan-out. Phase-1 capture.
+5. **Journal-watcher** `ProfileSource` (v1.1).
+6. **Verification ramp** Phase 2 (consensus) → Phase 3 (version-aware) as the KB matures.
+7. Live-data refresh (Spansh colonisation + PP2 trackers, CGs) — later.
+
+### §H — ED domain must-haves baked into v1
+Canonn (Tier 0), Spansh expansion (exobio/routing/colonisation), INARA→Tier 1 + rate-limiter, drop "U14" → "Odyssey season", Thargoid epoch split, `superseded` for PP1→PP2. Deferred: structured unlock chains, CAPI, EDMC.
