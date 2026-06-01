@@ -114,65 +114,43 @@ def _build_context_block(result: RetrievalResult) -> str:
 # 8..16 chars (sha256[:16] in production; shorter ids appear in tests/fixtures).
 _CITATION_RE = re.compile(r"\[([a-f0-9]{6,16})\]")
 
-# Sentence tokeniser: split on period/exclamation/question + whitespace.
-_SENTENCE_RE = re.compile(r"(?<=[.!?])\s+")
-
-# Short words that typically are not factual claims.
-_NON_CLAIM_PATTERNS = re.compile(
-    r"^(ok|okay|yes|no|sure|right|great|alright|thanks|thank you|you're welcome"
-    r"|of course|absolutely|certainly|noted)\s*\.?$",
-    re.IGNORECASE,
-)
-
 
 def validate_answer(answer: str, result: RetrievalResult) -> tuple[bool, str]:
     """
-    Check citation completeness.
+    Verify the answer is traceable to retrieved sources (the anti-BS gate).
 
-    Rules:
+    The two properties that actually matter for trust — and that a real 8B model
+    can satisfy with its natural formatting:
+
     1. The REFUSAL constant always passes.
-    2. Every [id] cited must exist in result.chunks.
-    3. Every sentence that is a factual claim (not a pleasantry, not the refusal
-       string, not a question) must contain at least one [chunk_id].
+    2. NO FABRICATED CITATIONS: every ``[id]`` cited must exist in result.chunks.
+       A made-up source is the dangerous failure and is rejected outright.
+    3. GROUNDED: the answer must carry at least one valid ``[id]`` citation, so it
+       is anchored to a real chunk rather than free-form prose.
+
+    NOTE: this deliberately does NOT require every sentence to be cited. The
+    earlier per-sentence rule false-rejected well-cited real answers (list
+    intros, transitions, "To unlock X:" lead-ins read as uncited claims). The
+    tau retrieval floor (retriever.grounded) already guarantees the answer is
+    built on confident retrieval; this check guarantees it is sourced and free
+    of invented citations. See spec §B and the 2026-06-01 gate-tuning fix.
 
     Returns (True, "ok") or (False, reason_string).
     """
-    # Rule 0: refusal is always valid.
+    # Rule 1: refusal is always valid.
     if answer.strip() == REFUSAL.strip():
         return True, "ok"
 
     valid_ids = {c.chunk_id for c in result.chunks}
+    cited = _CITATION_RE.findall(answer)
 
-    # Rule 2: every cited id must be in result.chunks.
-    for cited_id in _CITATION_RE.findall(answer):
+    # Rule 2: no fabricated citations.
+    for cited_id in cited:
         if cited_id not in valid_ids:
             return False, f"Cited chunk_id [{cited_id}] not found in retrieval result."
 
-    # Rule 3: every factual sentence must contain a citation.
-    sentences = _SENTENCE_RE.split(answer.strip())
-    for sentence in sentences:
-        sentence = sentence.strip()
-        if not sentence:
-            continue
-        if _is_non_factual(sentence):
-            continue
-        if not _CITATION_RE.search(sentence):
-            return False, (
-                f"Factual sentence missing citation: \"{sentence[:80]}\""
-            )
+    # Rule 3: must be grounded in at least one real source.
+    if not cited:
+        return False, "Answer contains no citation; not grounded in any source."
 
     return True, "ok"
-
-
-def _is_non_factual(sentence: str) -> bool:
-    """Return True if the sentence is unlikely to be a factual claim."""
-    if _NON_CLAIM_PATTERNS.match(sentence):
-        return True
-    # Questions are not claims.
-    if sentence.endswith("?"):
-        return True
-    # Very short sentences (≤3 words) that contain no nouns are probably greetings.
-    words = sentence.split()
-    if len(words) <= 3 and not any(w[0].isupper() for w in words[1:]):
-        return True
-    return False

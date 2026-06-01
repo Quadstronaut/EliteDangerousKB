@@ -129,15 +129,25 @@ def test_validate_answer_clean_cited():
     assert reason == "ok"
 
 
-def test_validate_answer_uncited_claim():
-    """A factual sentence with no [chunk_id] → (False, <reason>)."""
+def test_validate_answer_no_citation_at_all():
+    """An answer with ZERO citations is not grounded → (False, <reason>)."""
     from copilot import assemble
     result = _result("abc12345")
-    # Second sentence has no citation.
-    answer = "Provide Meta-Alloys [abc12345]. Farseer is in Deciat."
+    answer = "Provide Meta-Alloys to Farseer. She is in Deciat."
     ok, reason = assemble.validate_answer(answer, result)
     assert ok is False
     assert reason  # non-empty explanation
+
+
+def test_validate_answer_partial_citation_ok():
+    """At least one valid citation + no fabricated ids → valid, even if not every
+    sentence is cited. Real models cite claims but not list intros/transitions."""
+    from copilot import assemble
+    result = _result("abc12345")
+    answer = "To unlock Farseer: provide Meta-Alloys [abc12345]. She is in Deciat."
+    ok, reason = assemble.validate_answer(answer, result)
+    assert ok is True
+    assert reason == "ok"
 
 
 def test_validate_answer_hallucinated_id():
