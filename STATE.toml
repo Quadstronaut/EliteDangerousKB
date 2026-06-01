@@ -1,0 +1,6 @@
+loop_number = 0
+last_completed_phase = "none"   # none|triage|search|summarize|synthesize|index|commit
+mode = "search"                 # search|deep-analysis
+consecutive_empty_loops = 0
+halt = false
+updated_at = ""                 # ISO 8601; set by writer

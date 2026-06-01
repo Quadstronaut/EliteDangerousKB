@@ -1,0 +1,31 @@
+[ollama]
+base_url   = "http://localhost:11434"
+chat_model = "qwen3:8b"
+embed_model = "bge-m3"
+vision_model = "qwen3-vl:8b"
+loop_model = "qwen3-coder:30b"
+keep_alive = "5m"
+
+[retrieval]
+top_k = 8
+tau = 0.55              # cosine-similarity floor; max_score < tau => refuse (spec §B)
+embed_dim = 1024
+chunk_min_tokens = 128
+chunk_max_tokens = 512
+chunk_overlap = 0.15
+
+[copilot]
+mode = "verified_only"  # "verified_only" | "include_unverified"
+forced_citation = true
+max_regen = 1
+
+[paths]
+kb = "kb"
+embeddings = "embeddings"
+indexes = "indexes"
+cmdr_profile = "cmdr/duvrazh.md"
+
+[loop]
+verification_tier = 1               # 1=capture, 2=consensus, 3=currency-purge
+git_commit_every_loop = true
+deep_analysis_after_empty_loops = 5
