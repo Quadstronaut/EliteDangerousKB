@@ -60,3 +60,87 @@ def test_ed_kb_search_returns_list_of_dicts():
     assert row["score"] == pytest.approx(0.87)
     assert row["availability"] == "live"
     assert row["changed_note"] is None
+
+
+def test_ed_kb_answer_returns_structured_dict():
+    """ed_kb_answer must return {answer: str, citations: list[str], grounded: bool}."""
+    chunk = _make_chunk()
+    mock_result = RetrievalResult(
+        query="what does farseer unlock",
+        chunks=[chunk],
+        max_score=0.87,
+        grounded=True,
+    )
+
+    fake_answer = "Felicity Farseer unlocks at Sol distance < 20 ly [abc123def456789a]."
+
+    with (
+        patch("copilot.mcp_server.retriever") as mock_retriever,
+        patch("copilot.mcp_server.assemble") as mock_assemble,
+        patch("copilot.mcp_server.ollama_client") as mock_ollama,
+    ):
+        mock_retriever.retrieve.return_value = mock_result
+        mock_assemble.build_messages.return_value = [{"role": "user", "content": "q"}]
+        mock_assemble.validate_answer.return_value = (True, "ok")
+        mock_ollama.chat_stream.return_value = iter([fake_answer])
+
+        from copilot.mcp_server import ed_kb_answer
+        result = ed_kb_answer("what does farseer unlock")
+
+    assert isinstance(result, dict)
+    assert "answer" in result
+    assert "citations" in result
+    assert "grounded" in result
+    assert isinstance(result["citations"], list)
+    assert isinstance(result["grounded"], bool)
+    assert result["grounded"] is True
+    assert result["citations"] == ["abc123def456789a"]
+    assert fake_answer in result["answer"]
+
+
+def test_ed_kb_answer_not_grounded_returns_refusal():
+    """When grounded=False, ed_kb_answer must return the REFUSAL string."""
+    mock_result = RetrievalResult(
+        query="some obscure question",
+        chunks=[],
+        max_score=0.1,
+        grounded=False,
+    )
+    with patch("copilot.mcp_server.retriever") as mock_retriever:
+        mock_retriever.retrieve.return_value = mock_result
+        from copilot.mcp_server import ed_kb_answer
+        result = ed_kb_answer("some obscure question")
+
+    assert result["grounded"] is False
+    assert result["citations"] == []
+    # REFUSAL string from repl.py must be present
+    assert "don't have a verified source" in result["answer"].lower() or len(result["answer"]) > 0
+
+
+def test_ed_kb_answer_ollama_unavailable():
+    """OllamaUnavailable must be caught and return an error dict (not crash)."""
+    chunk = _make_chunk()
+    mock_result = RetrievalResult(
+        query="farseer",
+        chunks=[chunk],
+        max_score=0.9,
+        grounded=True,
+    )
+    with (
+        patch("copilot.mcp_server.retriever") as mock_retriever,
+        patch("copilot.mcp_server.assemble") as mock_assemble,
+        patch("copilot.mcp_server.ollama_client") as mock_ollama,
+    ):
+        mock_retriever.retrieve.return_value = mock_result
+        mock_assemble.build_messages.return_value = []
+        mock_assemble.validate_answer.return_value = (True, "ok")
+        from copilot.ollama_client import OllamaUnavailable
+        mock_ollama.chat_stream.side_effect = OllamaUnavailable("down")
+
+        from copilot.mcp_server import ed_kb_answer
+        result = ed_kb_answer("farseer")
+
+    # Must not raise; must return a dict with "answer" key
+    assert isinstance(result, dict)
+    assert "answer" in result
+    assert "ollama" in result["answer"].lower() or "unavailable" in result["answer"].lower()
