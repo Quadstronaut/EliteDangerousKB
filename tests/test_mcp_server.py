@@ -284,3 +284,17 @@ def test_ed_kb_search_parity_real_retriever(monkeypatch):
     assert [r["kb_path"] for r in mcp_rows] == [c.kb_path for c in direct.chunks]
     # Order must be preserved exactly (descending score from index.search).
     assert [r["chunk_id"] for r in mcp_rows] == ["aaaa1111bbbb2222", "cccc3333dddd4444"]
+
+
+def test_ed_kb_search_ollama_unavailable():
+    """ed_kb_search must return an error dict when Ollama is unreachable, not raise."""
+    with patch("copilot.mcp_server.retriever") as mock_retriever:
+        from copilot.ollama_client import OllamaUnavailable
+        mock_retriever.retrieve.side_effect = OllamaUnavailable("down")
+        from copilot.mcp_server import ed_kb_search
+        result = ed_kb_search("farseer", top_k=8)
+
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert "error" in result[0]
+    assert "ollama" in result[0]["error"].lower() or "unavailable" in result[0]["error"].lower()
