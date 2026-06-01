@@ -1,0 +1,22 @@
+# Raw captures can get huge — keep cleaned text + summaries, not raw HTML blobs
+sources/html/
+sources/transcripts/raw/
+
+# Vector index is rebuildable from the KB
+embeddings/*.bin
+embeddings/*.faiss
+embeddings/*.npy
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Logs
+journal/daemon.log
+*.log
+
+# OS
+Thumbs.db
+desktop.ini
