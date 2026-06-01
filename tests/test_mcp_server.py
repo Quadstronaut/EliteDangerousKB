@@ -191,3 +191,96 @@ def test_ed_cmdr_state_error_returns_error_dict():
     assert isinstance(result, dict)
     assert "error" in result
     assert "profile" in result["error"].lower() or "corrupted" in result["error"].lower()
+
+
+def test_ed_kb_search_parity_with_retriever():
+    """
+    Parity test (spec §B/§D): ed_kb_search chunk ids and order MUST match
+    retriever.retrieve().chunks for the same query and top_k.
+
+    This guards against any future serialization or ordering drift.
+    """
+    chunks = [
+        _make_chunk(chunk_id="aaaa1111bbbb2222", score=0.92),
+        _make_chunk(chunk_id="cccc3333dddd4444", score=0.78,
+                    kb_path="kb/ships/anaconda.md",
+                    heading_path="Anaconda > Hardpoints"),
+    ]
+    mock_result = RetrievalResult(
+        query="engineers meta build",
+        chunks=chunks,
+        max_score=0.92,
+        grounded=True,
+    )
+
+    with patch("copilot.mcp_server.retriever") as mock_retriever:
+        mock_retriever.retrieve.return_value = mock_result
+        from copilot.mcp_server import ed_kb_search
+        mcp_result = ed_kb_search("engineers meta build", top_k=8)
+
+    # Simulate calling retriever.retrieve directly (same mock result)
+    direct_chunks = mock_result.chunks
+
+    assert len(mcp_result) == len(direct_chunks), (
+        f"Length mismatch: MCP={len(mcp_result)}, direct={len(direct_chunks)}"
+    )
+    for i, (mcp_row, direct_chunk) in enumerate(zip(mcp_result, direct_chunks)):
+        assert mcp_row["chunk_id"] == direct_chunk.chunk_id, (
+            f"chunk_id mismatch at position {i}: "
+            f"MCP={mcp_row['chunk_id']}, direct={direct_chunk.chunk_id}"
+        )
+        assert mcp_row["score"] == pytest.approx(direct_chunk.score), (
+            f"score mismatch at position {i}"
+        )
+        assert mcp_row["kb_path"] == direct_chunk.kb_path
+        assert mcp_row["availability"] == direct_chunk.availability
+
+
+def test_ed_kb_search_parity_real_retriever(monkeypatch):
+    """
+    Strong parity (spec §B/§D): ed_kb_search drives the REAL retriever.retrieve
+    over a small mocked index and must return chunk ids/order/scores identical to
+    calling retriever.retrieve directly. ed_kb_search itself is NOT mocked here —
+    only the index/embed/config layer below the retriever (Ollama is down).
+
+    This proves the MCP wrapper introduces zero retrieval drift.
+    """
+    import numpy as np
+    from copilot import retriever
+
+    # Small built "index": two chunks with fixed cosine scores, descending order.
+    catalog = {
+        "aaaa1111bbbb2222": _make_chunk(chunk_id="aaaa1111bbbb2222", score=0.0),
+        "cccc3333dddd4444": _make_chunk(
+            chunk_id="cccc3333dddd4444", score=0.0,
+            kb_path="kb/ships/anaconda.md", heading_path="Anaconda > Hardpoints",
+        ),
+    }
+    hits = [("aaaa1111bbbb2222", 0.92), ("cccc3333dddd4444", 0.78)]
+
+    # Mock only the layer below the retriever — Ollama embed, index search/hydrate, config.
+    monkeypatch.setattr(
+        "copilot.ollama_client.embed",
+        lambda texts: np.stack([np.ones(1024, dtype=np.float32) / 32.0 for _ in texts]),
+    )
+    monkeypatch.setattr("copilot.index.search", lambda qv, top_k: hits[:top_k])
+    monkeypatch.setattr("copilot.index.chunk_by_id", lambda cid: catalog.get(cid))
+    monkeypatch.setattr(
+        "copilot.retriever._config",
+        lambda: {"retrieval": {"top_k": 8, "tau": 0.55}},
+    )
+
+    query = "engineers meta build"
+
+    # Direct call to the real retriever.
+    direct = retriever.retrieve(query, top_k=8)
+
+    # MCP tool call — exercises the real retriever through the wrapper.
+    from copilot.mcp_server import ed_kb_search
+    mcp_rows = ed_kb_search(query, top_k=8)
+
+    assert [r["chunk_id"] for r in mcp_rows] == [c.chunk_id for c in direct.chunks]
+    assert [r["score"] for r in mcp_rows] == pytest.approx([c.score for c in direct.chunks])
+    assert [r["kb_path"] for r in mcp_rows] == [c.kb_path for c in direct.chunks]
+    # Order must be preserved exactly (descending score from index.search).
+    assert [r["chunk_id"] for r in mcp_rows] == ["aaaa1111bbbb2222", "cccc3333dddd4444"]
