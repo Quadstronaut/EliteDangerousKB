@@ -118,7 +118,7 @@ class TestParseJournal:
         facts = parse_journal(FIXTURES / "sample_journal.log")
         trade = [f for f in facts if f.key == "rank.trade"]
         assert len(trade) == 1
-        assert trade[0].value == "Elite V"   # index 9 = "Elite", but journal gives 9 → Elite V per rank map
+        assert trade[0].value == "Elite I"   # journal Trade index 9 → _TRADE_RANKS[9] == "Elite I"
 
     def test_balance_extracted_from_statistics(self):
         from copilot.profile_sources import parse_journal

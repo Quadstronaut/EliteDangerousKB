@@ -138,3 +138,117 @@ def parse_game_state(dir: Path) -> list[ProfileFact]:
             ))
 
     return facts
+
+
+# ---------------------------------------------------------------------------
+# parse_journal
+# ---------------------------------------------------------------------------
+
+def parse_journal(path: Path) -> list[ProfileFact]:
+    """Stream a Journal.*.log file (JSONL) and extract ProfileFacts.
+
+    Extracts: EngineerProgress, Rank, Statistics(balance), ScanOrganic,
+    Loadout, CarrierStats.
+
+    Events are streamed; the last occurrence of a given fact key wins,
+    preserving chronological ordering naturally.
+
+    Raises FileNotFoundError if *path* does not exist.
+    """
+    if not path.exists():
+        raise FileNotFoundError(f"Journal not found: {path}")
+
+    facts: dict[str, ProfileFact] = {}  # key → latest fact; last write wins
+
+    def _put(key: str, value: str, freshness: str) -> None:
+        facts[key] = ProfileFact(
+            key=key,
+            value=value,
+            origin="journal",
+            freshness=freshness,
+            verified=True,
+        )
+
+    with path.open(encoding="utf-8", errors="replace") as fh:
+        for raw_line in fh:
+            raw_line = raw_line.strip()
+            if not raw_line:
+                continue
+            try:
+                event = json.loads(raw_line)
+            except json.JSONDecodeError:
+                continue  # skip malformed lines
+
+            etype = event.get("event", "")
+            ts = event.get("timestamp", "unknown")
+
+            if etype == "Rank":
+                for cat, idx in event.items():
+                    if cat in _RANK_MAPS and isinstance(idx, int):
+                        _put(f"rank.{cat.lower()}", _rank_label(cat, idx), ts)
+
+            elif etype == "EngineerProgress":
+                for eng in event.get("Engineers", []):
+                    name = eng.get("Engineer", "unknown")
+                    slug = re.sub(r"[^a-z0-9]", "-", name.lower()).strip("-")
+                    progress = eng.get("Progress", "unknown")
+                    rank = eng.get("Rank", 0)
+                    _put(f"engineer.{slug}.progress", progress, ts)
+                    if isinstance(rank, int):
+                        _put(f"engineer.{slug}.rank", str(rank), ts)
+
+            elif etype == "Statistics":
+                bank = event.get("Bank_Account", {})
+                if "Current_Wealth" in bank:
+                    _put("balance_cr", str(bank["Current_Wealth"]), ts)
+                exobio = event.get("Exobiology", {})
+                if "Organic_Data_Sold" in exobio:
+                    _put("exobio.data_sold", str(exobio["Organic_Data_Sold"]), ts)
+                if "Organic_Genuses_Sold_All_Species" in exobio:
+                    _put(
+                        "exobio.genuses_sold_all_species",
+                        str(exobio["Organic_Genuses_Sold_All_Species"]),
+                        ts,
+                    )
+
+            elif etype == "ScanOrganic":
+                genus = event.get("Genus_Localised", event.get("Genus", "unknown"))
+                species = event.get("Species_Localised", event.get("Species", "unknown"))
+                scan_type = event.get("ScanType", "unknown")
+                body = str(event.get("Body", ""))
+                _put(
+                    f"organic.scan.{re.sub(r'[^a-z0-9]', '-', species.lower())}",
+                    f"{genus} / {species} / ScanType={scan_type} / Body={body}",
+                    ts,
+                )
+
+            elif etype == "Loadout":
+                ship = event.get("Ship", "unknown")
+                ship_name = event.get("ShipName", "")
+                ship_id = event.get("ShipID", 0)
+                rebuy = event.get("Rebuy", 0)
+                _put(f"ship.{ship_id}.type", ship, ts)
+                if ship_name:
+                    _put(f"ship.{ship_id}.name", ship_name, ts)
+                _put(f"ship.{ship_id}.rebuy_cr", str(rebuy), ts)
+
+            elif etype == "CarrierStats":
+                carrier_id = event.get("CarrierID", "unknown")
+                name = event.get("Name", "")
+                callsign = event.get("Callsign", "")
+                fuel = event.get("FuelLevel", None)
+                finance = event.get("Finance", {})
+                if name:
+                    _put(f"carrier.{carrier_id}.name", name, ts)
+                if callsign:
+                    _put(f"carrier.{carrier_id}.callsign", callsign, ts)
+                if fuel is not None:
+                    _put(f"carrier.{carrier_id}.fuel_t", str(fuel), ts)
+                if "CarrierBalance" in finance:
+                    _put(
+                        f"carrier.{carrier_id}.balance_cr",
+                        str(finance["CarrierBalance"]),
+                        ts,
+                    )
+
+    return list(facts.values())
