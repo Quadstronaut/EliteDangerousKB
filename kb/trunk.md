@@ -1,0 +1,50 @@
+---
+source_url: https://www.elitedangerous.com
+source_type: official
+source_tier: 0
+captured_at: 2026-06-01
+source_count: 1
+verified: true
+availability: live
+---
+
+# Elite Dangerous Knowledge Base
+
+Central index of the KB. Each section links to the main topic pages.
+
+## Ships
+
+Core vessel knowledge: stats, outfitting slots, rebuy costs, role recommendations.
+See [[ships/python-mk-ii]] for the Python Mk II.
+
+## Engineers
+
+Engineer unlock sequences and offered blueprints.
+See [[engineers/felicity-farseer]] for the first exploration engineer.
+
+## Mechanics
+
+Core gameplay systems explained with current (post-Odyssey) accuracy.
+See [[mechanics/frame-shift-drive]] for FSD grades, optimisation, and neutron boosting.
+
+## Careers
+
+Combat, trade, exploration, exobiology, AX/Thargoid, mercenary, mining.
+Exobiology is the newest and least-documented career in the KB — priority research target.
+
+## Powerplay 2.0
+
+Powerplay was replaced by Powerplay 2.0 in 2024. Old pledge modules are no longer available.
+<!-- tier:1 src:patch-notes -->
+
+## Colonisation / Trailblazers
+
+The Trailblazers colonisation programme (Feb 2025) allows commanders and squadrons to claim
+and develop unclaimed systems using fleet carriers and construction commodities.
+
+## AX / Thargoid Content
+
+The Thargoid war narrative concluded, but the content remains fully live: Spire sites,
+Titan wrecks, AX combat zones, and Thargoid interceptor encounters all remain accessible.
+These are tagged `availability: live` throughout the KB.
+<!-- tier:0 src:canonn -->
