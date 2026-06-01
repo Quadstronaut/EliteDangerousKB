@@ -10,8 +10,20 @@ embeddings/*.npy
 # Python
 __pycache__/
 *.pyc
+*.pyo
 .venv/
 venv/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Embeddings (large binary — regenerate from KB)
+embeddings/chunk_ids.json
+
+# Index (derived artifact)
+indexes/manifest.json
+indexes/data-sources.json
 
 # Logs
 journal/daemon.log
