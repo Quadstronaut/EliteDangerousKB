@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Build a powerful, multi-tier, iterated research loop that consolidates **fact-checked, version-tagged** Elite Dangerous knowledge into a local knowledge base, plus a personalized chat copilot ("COVAS") that answers any question about ships, engineers, locations, mechanics, outfitting, careers, Powerplay, colonisation, community goals, and the Thargoid war — grounded only in that verified KB.
+Build a powerful, multi-tier, iterated research loop that consolidates **fact-checked, current-truth-only** Elite Dangerous knowledge into a local knowledge base, plus a personalized chat copilot ("COVAS") that answers any question about ships, engineers, locations, mechanics, outfitting, careers, Powerplay, colonisation, community goals, and current AX/Thargoid content — grounded only in that verified KB.
 
 The user has played since day 1 but never dove deep: wealthy (3B+ on foot, billions more in 2 fleet carriers, ~3B rebuy implying a large-ship fleet), ranks Combat Expert / Trade Elite V / Explorer Elite / Exobiology Directionless / Mercenary Defenceless / CQC Helpless. **Money is not the constraint** — the goal is capability, progression, and mastery in the grind-gated and knowledge-gated areas money can't buy.
 
@@ -16,10 +16,10 @@ The user has played since day 1 but never dove deep: wealthy (3B+ on foot, billi
 
 ## Core problem this solves
 
-ED community knowledge is full of stale and contradictory information (pre-Odyssey, pre-Powerplay-2.0, pre-Colonisation claims presented as current). An 8B local model will confidently hallucinate ED facts. The system defeats both:
+ED community knowledge is full of stale and contradictory information (pre-Odyssey, pre-Powerplay-2.0, pre-Colonisation claims presented as current). An 8B local model will confidently hallucinate ED facts. The KB holds **only what is true and relevant now** — obsolete mechanics are omitted, not catalogued. The system defeats both failure modes:
 
 1. **RAG grounding** — the copilot answers *only* from retrieved verified KB chunks, with citations. "I don't have a verified source" is a valid, required answer.
-2. **Version + availability tagging** — every fact is anchored to a game epoch and an availability status, so the copilot never presents stale mechanics as current or sends the user chasing content that ended.
+2. **Current-truth-only KB** — obsolete-and-pointless mechanics are omitted entirely; the rare stale fact that still matters survives as a one-line `changed_note`, so the copilot never presents dead mechanics as current or sends the user chasing content that ended.
 
 ---
 
@@ -89,18 +89,19 @@ source_tier: <0|1|2|3>
 captured_at: <ISO>
 source_count: <int>          # independent corroborating sources
 verified: <true|false>       # promoted in Phase 2
-availability: <live|superseded|removed|seasonal>
-content_epoch: <horizons|odyssey|trailblazers|post-war-ax|unknown>   # real ED vocabulary
+availability: <live|seasonal|changed>   # current-truth only; `changed` carries a one-line note
+changed_note: <one line, only when availability=changed>
 ---
 ```
 
-`availability` is a mandatory v1 correctness floor — the copilot never recommends chasing content that has ended and always flags what is still obtainable:
-- `live` — currently obtainable (e.g. post-war AX combat, Spire sites, Titan-wreck diving, exobiology).
-- `superseded` — replaced and gone (e.g. **Powerplay 1 → Powerplay 2** modules/ranks).
-- `removed` — permanently missed (e.g. the concluded Thargoid *war's* hearts/Titan-active rewards, past CGs, limited decals).
-- `seasonal` / time-limited — recurring or windowed.
+**The KB stores what is true and relevant NOW.** Obsolete mechanics with no present purpose are **omitted entirely** — the loop does not research them and they get no pages. `availability` values:
+- `live` — currently obtainable/relevant (e.g. post-war AX combat, Spire sites, Titan-wreck diving, exobiology, Trailblazers colonisation). **This is the default and the bulk of the KB.**
+- `seasonal` / time-limited — currently relevant but recurring or windowed (e.g. active CGs).
+- `changed` — **the only concession to stale content.** Used ONLY when knowing a thing changed has present value (prevents bad advice or corrects a misconception the user will hit in old guides). Stored as a **one-line `changed_note`** ("Powerplay 1 → Powerplay 2, 2024 — old modules gone"; "Thargoid war concluded — hearts/Titan-active rewards no longer obtainable"), **never a researched branch.** A thin myth-correction layer, not a museum.
 
-**Mandatory v1 epoch correctness:** Thargoid content is SPLIT — war-era rewards are `removed`, but AX combat/Spire/Titan-diving are `live` (`content_epoch: post-war-ax`). Colonisation uses the live term **Trailblazers** (Feb 2025). Deferred to v2: `unlock_chain`/`prerequisite` as structured fields (carried in body text for v1), finer `version_epoch` granularity, `relates_to`, `key_entities`.
+There is **no `superseded`/`removed` page-building**: if a dead mechanic has no `changed_note` value, it is simply absent. The copilot answering "that's no longer in the game, here's what's current" comes from a one-line note or from the absence itself — not from catalogued dead content.
+
+**Mandatory v1 correctness:** AX combat/Spire/Titan-diving are tagged `live` (the war narrative ended but the content is current — must never be presented as gone). Colonisation uses the live term **Trailblazers** (Feb 2025). Deferred to v2: `unlock_chain`/`prerequisite` as structured fields (carried in body text for v1), `relates_to`, `key_entities`.
 
 ---
 
@@ -110,7 +111,7 @@ Built in stages so nothing is mishandled. `config.toml` carries the current `ver
 
 - **Phase 1 — Capture-everything, flag-later:** broad coverage fast; every fact gets frontmatter even when single-source.
 - **Phase 2 — Multi-source consensus:** cross-reference pass promotes facts with 2+ independent agreeing sources to `verified: true`. Conflicts logged, never silently resolved.
-- **Phase 3 — Version-aware validation:** anchor every verified fact to a game epoch via patch notes; stale claims **demoted and flagged, not deleted**; structured (Tier 0) data overrides prose on conflict.
+- **Phase 3 — Currency validation & purge:** check verified facts against current patch notes; structured (Tier 0) data overrides prose on conflict. Facts that are no longer true are **deleted** (current-truth-only policy, §D), EXCEPT where they earn a one-line `changed_note` because the stale belief actively misleads. No museum of dead mechanics.
 
 The copilot can answer in "verified only" mode or "include unverified (warned)" mode.
 
@@ -118,7 +119,7 @@ The copilot can answer in "verified only" mode or "include unverified (warned)" 
 
 ## Data flow (one loop)
 
-Triage queue → **Search** (web + Tier-0 APIs) → dedup via `seen.json` → **Summarize** (qwen3-coder:30b extracts claims, entities, version + availability signals) → **Synthesize** (route to KB pages, add `[[wikilinks]]`, set confidence) → **Re-embed** changed pages (bge-m3) → **Index + git commit** → regenerate `README.md` dashboard → update `STATE.toml`.
+Triage queue → **Search** (web + Tier-0 APIs) → dedup via `seen.json` → **Summarize** (qwen3-coder:30b extracts claims, entities, currency signals) → **Discard obsolete-and-pointless facts** → **Synthesize** (route current-truth facts to KB pages, add `[[wikilinks]]`, set tier/source_count) → **Re-embed** changed pages (bge-m3) → **Index + git commit** → regenerate `README.md` dashboard → update `STATE.toml`.
 
 Deep-analysis mode triggers after N consecutive empty loops: expand inward (cross-reference clusters, gap-analysis, generate new targets).
 
@@ -175,7 +176,7 @@ EliteDangerousKB/
 
 - Loop self-heals `config.toml`, retries with backoff, never stops unless `halt = true` or usage exhausted.
 - Ollama-unreachable → REPL and MCP server degrade gracefully with a clear message.
-- Every copilot answer carries citations + version + availability tags; empty context → "no verified source," never a guess.
+- Every copilot answer carries citations; surfaces a `changed_note` when relevant; empty/low-similarity context → "no verified source," never a guess.
 - Git commit every loop; KB is the source of truth. Paraphrase sources (fair use), cite URLs.
 
 ---
@@ -198,6 +199,7 @@ EliteDangerousKB/
 - No voice I/O (despite the COVAS name) — text only for v1.
 - No `graph.json` (deleted — no consumer).
 - No CAPI/EDMC integration in v1 (OAuth + Frontier approval is real scope) — v2.
+- **No obsolete/dead mechanics** — current truth only; the loop does not research or page content with no present relevance. Stale facts survive only as a one-line `changed_note` where it prevents bad advice (see §D).
 
 ---
 
@@ -219,8 +221,8 @@ Deferred to v1.1: cited-span validation (verify the quoted span exists in the ci
 ### §C — Personalization / Journal ingest (RESOLVED)
 Does **not** block day-1 chat. `profile.py` exposes a `ProfileSource` interface (`get_state() -> CmdrState`) from commit 1. v1 implementation = hand-seeded `cmdr/duvrazh.md` (template in repo from the start); answers drawn from it are **labeled as unverified/manual state**, never presented as live truth. **Journal-watcher** (polls `%USERPROFILE%\Saved Games\Frontier Developments\Elite Dangerous\Journal.*.log`) is a drop-in second `ProfileSource` — lands **v1.1 / Sprint 2** (well-trodden via EDMC; before any feature claiming live loadout/carrier accuracy). CAPI/EDMC = v2.
 
-### §D — Availability/version + MCP (RESOLVED)
-The `availability` enum (`live | superseded | removed | seasonal`) and the Thargoid epoch split are a **mandatory v1 correctness floor** (recommending dead content == hallucination-class harm). Use real ED vocabulary. **MCP ships in v1** (user mandate) as a thin **FastMCP + stdio** wrapper over the pure retriever, registered via `.mcp.json`; sequenced after the copilot core but in the v1 release. Deferred: structured `unlock_chain`, deep-analysis mode, live-refresh automation, `graph.json` (deleted).
+### §D — Availability + MCP (RESOLVED, amended by user 2026-06-01)
+**User override of the council:** the KB stores **current truth only**. Obsolete mechanics with no present purpose are **omitted entirely** — not researched, not paged, not tagged. The council's `superseded`/`removed` "catalogue dead content" model is dropped. `availability` collapses to `live | seasonal | changed`, where `changed` is a thin myth-correction layer: a **one-line `changed_note`** kept ONLY when knowing a thing changed prevents bad advice or corrects a misconception the user will meet in old guides (PP1→PP2, "war is over"). Never a researched branch. The one hard correctness rule survives: AX/Spire/Titan content is `live` and must never be presented as gone. **MCP ships in v1** (user mandate) as a thin **FastMCP + stdio** wrapper over the pure retriever, registered via `.mcp.json`; sequenced after the copilot core but in the v1 release. Deferred: structured `unlock_chain`, deep-analysis mode, live-refresh automation, `graph.json` (deleted).
 
 ### §E — Implementation (RESOLVED)
 - **Vector store:** numpy brute-force cosine for v1 (≈50k × 1024 float32 ≈ 200 MB, single matmul in ms; zero Windows install pain). Persist as `.npy` + `manifest.json`. **Switch threshold:** revisit `sqlite-vec` (pip-only, persistent) or `faiss-cpu` past ~100k chunks or if query latency > ~200 ms.
@@ -241,4 +243,4 @@ The loop's heavy model (`qwen3-coder:30b`, 17 GB) crashed the local Ollama serve
 7. Live-data refresh (Spansh colonisation + PP2 trackers, CGs) — later.
 
 ### §H — ED domain must-haves baked into v1
-Canonn (Tier 0), Spansh expansion (exobio/routing/colonisation), INARA→Tier 1 + rate-limiter, drop "U14" → "Odyssey season", Thargoid epoch split, `superseded` for PP1→PP2. Deferred: structured unlock chains, CAPI, EDMC.
+Canonn (Tier 0), Spansh expansion (exobio/routing/colonisation), INARA→Tier 1 + rate-limiter, drop "U14" → "Odyssey season", AX content tagged `live` (never presented as gone), `changed_note` for PP1→PP2 and war-end. Obsolete-and-pointless mechanics **omitted entirely**. Deferred: structured unlock chains, CAPI, EDMC.
