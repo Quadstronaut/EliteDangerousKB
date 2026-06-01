@@ -349,3 +349,136 @@ def available_sources() -> list["ProfileSource"]:
                 sources.append(ThirdPartySource(candidate, label=label))
 
     return sources
+
+
+# ---------------------------------------------------------------------------
+# Bootstrap function + CLI entry point
+# ---------------------------------------------------------------------------
+
+# Module-level import so tests can patch copilot.profile_sources.ingest_screenshot.
+# Guarded so importing profile_sources never hard-fails on the optional dep.
+try:
+    from copilot.vision_ingest import ingest_screenshot
+except ImportError:  # pragma: no cover
+    def ingest_screenshot(image_path: str) -> list[ProfileFact]:  # type: ignore[misc]
+        return []
+
+
+_DEFAULT_SCREENSHOT = (
+    r"C:\Users\Quadstronaut\.claude\image-cache"
+    r"\45518cb0-435b-47c5-9711-56ce5054f178\1.png"
+)
+
+
+def _write_profile_md(state: "CmdrState", path: Path) -> None:
+    """Overwrite *path* with a Markdown profile derived from *state*.
+
+    Preserves any existing YAML frontmatter from the original file (so
+    human-added goals and notes survive a re-bootstrap). Appends a
+    "## Auto-populated facts" section with the verified facts table.
+    """
+    from copilot.atomic import write_atomic
+
+    # Read existing content so we can preserve the frontmatter.
+    existing = path.read_text(encoding="utf-8") if path.exists() else ""
+
+    # Split on the second "---" (end of frontmatter), if present.
+    fm_end = existing.find("---", 3)
+    if existing.startswith("---") and fm_end > 3:
+        header = existing[: fm_end + 3]
+        body_rest = existing[fm_end + 3 :]
+    else:
+        header = f"---\nname: {state.name}\n---"
+        body_rest = f"\n# CMDR {state.name}\n"
+
+    # Remove any previous auto-populated section.
+    auto_marker = "\n## Auto-populated facts"
+    if auto_marker in body_rest:
+        body_rest = body_rest[: body_rest.index(auto_marker)]
+
+    # Build the new auto-populated section.
+    lines = [auto_marker, ""]
+    lines.append("| Key | Value | Origin | Freshness | Verified |")
+    lines.append("|-----|-------|--------|-----------|----------|")
+    for fact in sorted(state.facts, key=lambda f: f.key):
+        verified_str = "yes" if fact.verified else "no"
+        lines.append(
+            f"| `{fact.key}` | {fact.value} | {fact.origin} | {fact.freshness} | {verified_str} |"
+        )
+
+    new_content = header + body_rest.rstrip() + "\n" + "\n".join(lines) + "\n"
+    write_atomic(path, new_content)
+
+
+def bootstrap(screenshot_path: str | None = _DEFAULT_SCREENSHOT) -> "CmdrState":
+    """Run discovery + optional vision ingest and write cmdr/duvrazh.md.
+
+    1. Calls available_sources() — reads live game data.
+    2. If *screenshot_path* is given and the file exists, calls
+       ingest_screenshot() and adds a ScreenshotSource adapter.
+    3. Merges via profile.merge_state (ORIGIN_PRIORITY).
+    4. Writes cmdr/duvrazh.md via write_atomic.
+    5. Returns the resulting CmdrState.
+
+    NOTE: If the screenshot at the default path does not exist, drop a
+    screenshot there (or pass a path) and rerun:
+        python -m copilot.profile_sources --bootstrap [--screenshot PATH]
+    """
+    from copilot.profile import merge_state, ManualProfile
+    from copilot.paths import repo_root
+
+    sources: list[ProfileSource] = list(available_sources())
+
+    # Vision ingest — optional.
+    if screenshot_path is not None:
+        ss_path = Path(screenshot_path)
+        if ss_path.exists():
+            try:
+                vision_facts = ingest_screenshot(str(ss_path))
+                if vision_facts:
+                    class _ScreenshotAdapter:
+                        origin = "screenshot"
+                        def get_facts(self) -> list[ProfileFact]:
+                            return vision_facts
+                    sources.append(_ScreenshotAdapter())
+                    print(f"[bootstrap] Vision ingest: {len(vision_facts)} facts from {ss_path.name}")
+            except Exception as exc:  # noqa: BLE001
+                print(f"[bootstrap] Vision ingest failed (non-fatal): {exc}")
+        else:
+            print(
+                f"[bootstrap] Screenshot not found at {ss_path}\n"
+                "  To include vision facts: drop a screenshot at that path and rerun."
+            )
+
+    sources.append(ManualProfile())
+    state = merge_state(sources)
+
+    profile_path = repo_root() / "cmdr" / "duvrazh.md"
+    _write_profile_md(state, profile_path)
+    print(f"[bootstrap] Wrote {len(state.facts)} facts to {profile_path}")
+    return state
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Bootstrap cmdr/duvrazh.md from live game data + optional screenshot."
+    )
+    parser.add_argument(
+        "--bootstrap",
+        action="store_true",
+        help="Run discovery + ingest + profile write.",
+    )
+    parser.add_argument(
+        "--screenshot",
+        default=_DEFAULT_SCREENSHOT,
+        help=f"Path to rank screenshot (default: {_DEFAULT_SCREENSHOT}).",
+    )
+    args = parser.parse_args()
+
+    if args.bootstrap:
+        result = bootstrap(screenshot_path=args.screenshot)
+        print(f"[bootstrap] Done. balance_cr={result.balance_cr}, ranks={result.ranks}")
+    else:
+        parser.print_help()
