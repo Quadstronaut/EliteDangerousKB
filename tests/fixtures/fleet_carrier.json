@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-06-01T10:00:00Z",
+  "event": "CarrierStats",
+  "CarrierID": 3700000001,
+  "Callsign": "X9V-T3K",
+  "Name": "THE LONG HAUL",
+  "DockingAccess": "squadronfriends",
+  "AllowNotorious": false,
+  "FuelLevel": 497,
+  "JumpRangeCurr": 500.0,
+  "JumpRangeMax": 500.0,
+  "PendingDecommission": false,
+  "SpaceUsage": {
+    "TotalCapacity": 25000,
+    "Crew": 600,
+    "Cargo": 1200,
+    "CargoSpaceReserved": 6,
+    "ShipPacks": 0,
+    "ModulePacks": 0,
+    "FreeSpace": 23194
+  },
+  "Finance": {
+    "CarrierBalance": 1870000000,
+    "ReserveBalance": 0,
+    "AvailableBalance": 1870000000,
+    "ReservePercent": 0
+  },
+  "Crew": [],
+  "ShipPacks": [],
+  "ModulePacks": []
+}
