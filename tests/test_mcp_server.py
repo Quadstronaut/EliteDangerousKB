@@ -4,7 +4,7 @@ import importlib
 import pytest
 
 from unittest.mock import patch, MagicMock
-from copilot.models import Chunk, RetrievalResult
+from copilot.models import Chunk, RetrievalResult, CmdrState, ProfileFact
 
 
 def test_fastmcp_importable():
@@ -144,3 +144,50 @@ def test_ed_kb_answer_ollama_unavailable():
     assert isinstance(result, dict)
     assert "answer" in result
     assert "ollama" in result["answer"].lower() or "unavailable" in result["answer"].lower()
+
+
+def test_ed_cmdr_state_returns_dict():
+    """ed_cmdr_state must return a serialized CmdrState dict."""
+    fact = ProfileFact(
+        key="rank.combat",
+        value="Expert",
+        origin="journal",
+        freshness="2026-05-01",
+        verified=True,
+    )
+    mock_state = CmdrState(
+        name="Duvrazh",
+        ranks={"combat": "Expert", "trade": "Elite V"},
+        balance_cr=3_000_000_000,
+        assets={"carriers": ["FC Alpha", "FC Beta"], "ships": ["Cutter", "Corvette"]},
+        goals=["Engineering", "AX Combat"],
+        facts=[fact],
+    )
+    with patch("copilot.mcp_server.profile") as mock_profile:
+        mock_profile.load_cmdr_state.return_value = mock_state
+        from copilot.mcp_server import ed_cmdr_state
+        result = ed_cmdr_state()
+
+    assert isinstance(result, dict)
+    assert result["name"] == "Duvrazh"
+    assert result["ranks"]["combat"] == "Expert"
+    assert result["balance_cr"] == 3_000_000_000
+    assert "carriers" in result["assets"]
+    assert "Engineering" in result["goals"]
+    assert len(result["facts"]) == 1
+    f = result["facts"][0]
+    assert f["key"] == "rank.combat"
+    assert f["origin"] == "journal"
+    assert f["verified"] is True
+
+
+def test_ed_cmdr_state_error_returns_error_dict():
+    """Profile load failure must return an error dict, not raise."""
+    with patch("copilot.mcp_server.profile") as mock_profile:
+        mock_profile.load_cmdr_state.side_effect = RuntimeError("profile corrupted")
+        from copilot.mcp_server import ed_cmdr_state
+        result = ed_cmdr_state()
+
+    assert isinstance(result, dict)
+    assert "error" in result
+    assert "profile" in result["error"].lower() or "corrupted" in result["error"].lower()
