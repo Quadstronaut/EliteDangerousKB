@@ -55,11 +55,13 @@ The retrieval logic is written **once** in `retriever.py` and consumed two ways 
 | `wrapper.ps1` | PowerShell daemon | Infinite loop runner with retry/backoff (Subject-K pattern) |
 | `launch-copilot.ps1` | PowerShell | **User entry script**; health-checks Ollama then launches the REPL |
 | `copilot/retriever.py` | Python | Shared core: embed query (bge-m3) → vector search KB → rank → assemble context + CMDR profile |
-| `copilot/repl.py` | Python | Interactive chat: retrieval → qwen3:8b → streamed answer with citations + version/availability tags |
+| `copilot/repl.py` | Python | Interactive chat: retrieval → qwen3:8b → streamed answer with citations + `changed_note` when relevant |
 | `copilot/mcp_server.py` | Python (MCP) | Same retrieval + live-API tools, exposed to Claude Code |
-| `copilot/ollama_client.py` | Python | Thin Ollama HTTP client (chat + embeddings) |
-| `copilot/profile.py` | Python | Loads CMDR profile, injects into every answer |
-| `cmdr/duvrazh.md` | Markdown | CMDR profile: assets, ranks, ships, carriers, goals |
+| `copilot/ollama_client.py` | Python | Thin Ollama HTTP client (chat + embeddings + vision) |
+| `copilot/profile.py` | Python | `ProfileSource` interface; merges all CMDR data sources into `CmdrState`, injects into every answer |
+| `copilot/data_discovery.py` | Python | Scans the system for ED-related data files, emits a source manifest (see §I) |
+| `copilot/vision_ingest.py` | Python | Parses screenshots (ranks, assets, loadouts) via `qwen3-vl:8b` into structured profile facts |
+| `cmdr/duvrazh.md` | Markdown | CMDR profile: assets, ranks, ships, carriers, goals — bootstrapped from data, human-editable |
 
 ---
 
@@ -152,23 +154,19 @@ EliteDangerousKB/
 │   ├── trunk.md
 │   ├── ships/  engineers/  outfitting/  mechanics/  locations/
 │   ├── careers/        # combat, trade, explore, exobio, mining, AX, mercenary/on-foot
-│   ├── powerplay/  colonisation/  community-goals/  thargoid-war/
+│   ├── powerplay/  colonisation/  community-goals/  ax-thargoid/   # AX = live content
 │   └── entities/
 ├── sources/  summaries/  live/  indexes/  embeddings/  queue/  journal/
 └── copilot/
-    ├── retriever.py   repl.py   mcp_server.py   ollama_client.py   profile.py
+    ├── retriever.py   assemble.py   repl.py   mcp_server.py
+    ├── ollama_client.py   profile.py   data_discovery.py   vision_ingest.py
 ```
 
 ---
 
 ## Staged build order
 
-1. **Scaffold** — directory skeleton, `cmdr/duvrazh.md`, `config.toml`, `STATE.toml`, `.gitignore`, git init on `master`.
-2. **Copilot core (thin slice)** — `retriever.py` + `repl.py` + `launch-copilot.ps1` against a small seeded KB; user can chat on day one.
-3. **MCP server** — `mcp_server.py` wrapping the same retriever; registered so Claude Code can sleeve on.
-4. **The loop** — `ed-research-prompt.md` + `wrapper.ps1`; Tier-0 structured ingest first (Coriolis/EDSM), then web fan-out.
-5. **Verification ramp** — Phase 1 → 2 → 3 as the KB fills.
-6. **Live-data refresh** — periodic API pulls for CGs / Powerplay / galaxy state into `live/`.
+**Superseded by the council's §G — Revised build order (below).** See §G for the binding sequence (it adds data discovery + profile bootstrap, idempotent/verbose wrapper, and the journal-watcher step).
 
 ---
 
@@ -186,6 +184,8 @@ EliteDangerousKB/
 - **Retriever:** golden-question set (e.g. "Farseer unlock requirement," "meta exploration FSD roll") with known KB answers → assert correct chunks retrieved.
 - **Copilot anti-hallucination gate:** refusal-calibration fixtures — refuses on empty context AND on non-empty-but-irrelevant context below τ (the dangerous case).
 - **Loop dry-run:** single iteration advances `STATE.toml` and produces a git commit.
+- **Idempotent resume (§J):** kill the loop mid-phase, relaunch → it resumes at the last completed phase, re-runs nothing already committed, and state files are uncorrupted.
+- **Data discovery (§I):** `data_discovery.py` finds the Saved Games journal dir + game-state JSON on this machine and writes a valid `indexes/data-sources.json`; `vision_ingest.py` parses the rank screenshot into the seed profile.
 - **Index consistency:** `reindex --from-kb` output equals the incrementally-maintained index.
 - **MCP parity:** `ed_kb_search` returns an identical `list[Chunk]` to the local retriever for the same query (compare structured chunks, not assembled prose).
 
@@ -234,13 +234,39 @@ Does **not** block day-1 chat. `profile.py` exposes a `ProfileSource` interface 
 The loop's heavy model (`qwen3-coder:30b`, 17 GB) crashed the local Ollama server during review when contended. The **copilot path uses only `qwen3:8b` + `bge-m3`** (lightweight). The loop's 30B offload must be **sequential**, and `keep_alive` managed so the 30B and 8B are not co-resident under memory pressure. Both REPL and MCP must degrade gracefully when Ollama is unreachable.
 
 ### §G — Revised build order
-1. Scaffold + `cmdr/duvrazh.md` template + `ProfileSource` interface + `config.toml`/`STATE.toml` + git (master). `graph.json` removed.
-2. **Copilot core (chat day 1):** `retriever.py` (pure, chunk-level + numpy index) + `assemble.py` + `repl.py` + `launch-copilot.ps1`, against a small hand-seeded KB. Anti-hallucination gate §B included. Manual profile.
-3. **MCP server** (FastMCP/stdio) over the same retriever; `.mcp.json` registration.
-4. **The loop:** `ed-research-prompt.md` + `wrapper.ps1`; **Tier-0 structured ingest first** (Coriolis / EDSM / Spansh / Canonn), then web fan-out. Phase-1 capture.
-5. **Journal-watcher** `ProfileSource` (v1.1).
-6. **Verification ramp** Phase 2 (consensus) → Phase 3 (version-aware) as the KB matures.
-7. Live-data refresh (Spansh colonisation + PP2 trackers, CGs) — later.
+1. Scaffold + `cmdr/duvrazh.md` template + `ProfileSource` interface + `config.toml`/`STATE.toml` (atomic writes, §J) + git (master). `graph.json` removed.
+2. **Data discovery + profile bootstrap:** `data_discovery.py` scans the system (§I) → `indexes/data-sources.json`; `vision_ingest.py` parses the provided rank screenshot to seed `cmdr/duvrazh.md`; one-shot Journal/Status JSON backfill into `CmdrState`.
+3. **Copilot core (chat day 1):** `retriever.py` (pure, chunk-level + numpy index) + `assemble.py` + `repl.py` + `launch-copilot.ps1`, against a small hand-seeded KB. Anti-hallucination gate §B included.
+4. **MCP server** (FastMCP/stdio) over the same retriever; `.mcp.json` registration.
+5. **The loop:** `ed-research-prompt.md` + `wrapper.ps1` (idempotent, verbose, always-live §J); **Tier-0 structured ingest first** (Coriolis / EDSM / Spansh / Canonn), then web fan-out. Phase-1 capture.
+6. **Journal-watcher** live `ProfileSource` + deep-research-vetted supplemental tools (§I) — v1.1.
+7. **Verification ramp** Phase 2 (consensus) → Phase 3 (currency validation & purge) as the KB matures.
+8. Live-data refresh (Spansh colonisation + PP2 trackers, CGs) — later.
 
 ### §H — ED domain must-haves baked into v1
 Canonn (Tier 0), Spansh expansion (exobio/routing/colonisation), INARA→Tier 1 + rate-limiter, drop "U14" → "Odyssey season", AX content tagged `live` (never presented as gone), `changed_note` for PP1→PP2 and war-end. Obsolete-and-pointless mechanics **omitted entirely**. Deferred: structured unlock chains, CAPI, EDMC.
+
+### §I — Data-first profile acquisition (user requirement 2026-06-01)
+The CMDR profile is built **from data, not by hand wherever possible.** `profile.py` merges multiple `ProfileSource` implementations into a single `CmdrState`; each fact carries its origin + freshness so the copilot can label confidence and never present a guess as live truth.
+
+**Source priority (highest-trust first):**
+1. **Live game-state JSON** — the game continuously writes `Status.json`, `Cargo.json`, `ShipLocker.json`, `Backpack.json`, `Market.json`, `Outfitting.json`, `Shipyard.json`, `ModulesInfo.json`, `NavRoute.json`, `FleetCarrier.json` to `%USERPROFILE%\Saved Games\Frontier Developments\Elite Dangerous\`. Zero-latency truth for current ship/cargo/carrier/loadout.
+2. **Journal event logs** — `Journal.*.log` (same dir): engineer grades reached, bodies scanned (+ FirstDiscovered), kills, systems visited, rank-ups, credits. The historical ground truth. (v1.1 watcher; one-shot backfill parse can run earlier.)
+3. **Screenshots → vision** — `vision_ingest.py` parses rank/asset/loadout screenshots via `qwen3-vl:8b` into structured facts. The rank screenshot the user already provided is the **v1 bootstrap** for `cmdr/duvrazh.md`. For anything not in the logs, the user can drop a screenshot and it's parsed.
+4. **3rd-party tool exports** — if EDMC / EDDiscovery / EDEngineer are installed, ingest their exports/databases (read-only).
+5. **Manual `cmdr/duvrazh.md`** — fallback + human override; always editable, flagged as manual/unverified.
+
+**System-wide data discovery (`data_discovery.py`):** at setup and periodically, scan for ED-related data across `%USERPROFILE%`, `Documents`, `%LOCALAPPDATA%` + `%APPDATA%` (Frontier Developments, EDMC, EDDiscovery, EDEngineer, EDMarketConnector), the Pictures/Frontier screenshot folder, and the **`G:`** drive. Emit `indexes/data-sources.json` (path, type, last-modified, ingest-status). Read-only; never writes into game folders.
+
+**Supplemental tool discovery (deep-research authorized):** the `deep-research` skill is authorized to locate third-party utilities/exporters/APIs that make acquisition or KB-building easier. **Gate:** any discovered tool must pass a functional test (does it run, does its output parse, is it current/maintained) before adoption, and the evaluation is logged to the journal. No silent dependency on an unvetted tool.
+
+### §J — Idempotent wrapper + always-live output (user requirement 2026-06-01)
+**Idempotency / crash-safety — a hard requirement, not best-effort.** The user will `Ctrl-C` and relaunch `wrapper.ps1` freely; it must **always resume cleanly from where it stopped.**
+- All state (`STATE.toml`, `seen.json`, `indexes/manifest.json`) is written **atomically** (write temp file → `fsync` → rename) so a kill mid-write never corrupts state.
+- The loop checkpoints **within** an iteration (per phase: triage → search → summarize → synthesize → index → commit), not only at loop end, so an interrupted loop resumes at the last completed phase, not the last completed loop.
+- Operations are idempotent by content-hash: a source already in `seen.json` is skipped; an unchanged chunk is not re-embedded; a half-finished page is detectable and redone, not duplicated.
+- `git` commit is the loop's durable boundary; on launch the wrapper reconciles uncommitted work against `STATE.toml`.
+
+**Always-live verbose output — nothing is ever silent or "idle."** The user wants to watch work happen on screen at all times.
+- `wrapper.ps1` and the loop stream **verbose, timestamped, real-time** progress to the console (every query issued, source considered/kept/rejected, summary produced, page written, embedding built, commit made) — `Tee`'d to `journal/daemon.log`, never buffered-until-end.
+- When there are no new sources, the loop **does not sleep** — it switches to deep-analysis / cross-referencing / gap-hunting (visible work), so the screen always shows activity. True idle only occurs on hard error backoff, which is itself printed with a countdown.
