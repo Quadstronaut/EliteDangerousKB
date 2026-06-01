@@ -252,3 +252,100 @@ def parse_journal(path: Path) -> list[ProfileFact]:
                     )
 
     return list(facts.values())
+
+
+# ---------------------------------------------------------------------------
+# ProfileSource classes
+# ---------------------------------------------------------------------------
+
+class GameStateSource:
+    """Reads live game-state JSON files from the Saved Games dir."""
+
+    origin: str = "game-state-json"
+
+    def __init__(self, dir: Path) -> None:
+        self._dir = dir
+
+    def get_facts(self) -> list[ProfileFact]:
+        return parse_game_state(self._dir)
+
+
+class JournalSource:
+    """One-shot parse of a single Journal.*.log file."""
+
+    origin: str = "journal"
+
+    def __init__(self, journal_path: Path) -> None:
+        self._path = journal_path
+
+    def get_facts(self) -> list[ProfileFact]:
+        if not self._path.exists():
+            return []
+        return parse_journal(self._path)
+
+
+class ThirdPartySource:
+    """Stub for EDMC / EDDiscovery / EDEngineer exports.
+
+    Currently returns an empty list (structured ingest of specific export
+    formats is deferred to v1.1). Presence in available_sources() signals
+    that the tool dir was found; future expansion adds parse logic here.
+    """
+
+    origin: str = "3rd-party"
+
+    def __init__(self, dir: Path, label: str = "unknown") -> None:
+        self._dir = dir
+        self._label = label
+
+    def get_facts(self) -> list[ProfileFact]:
+        # v1.1: parse EDMC journal JSON / EDDiscovery CSV exports.
+        return []
+
+
+# ---------------------------------------------------------------------------
+# available_sources
+# ---------------------------------------------------------------------------
+
+def _newest_journal(sg: Path) -> Path | None:
+    """Return the most recently modified Journal.*.log in *sg*, or None."""
+    candidates = list(sg.glob("Journal.*.log"))
+    if not candidates:
+        return None
+    return max(candidates, key=lambda p: p.stat().st_mtime)
+
+
+def available_sources() -> list["ProfileSource"]:
+    """Return ProfileSource instances whose underlying data exists on this machine.
+
+    Discovery order (matches ORIGIN_PRIORITY):
+    1. GameStateSource — if saved_games_dir() is not None.
+    2. JournalSource  — if a Journal.*.log exists in saved_games_dir().
+    3. ThirdPartySource — for each 3rd-party tool dir found in data-sources.json
+       (or re-scanned inline if the manifest is absent).
+    """
+    sources: list[ProfileSource] = []
+
+    sg = saved_games_dir()
+    if sg is not None:
+        sources.append(GameStateSource(sg))
+        newest = _newest_journal(sg)
+        if newest is not None:
+            sources.append(JournalSource(newest))
+
+    # 3rd-party: scan LOCALAPPDATA/APPDATA for known tool dirs.
+    third_party_dirs = {
+        "EDMarketConnector": "edmc",
+        "EDDiscovery": "eddiscovery",
+        "EDEngineer": "edengineer",
+    }
+    for env_var in ("LOCALAPPDATA", "APPDATA"):
+        base = os.environ.get(env_var, "")
+        if not base:
+            continue
+        for dir_name, label in third_party_dirs.items():
+            candidate = Path(base) / dir_name
+            if candidate.is_dir():
+                sources.append(ThirdPartySource(candidate, label=label))
+
+    return sources
