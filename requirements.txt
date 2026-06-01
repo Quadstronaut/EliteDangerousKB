@@ -1,0 +1,5 @@
+numpy
+requests
+tomli-w
+pytest
+mcp  # installed: 1.27.2
