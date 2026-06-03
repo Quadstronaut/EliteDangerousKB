@@ -14,6 +14,7 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -77,7 +78,11 @@ def build_index(kb_dir: Path) -> int:
     """Full rebuild from all .md files under kb_dir. Returns chunk count."""
     all_chunks: list[Chunk] = []
     for md_path in sorted(kb_dir.rglob("*.md")):
-        all_chunks.extend(chunk_page(md_path))
+        try:
+            all_chunks.extend(chunk_page(md_path))
+        except (UnicodeDecodeError, OSError) as exc:
+            # One malformed/non-UTF-8 page must not abort the whole rebuild.
+            print(f"[index] WARNING: skipping unreadable {md_path}: {exc}", file=sys.stderr)
 
     if not all_chunks:
         _save_index([], np.empty((0, 1024), dtype=np.float32), {})
@@ -113,13 +118,21 @@ def upsert_changed(kb_dir: Path) -> dict:
         old_vectors = np.load(str(emb_path))
         old_ids: list[str] = json.loads(ids_path.read_text(encoding="utf-8"))
     else:
+        # Vectors/ids are gone (e.g. a crash before they were written). The
+        # manifest alone is untrustworthy — keeping it would mark chunks
+        # "unchanged" and then KeyError when stacking their (absent) rows.
+        # Discard it so every current chunk is treated as added (full re-embed).
         old_vectors = np.empty((0, 1024), dtype=np.float32)
         old_ids = []
+        old_manifest = {}
 
     # Gather current chunks
     current_chunks: list[Chunk] = []
     for md_path in sorted(kb_dir.rglob("*.md")):
-        current_chunks.extend(chunk_page(md_path))
+        try:
+            current_chunks.extend(chunk_page(md_path))
+        except (UnicodeDecodeError, OSError) as exc:
+            print(f"[index] WARNING: skipping unreadable {md_path}: {exc}", file=sys.stderr)
 
     current_by_id: dict[str, Chunk] = {c.chunk_id: c for c in current_chunks}
     current_hashes: dict[str, str] = {
@@ -200,8 +213,22 @@ def search(query_vec: np.ndarray, top_k: int) -> list[tuple[str, float]]:
     if vectors.shape[0] == 0:
         return []
 
+    # Integrity guard: the row→id pairing is the citation's source of truth.
+    # A length mismatch means an interrupted write skewed it — serving would
+    # either IndexError or, worse, return a real id for the wrong vector (a
+    # silent mis-citation that sails past τ and the gate). Refuse instead;
+    # build_index() restores a consistent index.
+    if vectors.shape[0] != len(chunk_ids):
+        print(
+            f"[index] WARNING: vectors ({vectors.shape[0]}) vs chunk_ids "
+            f"({len(chunk_ids)}) length mismatch — index inconsistent, refusing "
+            "to serve. Rebuild with build_index().",
+            file=sys.stderr,
+        )
+        return []
+
     scores: np.ndarray = vectors @ query_vec  # cosine; both sides normalised
-    top_k = min(top_k, len(scores))
+    top_k = min(top_k, len(scores), len(chunk_ids))
     top_indices = np.argsort(scores)[::-1][:top_k]
     return [(chunk_ids[i], float(scores[i])) for i in top_indices]
 

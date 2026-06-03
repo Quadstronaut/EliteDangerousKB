@@ -54,6 +54,11 @@ def retrieve(
             continue
         chunks.append(dataclasses.replace(chunk, score=score))
 
+    # 3b. Drop chunks whose text is empty (stale manifest entry whose source
+    # section no longer exists). An empty chunk contributes nothing but its id,
+    # which the model could "cite" — a citation to nothing. Never serve them.
+    chunks = [c for c in chunks if c.text.strip()]
+
     # 4. Apply filters (e.g. {"verified": True}).
     if filters:
         for key, value in filters.items():

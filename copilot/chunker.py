@@ -197,10 +197,17 @@ def _split_on_headings(body: str) -> list[tuple[str, str]]:
 
     Returns list of (heading_text, section_body) tuples.
     A leading intro block before the first heading becomes ("", intro_text).
+
+    H3 headings are qualified with their parent H2 ("Parent > Child") so that
+    two identically-named H3s under different H2s (e.g. "Requirements" under
+    both "Engineering" and "Outfitting") produce DISTINCT heading_paths — and
+    therefore distinct chunk_ids. Without this they collide and the second
+    section silently overwrites the first in the index.
     """
     sections: list[tuple[str, str]] = []
     last_end = 0
-    last_heading = ""
+    last_heading = ""      # qualified heading of the section currently open
+    current_h2 = ""        # most recent H2, used to qualify nested H3s
     for m in _HEADING_RE.finditer(body):
         text_before = body[last_end: m.start()].strip()
         if last_end == 0 and text_before:
@@ -209,7 +216,16 @@ def _split_on_headings(body: str) -> list[tuple[str, str]]:
             sections.append((last_heading, text_before))
         elif last_heading:
             sections.append((last_heading, ""))
-        last_heading = m.group(2).strip()
+
+        level = len(m.group(1))            # 2 for "##", 3 for "###"
+        heading_text = m.group(2).strip()
+        if level <= 2:
+            current_h2 = heading_text
+            last_heading = heading_text
+        else:
+            last_heading = (
+                f"{current_h2} > {heading_text}" if current_h2 else heading_text
+            )
         last_end = m.end()
     # Trailing section
     tail = body[last_end:].strip()

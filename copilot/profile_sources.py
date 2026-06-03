@@ -50,6 +50,19 @@ _RANK_MAPS = {
     "CQC": _CQC_RANKS,
 }
 
+# Journal rank categories → canonical ProfileFact rank keys (CONTRACTS).
+# The journal names the Mercenary rank "Soldier" and the Explorer rank
+# "Explore". Normalise them so journal facts merge with manual-profile keys
+# (rank.mercenary / rank.explorer) instead of producing duplicate ranks.
+_CANONICAL_RANK_KEY = {
+    "Combat": "combat",
+    "Trade": "trade",
+    "Explore": "explorer",
+    "Soldier": "mercenary",
+    "Exobiologist": "exobiologist",
+    "CQC": "cqc",
+}
+
 
 def _rank_label(category: str, index: int) -> str:
     labels = _RANK_MAPS.get(category, [])
@@ -185,7 +198,8 @@ def parse_journal(path: Path) -> list[ProfileFact]:
             if etype == "Rank":
                 for cat, idx in event.items():
                     if cat in _RANK_MAPS and isinstance(idx, int):
-                        _put(f"rank.{cat.lower()}", _rank_label(cat, idx), ts)
+                        canonical = _CANONICAL_RANK_KEY.get(cat, cat.lower())
+                        _put(f"rank.{canonical}", _rank_label(cat, idx), ts)
 
             elif etype == "EngineerProgress":
                 for eng in event.get("Engineers", []):

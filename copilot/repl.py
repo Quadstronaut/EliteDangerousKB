@@ -13,9 +13,21 @@ from typing import Iterator
 
 from copilot import assemble, ollama_client, retriever
 from copilot.models import CmdrState
+from copilot.ollama_client import OllamaUnavailable
 from copilot.paths import load_config
 
 REFUSAL: str = "I don't have a verified source for that."
+
+
+def _retrieval_filters(cfg: dict) -> dict | None:
+    """Translate config[copilot][mode] into retrieve() filters.
+
+    verified_only (the default) restricts retrieval to chunks flagged
+    verified=True — the trust boundary the spec promises. include_unverified
+    drops the filter so lower-tier capture chunks are eligible.
+    """
+    mode = cfg.get("copilot", {}).get("mode", "verified_only")
+    return {"verified": True} if mode == "verified_only" else None
 
 
 def answer(query: str, state: CmdrState | None) -> str:
@@ -27,8 +39,8 @@ def answer(query: str, state: CmdrState | None) -> str:
     cfg = load_config()
     max_regen: int = cfg.get("copilot", {}).get("max_regen", 1)
 
-    # 1. Retrieve.
-    result = retriever.retrieve(query)
+    # 1. Retrieve (honouring verified_only / include_unverified mode).
+    result = retriever.retrieve(query, filters=_retrieval_filters(cfg))
     if not result.grounded:
         return REFUSAL
 
@@ -82,35 +94,22 @@ def main() -> None:
             print("[COVAS] Goodbye, Commander.")
             break
 
-        result = retriever.retrieve(query)
-        if not result.grounded:
-            print(f"COVAS: {REFUSAL}\n")
+        # Route through answer(): it retrieves, generates, and runs the
+        # anti-hallucination gate BEFORE returning. We never display ungated
+        # text — a hallucinated draft must not flash on screen ahead of the
+        # gate. Streaming is traded away for that guarantee.
+        print("[COVAS] ...thinking", flush=True)
+        try:
+            reply = answer(query, state)
+        except OllamaUnavailable as exc:
+            print(f"COVAS: Ollama is unavailable right now ({exc}).")
+            print("       Start it with `ollama serve`, then ask again.\n")
+            continue
+        except Exception as exc:  # noqa: BLE001 — never let the loop die
+            print(f"COVAS: Sorry, that query failed ({exc}). Try again.\n")
             continue
 
-        messages = assemble.build_messages(query, result, state)
-        print("COVAS: ", end="", flush=True)
-        parts: list[str] = []
-        for delta in ollama_client.chat_stream(messages):
-            print(delta, end="", flush=True)
-            parts.append(delta)
-        print()  # newline after streamed answer
-
-        text = "".join(parts)
-        ok, reason = assemble.validate_answer(text, result)
-        if not ok:
-            # Try one regen silently; if it fails, print the refusal.
-            parts2: list[str] = []
-            for delta in ollama_client.chat_stream(messages):
-                parts2.append(delta)
-            text2 = "".join(parts2)
-            ok2, _ = assemble.validate_answer(text2, result)
-            if ok2:
-                # Replace the printed answer with the valid regen.
-                print(f"\r[corrected] COVAS: {text2}\n")
-            else:
-                print(f"\nCOVAS: {REFUSAL}\n")
-        else:
-            print()
+        print(f"COVAS: {reply}\n")
 
 
 if __name__ == "__main__":

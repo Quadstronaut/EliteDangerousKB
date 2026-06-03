@@ -14,7 +14,9 @@ exobiology, system colonisation, Odyssey on-foot).
 | MCP Server | C | ✅ **built** — `ed_kb_search` / `ed_kb_answer` / `ed_cmdr_state` |
 | Research Loop | D | 📝 **authored, NOT run** — start it yourself (see below) |
 
-- **171 tests passing** (`-m "not integration"`).
+- **188 tests passing** (`-m "not integration"`) — incl. 17 regression tests from
+  the 2026-06-03 review-council hardening pass (exception paths, index integrity,
+  chunker collisions, `verified_only` enforcement).
 - Real end-to-end verified against live `bge-m3` + `qwen3:8b`: grounded queries return
   cited answers; off-topic queries refuse.
 - Seed KB = 4 pages / 22 chunks (Farseer, FSD, Python Mk II, trunk). The loop (Plan D)
