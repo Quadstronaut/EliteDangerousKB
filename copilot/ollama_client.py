@@ -6,8 +6,9 @@ Three entry points:
   chat_stream() — qwen3:8b streaming chat with <think>…</think> stripped
   vision()      — qwen3-vl:8b multimodal (image + prompt → str)
 
-OllamaUnavailable is raised on requests.ConnectionError so callers can
-degrade gracefully rather than propagate raw network errors.
+OllamaUnavailable is raised on any requests.RequestException (connection
+refused, read timeout, HTTP error, mid-stream drop) and on malformed
+responses, so callers degrade gracefully rather than propagate raw errors.
 
 Spec §F: the copilot path (embed + chat_stream) uses only lightweight models
 (bge-m3, qwen3:8b) so it stays fast even when qwen3-coder:30b is resident.
@@ -66,12 +67,21 @@ def embed(texts: list[str]) -> np.ndarray:
             timeout=120,
         )
         resp.raise_for_status()
-    except requests.ConnectionError as exc:
+    except requests.RequestException as exc:
+        # ConnectionError (server down), ReadTimeout (slow/hung model),
+        # HTTPError (model not loaded → 4xx/5xx) are all RequestException
+        # subclasses. Collapse them so callers degrade gracefully instead of
+        # crashing on a raw traceback.
         raise OllamaUnavailable(
-            "Ollama is not running at localhost:11434. Start it with `ollama serve`."
+            f"Ollama embedding request failed: {exc}. "
+            "Ensure `ollama serve` is running and bge-m3 is pulled."
         ) from exc
 
     data = resp.json()
+    if "embeddings" not in data:
+        raise OllamaUnavailable(
+            f"Malformed Ollama embed response (no 'embeddings' field): {data!r}"
+        )
     vectors = np.array(data["embeddings"], dtype=np.float32)  # (N, 1024)
 
     # L2-normalise each row so cosine similarity = dot product.
@@ -186,24 +196,30 @@ def chat_stream(
             timeout=300,
         )
         resp.raise_for_status()
-    except requests.ConnectionError as exc:
+    except requests.RequestException as exc:
         raise OllamaUnavailable(
-            "Ollama is not running at localhost:11434."
+            f"Ollama chat request failed: {exc}. Ensure `ollama serve` is running."
         ) from exc
 
     stripper = _ThinkStripper()
-    for raw_line in resp.iter_lines():
-        if not raw_line:
-            continue
-        try:
-            obj = json.loads(raw_line)
-        except json.JSONDecodeError:
-            continue
-        delta = obj.get("message", {}).get("content", "")
-        if delta:
-            filtered = stripper.feed(delta)
-            if filtered:
-                yield filtered
+    try:
+        for raw_line in resp.iter_lines():
+            if not raw_line:
+                continue
+            try:
+                obj = json.loads(raw_line)
+            except json.JSONDecodeError:
+                continue
+            delta = obj.get("message", {}).get("content", "")
+            if delta:
+                filtered = stripper.feed(delta)
+                if filtered:
+                    yield filtered
+    except requests.RequestException as exc:
+        # Connection dropped mid-stream (ChunkedEncodingError / ReadTimeout
+        # while iterating). Surface as OllamaUnavailable so the REPL/MCP loop
+        # can recover instead of dying.
+        raise OllamaUnavailable(f"Ollama stream interrupted: {exc}") from exc
 
     # Flush any buffered text after the stream ends
     tail = stripper.flush()
@@ -222,7 +238,11 @@ def vision(image_path: str, prompt: str) -> str:
     Returns the full response content string.
     Raises OllamaUnavailable on connection failure.
     """
-    image_bytes = Path(image_path).read_bytes()
+    try:
+        image_bytes = Path(image_path).read_bytes()
+    except OSError as exc:
+        # Missing/unreadable screenshot is a caller error, not an Ollama outage.
+        raise FileNotFoundError(f"Vision image not readable: {image_path} ({exc})") from exc
     b64 = base64.b64encode(image_bytes).decode("ascii")
 
     try:
@@ -242,9 +262,15 @@ def vision(image_path: str, prompt: str) -> str:
             timeout=300,
         )
         resp.raise_for_status()
-    except requests.ConnectionError as exc:
+    except requests.RequestException as exc:
         raise OllamaUnavailable(
-            "Ollama is not running at localhost:11434."
+            f"Ollama vision request failed: {exc}. Ensure `ollama serve` is running."
         ) from exc
 
-    return resp.json()["message"]["content"]
+    data = resp.json()
+    try:
+        return data["message"]["content"]
+    except (KeyError, TypeError) as exc:
+        raise OllamaUnavailable(
+            f"Malformed Ollama vision response: {data!r}"
+        ) from exc

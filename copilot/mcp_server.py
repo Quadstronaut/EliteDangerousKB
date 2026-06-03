@@ -10,13 +10,19 @@ Launch:
 """
 from __future__ import annotations
 
+import re
+
 from mcp.server.fastmcp import FastMCP
 
 from copilot import retriever, assemble, profile, ollama_client
 from copilot.ollama_client import OllamaUnavailable
-from copilot.repl import REFUSAL
+from copilot.paths import load_config
+from copilot.repl import REFUSAL, _retrieval_filters
 
 mcp = FastMCP("ed-covas")
+
+# Same citation pattern the gate uses, to extract the ids the model actually cited.
+_CITATION_RE = re.compile(r"\[([a-f0-9]{6,16})\]")
 
 
 # ---------------------------------------------------------------------------
@@ -36,7 +42,8 @@ def ed_kb_search(query: str, top_k: int = 8) -> list[dict]:
     Returns an error dict if retrieval fails.
     """
     try:
-        result = retriever.retrieve(query, top_k=top_k)
+        filters = _retrieval_filters(load_config())
+        result = retriever.retrieve(query, top_k=top_k, filters=filters)
         return [_chunk_to_dict(c) for c in result.chunks]
     except OllamaUnavailable:
         return [{"error": "Ollama unavailable — ensure localhost:11434 is running"}]
@@ -59,7 +66,8 @@ def ed_kb_answer(query: str) -> dict:
     - grounded: bool — True if retrieval score exceeded the tau threshold
     """
     try:
-        result = retriever.retrieve(query)
+        filters = _retrieval_filters(load_config())
+        result = retriever.retrieve(query, filters=filters)
         if not result.grounded:
             return {"answer": REFUSAL, "citations": [], "grounded": False}
 
@@ -83,7 +91,13 @@ def ed_kb_answer(query: str) -> dict:
         if not ok:
             return {"answer": REFUSAL, "citations": [], "grounded": result.grounded}
 
-        citations = [c.chunk_id for c in result.chunks]
+        # Report the chunk_ids the answer ACTUALLY cited (intersected with the
+        # retrieved set), not every retrieved chunk — a consumer must not be
+        # told eight sources back a claim the model drew from one.
+        retrieved_ids = {c.chunk_id for c in result.chunks}
+        cited = [cid for cid in _CITATION_RE.findall(answer_text) if cid in retrieved_ids]
+        # De-dupe while preserving order.
+        citations = list(dict.fromkeys(cited))
         return {"answer": answer_text, "citations": citations, "grounded": result.grounded}
 
     except OllamaUnavailable:
