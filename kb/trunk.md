@@ -27,6 +27,11 @@ See [[engineers/felicity-farseer]] for the first exploration engineer.
 Core gameplay systems explained with current (post-Odyssey) accuracy.
 See [[mechanics/frame-shift-drive]] for FSD grades, optimisation, and neutron boosting.
 
+## Locations
+
+Systems, stations, and points of interest.
+See [[locations/deciat]] — home of engineer Felicity Farseer.
+
 ## Careers
 
 Combat, trade, exploration, exobiology, AX/Thargoid, mercenary, mining.
