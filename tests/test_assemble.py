@@ -3,7 +3,10 @@ import pytest
 from copilot.models import Chunk, CmdrState, RetrievalResult
 
 
-def _make_chunk(chunk_id: str, text: str = "Factual sentence.") -> Chunk:
+def _make_chunk(
+    chunk_id: str,
+    text: str = "To unlock Felicity Farseer, provide Meta-Alloys and visit Deciat.",
+) -> Chunk:
     return Chunk(
         chunk_id=chunk_id,
         text=text,

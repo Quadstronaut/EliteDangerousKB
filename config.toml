@@ -18,6 +18,10 @@ chunk_overlap = 0.15
 mode = "verified_only"  # "verified_only" | "include_unverified"
 forced_citation = true
 max_regen = 1
+# When true, a cited claim must share content with the chunk it cites, so a
+# confident WRONG answer with a real [id] attached is rejected, not trusted.
+# Lexical/conservative (catches fabrication, passes paraphrase). 2026-06-03.
+claim_grounding_check = true
 
 [paths]
 kb = "kb"

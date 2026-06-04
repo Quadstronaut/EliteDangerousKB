@@ -48,4 +48,7 @@ Write-Host "[COVAS] .venv OK." -ForegroundColor Green
 # ---------------------------------------------------------------------------
 Write-Host "[COVAS] Starting COVAS copilot..." -ForegroundColor Cyan
 Write-Host ""
+# Force UTF-8 so qwen output (en-dashes, arrows, °) doesn't crash or mojibake on
+# a legacy cp1252 console (Windows PowerShell 5.1 default).
+$env:PYTHONUTF8 = "1"
 & $VenvPython -m copilot.repl
