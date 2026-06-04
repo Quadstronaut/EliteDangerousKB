@@ -205,3 +205,48 @@ def _patch_dirs(monkeypatch, tmp_path: Path):
     monkeypatch.setattr("copilot.paths.indexes_dir", lambda: tmp_path / "indexes")
     (tmp_path / "embeddings").mkdir(exist_ok=True)
     (tmp_path / "indexes").mkdir(exist_ok=True)
+
+
+# ---------------------------------------------------------------------------
+# Corrupt vectors.npy recovery (council round-2 fix)
+# ---------------------------------------------------------------------------
+
+def test_search_corrupt_vectors_returns_empty_with_warning(kb, tmp_path, monkeypatch, capsys):
+    """search() on a corrupt vectors.npy emits a WARNING and returns [] (no traceback)."""
+    monkeypatch.setenv("EDKB_ROOT", str(tmp_path))
+    _patch_dirs(monkeypatch, tmp_path)
+
+    with patch("copilot.ollama_client.embed", side_effect=_fake_embed):
+        from copilot import index
+        index.build_index(kb)
+
+    # Overwrite vectors.npy with garbage bytes (simulates hardware corruption).
+    (tmp_path / "embeddings" / "vectors.npy").write_bytes(b"CORRUPT")
+
+    q = _fake_embed(["query"])[0]
+    result = index.search(q, top_k=5)
+
+    assert result == [], "Expected [] on corrupt vectors.npy, got non-empty result"
+    stderr = capsys.readouterr().err
+    assert "WARNING" in stderr and "vectors.npy" in stderr
+
+
+def test_upsert_corrupt_vectors_triggers_full_reembed(kb, tmp_path, monkeypatch, capsys):
+    """upsert_changed() on a corrupt vectors.npy emits WARNING and re-embeds all chunks."""
+    monkeypatch.setenv("EDKB_ROOT", str(tmp_path))
+    _patch_dirs(monkeypatch, tmp_path)
+
+    with patch("copilot.ollama_client.embed", side_effect=_fake_embed):
+        from copilot import index
+        index.build_index(kb)
+
+    # Corrupt vectors.npy but leave manifest intact (the dangerous scenario:
+    # manifest says "unchanged", but we have no valid vectors to stack).
+    (tmp_path / "embeddings" / "vectors.npy").write_bytes(b"CORRUPT")
+
+    with patch("copilot.ollama_client.embed", side_effect=_fake_embed):
+        result = index.upsert_changed(kb)
+
+    assert result["added"] >= 2, f"Expected full re-embed, got added={result['added']}"
+    stderr = capsys.readouterr().err
+    assert "WARNING" in stderr and "vectors.npy" in stderr

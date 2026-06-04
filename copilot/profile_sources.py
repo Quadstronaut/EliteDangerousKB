@@ -5,7 +5,6 @@ All sources implement the ProfileSource Protocol from copilot.profile.
 """
 from __future__ import annotations
 
-import glob
 import json
 import os
 import re

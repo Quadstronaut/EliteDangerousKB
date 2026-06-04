@@ -15,7 +15,7 @@ $RepoRoot = $PSScriptRoot
 Write-Host "[COVAS] Checking Ollama..." -ForegroundColor Cyan
 try {
     $tags = Invoke-RestMethod -Uri "http://localhost:11434/api/tags" -Method Get -TimeoutSec 5
-    Write-Host "[COVAS] Ollama OK — $(($tags.models | Measure-Object).Count) model(s) loaded." -ForegroundColor Green
+    Write-Host "[COVAS] Ollama OK - $(($tags.models | Measure-Object).Count) model(s) loaded." -ForegroundColor Green
 } catch {
     Write-Host ""
     Write-Host "ERROR: Ollama is not running or not reachable at http://localhost:11434." -ForegroundColor Red
@@ -48,7 +48,9 @@ Write-Host "[COVAS] .venv OK." -ForegroundColor Green
 # ---------------------------------------------------------------------------
 Write-Host "[COVAS] Starting COVAS copilot..." -ForegroundColor Cyan
 Write-Host ""
-# Force UTF-8 so qwen output (en-dashes, arrows, °) doesn't crash or mojibake on
+# Force UTF-8 so qwen output (en-dashes, arrows, degree signs) doesn't mojibake on
 # a legacy cp1252 console (Windows PowerShell 5.1 default).
+# NOTE: keep THIS launcher pure ASCII -- a non-ASCII byte here is read as cp1252 by
+# PS 5.1 (no BOM) and corrupts string parsing. That was the 2026-06-03 red-wall bug.
 $env:PYTHONUTF8 = "1"
 & $VenvPython -m copilot.repl

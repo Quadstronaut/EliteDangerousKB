@@ -15,9 +15,10 @@ import re
 from mcp.server.fastmcp import FastMCP
 
 from copilot import retriever, assemble, profile, ollama_client
+from copilot.assemble import REFUSAL
 from copilot.ollama_client import OllamaUnavailable
 from copilot.paths import load_config
-from copilot.repl import REFUSAL, _retrieval_filters
+from copilot.retriever import retrieval_filters
 
 mcp = FastMCP("ed-covas")
 
@@ -42,7 +43,7 @@ def ed_kb_search(query: str, top_k: int = 8) -> list[dict]:
     Returns an error dict if retrieval fails.
     """
     try:
-        filters = _retrieval_filters(load_config())
+        filters = retrieval_filters(load_config())
         result = retriever.retrieve(query, top_k=top_k, filters=filters)
         return [_chunk_to_dict(c) for c in result.chunks]
     except OllamaUnavailable:
@@ -66,27 +67,30 @@ def ed_kb_answer(query: str) -> dict:
     - grounded: bool — True if retrieval score exceeded the tau threshold
     """
     try:
-        filters = _retrieval_filters(load_config())
+        filters = retrieval_filters(load_config())
         result = retriever.retrieve(query, filters=filters)
         if not result.grounded:
             return {"answer": REFUSAL, "citations": [], "grounded": False}
 
         cmdr = _load_state_safe()
         messages = assemble.build_messages(query, result, cmdr)
+        max_regen: int = load_config().get("copilot", {}).get("max_regen", 1)
 
-        tokens: list[str] = []
-        for delta in ollama_client.chat_stream(messages):
-            tokens.append(delta)
-        answer_text = "".join(tokens)
-
-        ok, _reason = assemble.validate_answer(answer_text, result)
-        if not ok:
-            # One regen attempt, identical prompt
-            tokens = []
+        def _gen() -> str:
+            toks: list[str] = []
             for delta in ollama_client.chat_stream(messages):
-                tokens.append(delta)
-            answer_text = "".join(tokens)
-            ok, _reason = assemble.validate_answer(answer_text, result)
+                toks.append(delta)
+            return "".join(toks)
+
+        answer_text = _gen()
+        ok, _reason = assemble.validate_answer(answer_text, result)
+
+        if not ok:
+            for _ in range(max_regen):
+                answer_text = _gen()
+                ok, _reason = assemble.validate_answer(answer_text, result)
+                if ok:
+                    break
 
         if not ok:
             return {"answer": REFUSAL, "citations": [], "grounded": result.grounded}
