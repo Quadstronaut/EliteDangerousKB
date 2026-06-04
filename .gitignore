@@ -25,6 +25,10 @@ embeddings/chunk_ids.json
 indexes/manifest.json
 indexes/data-sources.json
 
+# Research-loop scratch: write_atomic stages KB pages here before the atomic
+# replace, so it is transient working state, not a tracked artifact.
+live/_staging.md
+
 # Logs
 journal/daemon.log
 *.log

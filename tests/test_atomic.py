@@ -39,6 +39,19 @@ def test_write_atomic_no_tmp_file_left_behind(tmp_path):
     assert tmp_files == [], f"Unexpected .tmp files: {tmp_files}"
 
 
+def test_write_atomic_creates_missing_parent_dirs(tmp_path):
+    """write_atomic must create absent parent directories (council fix):
+    a KB page targeting a not-yet-created subdir (e.g. kb/careers/exobiology/)
+    must not crash with FileNotFoundError."""
+    from copilot.atomic import write_atomic
+    target = tmp_path / "kb" / "careers" / "exobiology" / "page.md"
+    assert not target.parent.exists()
+    write_atomic(target, "content")
+    assert target.read_text(encoding="utf-8") == "content"
+    # No .tmp left behind in the freshly-created dir
+    assert list(target.parent.glob("*.tmp")) == []
+
+
 def test_write_atomic_crash_safety(tmp_path):
     """If os.replace fails (simulated), the original file must be intact."""
     from copilot.atomic import write_atomic

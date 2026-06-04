@@ -18,9 +18,13 @@ import tomli_w
 def write_atomic(path: Path, data: str) -> None:
     """Write *data* (str, UTF-8) to *path* atomically via a .tmp sibling.
 
-    Steps: open .tmp → write → flush → fsync → os.replace.
+    Steps: mkdir parents → open .tmp → write → flush → fsync → os.replace.
     If os.replace raises, the .tmp may remain but *path* is unmodified.
     """
+    # Create the destination directory if missing — a KB page may target a
+    # subdir (e.g. kb/careers/exobiology/) that has not been created yet.
+    # Without this, open(.tmp) raises FileNotFoundError and crashes the loop.
+    path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
     with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(data)
