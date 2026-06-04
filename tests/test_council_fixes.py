@@ -339,3 +339,56 @@ def test_ed_kb_answer_citations_are_actually_cited():
 
     # Only the cited id — NOT all three retrieved ids.
     assert out["citations"] == ["aaaa1111bbbb2222"]
+
+
+# ===========================================================================
+# assemble — claim-grounding layer (default ON): laundering rejected,
+# paraphrase passes, flag disables.
+# ===========================================================================
+
+def _grounding_result(text):
+    from copilot.models import Chunk, RetrievalResult
+    chunk = Chunk(
+        chunk_id="a3f1c9b2deadbeef", text=text, kb_path="kb/x.md", heading_path="X",
+        source_url=None, source_tier=1, source_count=1, verified=True,
+        availability="live", changed_note=None, score=0.9,
+    )
+    return RetrievalResult(query="q", chunks=[chunk], max_score=0.9, grounded=True)
+
+
+def test_claim_grounding_rejects_laundered_claim():
+    """A wrong claim with a real [id] glued on, unrelated to the chunk, fails."""
+    from copilot import assemble
+    result = _grounding_result("Painite sells well at mining hotspots in the Pleiades.")
+    answer = ("The Fer-de-Lance has the best hardpoints for combat and Powerplay "
+              "is mandatory to unlock engineers [a3f1c9b2deadbeef].")
+    ok, reason = assemble.validate_answer(answer, result, claim_grounding=True)
+    assert ok is False
+    assert "a3f1c9b2deadbeef" in reason
+
+
+def test_claim_grounding_passes_real_paraphrase():
+    """A claim that shares content words with its cited chunk passes."""
+    from copilot import assemble
+    result = _grounding_result("Felicity Farseer requires 1 unit of Meta-Alloys, delivered to Deciat.")
+    answer = "Deliver Meta-Alloys to Farseer in Deciat [a3f1c9b2deadbeef]."
+    ok, reason = assemble.validate_answer(answer, result, claim_grounding=True)
+    assert ok is True, reason
+
+
+def test_claim_grounding_can_be_disabled():
+    """With claim_grounding=False, the laundered claim passes the (syntactic) gate."""
+    from copilot import assemble
+    result = _grounding_result("Painite sells well at mining hotspots.")
+    answer = "Powerplay is mandatory to unlock engineers [a3f1c9b2deadbeef]."
+    ok, _ = assemble.validate_answer(answer, result, claim_grounding=False)
+    assert ok is True
+
+
+def test_claim_grounding_default_reads_config_on():
+    """No explicit flag → reads config, which ships claim_grounding_check = true."""
+    from copilot import assemble
+    result = _grounding_result("Painite sells well at mining hotspots.")
+    answer = "Powerplay is mandatory to unlock engineers [a3f1c9b2deadbeef]."
+    ok, _ = assemble.validate_answer(answer, result)  # no override
+    assert ok is False  # config default is ON
