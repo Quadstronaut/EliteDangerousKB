@@ -170,3 +170,41 @@ def test_validate_answer_refusal_string_is_always_valid():
     result = _result("abc12345")
     ok, reason = assemble.validate_answer(assemble.REFUSAL, result)
     assert ok is True
+
+
+# ---------------------------------------------------------------------------
+# council round-2: short-span grounded_count laundering fix
+# ---------------------------------------------------------------------------
+
+def test_short_intro_span_does_not_launder_fabricated_subsequent_claim():
+    """A 1-word intro span before the first citation must NOT inflate grounded_count,
+    allowing a subsequent fabricated claim with a valid [id] to pass undetected.
+
+    Regression for: _check_claim_grounding short-span branch used to do
+    `grounded_count += 1; continue` — letting any following ungrounded span
+    pass as an 'uncertain paraphrase' even when it shares zero content words
+    with its cited chunk.
+    """
+    from copilot import assemble
+    from copilot.models import Chunk, RetrievalResult
+
+    def _c(cid, text):
+        return Chunk(
+            chunk_id=cid, text=text, kb_path="kb/x.md", heading_path="X",
+            source_url=None, source_tier=1, source_count=1, verified=True,
+            availability="live", changed_note=None, score=0.9,
+        )
+
+    # chunk_a: words like "Farseer", "Meta-Alloys" — matched by short "alpha" span? No.
+    chunk_a = _c("aa11bb22cc33dd44", "Farseer needs Meta-Alloys to unlock engineering.")
+    # chunk_b: completely different domain words
+    chunk_b = _c("bb33cc44dd55ee66", "Deciat star system location coordinates approach vector.")
+    result = RetrievalResult(query="q", chunks=[chunk_a, chunk_b], max_score=0.9, grounded=True)
+
+    # "alpha" = 1 content word (< 3) → neutral skip.
+    # "omega sigma kappa lambda mu nu" = 6 content words, zero overlap with chunk_b → fabrication.
+    answer = "alpha [aa11bb22cc33dd44]. omega sigma kappa lambda mu nu [bb33cc44dd55ee66]."
+    ok, reason = assemble.validate_answer(answer, result, claim_grounding=True)
+
+    assert ok is False, f"Expected rejection but got ok=True, reason={reason!r}"
+    assert "bb33cc44dd55ee66" in reason

@@ -3,6 +3,7 @@ base_url   = "http://localhost:11434"
 chat_model = "qwen3:8b"
 embed_model = "bge-m3"
 vision_model = "qwen3-vl:8b"
+# NOTE: loop_model is reserved for a planned loop-runner and is not yet read by any runtime code.
 loop_model = "qwen3-coder:30b"
 keep_alive = "5m"
 
@@ -29,6 +30,7 @@ embeddings = "embeddings"
 indexes = "indexes"
 cmdr_profile = "cmdr/duvrazh.md"
 
+# NOTE: [loop] keys are reserved for a planned loop-runner and are not yet read by any runtime code.
 [loop]
 verification_tier = 1               # 1=capture, 2=consensus, 3=currency-purge
 git_commit_every_loop = true

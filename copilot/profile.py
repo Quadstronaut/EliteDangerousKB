@@ -11,7 +11,6 @@ ThirdPartySource; load_cmdr_state() already calls it if importable.
 from __future__ import annotations
 
 import re
-from pathlib import Path
 from typing import Protocol
 
 from copilot import paths
@@ -150,12 +149,17 @@ def merge_state(sources: list) -> CmdrState:
             else:
                 try:
                     new_pri = ORIGIN_PRIORITY.index(fact.origin)
-                    old_pri = ORIGIN_PRIORITY.index(existing.origin)
-                    if new_pri < old_pri:
-                        best[fact.key] = fact
                 except ValueError:
-                    # Unknown origin — keep existing.
-                    pass
+                    # Incoming origin unknown — keep existing (whatever it is).
+                    continue
+                try:
+                    old_pri = ORIGIN_PRIORITY.index(existing.origin)
+                except ValueError:
+                    # Existing origin unknown but incoming is known — always upgrade.
+                    best[fact.key] = fact
+                    continue
+                if new_pri < old_pri:
+                    best[fact.key] = fact
 
     all_facts = list(best.values())
 

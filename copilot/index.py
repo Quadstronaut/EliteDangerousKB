@@ -88,11 +88,20 @@ def build_index(kb_dir: Path) -> int:
         _save_index([], np.empty((0, 1024), dtype=np.float32), {})
         return 0
 
-    vectors = _embed_chunks(all_chunks)
-
-    chunk_ids = [c.chunk_id for c in all_chunks]
-    manifest: dict[str, dict] = {}
+    # Deduplicate by chunk_id, keeping the last occurrence (last-write-wins —
+    # matches manifest semantics). Duplicate chunk_ids arise from identically-
+    # named H2 headings in different files; without dedup, vectors.npy has N rows
+    # but manifest has < N entries, producing a silent mis-citation on search.
+    seen: dict[str, Chunk] = {}
     for chunk in all_chunks:
+        seen[chunk.chunk_id] = chunk
+    deduped = list(seen.values())
+
+    vectors = _embed_chunks(deduped)
+
+    chunk_ids = [c.chunk_id for c in deduped]
+    manifest: dict[str, dict] = {}
+    for chunk in deduped:
         manifest[chunk.chunk_id] = {
             "content_hash": _content_hash(chunk.text),
             "kb_path": chunk.kb_path,
@@ -101,7 +110,7 @@ def build_index(kb_dir: Path) -> int:
         }
 
     _save_index(chunk_ids, vectors, manifest)
-    return len(all_chunks)
+    return len(deduped)
 
 
 def upsert_changed(kb_dir: Path) -> dict:
@@ -114,10 +123,19 @@ def upsert_changed(kb_dir: Path) -> dict:
     emb_path = paths.embeddings_dir() / "vectors.npy"
     ids_path = paths.embeddings_dir() / "chunk_ids.json"
 
+    _corrupt = False
     if emb_path.exists() and ids_path.exists():
-        old_vectors = np.load(str(emb_path))
-        old_ids: list[str] = json.loads(ids_path.read_text(encoding="utf-8"))
-    else:
+        try:
+            old_vectors = np.load(str(emb_path))
+            old_ids: list[str] = json.loads(ids_path.read_text(encoding="utf-8"))
+        except (ValueError, OSError) as exc:
+            print(
+                f"[index] WARNING: vectors.npy unreadable ({exc}) — rebuild with build_index()",
+                file=sys.stderr,
+            )
+            _corrupt = True
+
+    if not (emb_path.exists() and ids_path.exists()) or _corrupt:
         # Vectors/ids are gone (e.g. a crash before they were written). The
         # manifest alone is untrustworthy — keeping it would mark chunks
         # "unchanged" and then KeyError when stacking their (absent) rows.
@@ -207,7 +225,14 @@ def search(query_vec: np.ndarray, top_k: int) -> list[tuple[str, float]]:
     if not emb_path.exists() or not ids_path.exists():
         return []
 
-    vectors: np.ndarray = np.load(str(emb_path))  # (N, 1024)
+    try:
+        vectors: np.ndarray = np.load(str(emb_path))  # (N, 1024)
+    except (ValueError, OSError) as exc:
+        print(
+            f"[index] WARNING: vectors.npy unreadable ({exc}) — rebuild with build_index()",
+            file=sys.stderr,
+        )
+        return []
     chunk_ids: list[str] = json.loads(ids_path.read_text(encoding="utf-8"))
 
     if vectors.shape[0] == 0:

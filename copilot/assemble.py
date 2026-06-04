@@ -154,28 +154,66 @@ def _check_claim_grounding(answer: str, result: RetrievalResult) -> tuple[bool, 
 
     Span attribution: the text from the previous citation up to each ``[id]`` is
     that id's claim. We require ≥1 shared content word with the cited chunk's
-    text. Spans with <2 content words are too short to judge and pass (avoids
-    false-rejecting "She is in Deciat [id]"-style fragments). This is lexical,
-    not semantic — it catches gross fabrication, not subtle wrongness.
+    text. Spans with <3 content words are too short to judge and pass (avoids
+    false-rejecting short paraphrase fragments). This is lexical, not semantic —
+    it catches gross fabrication, not subtle wrongness.
+
+    When lexical overlap is zero but the span is a plausible synonym paraphrase
+    (i.e. the answer contains ≥1 other citation that IS grounded), we treat the
+    span as "uncertain" rather than "rejected" — domain synonyms (e.g. "alien
+    artifact module" for "Guardian Frame Shift Drive Booster") should not trigger
+    false refusals. Only reject when ALL citations in the answer fail grounding.
     """
     by_id = {c.chunk_id: c for c in result.chunks}
+    all_chunk_words: set[str] = set()
+    for c in result.chunks:
+        all_chunk_words |= _content_words(c.text)
+
+    # First pass: collect grounding status for every citation span.
+    # grounded_count: spans that share ≥1 content word with their cited chunk.
+    # ungrounded: spans that don't (potential fabrication or domain synonym).
     prev = 0
+    ungrounded_spans: list[tuple[str, str]] = []  # (cid, span)
+    grounded_count = 0
+
     for m in _CITATION_RE.finditer(answer):
         cid = m.group(1)
         span = answer[prev:m.start()]
         prev = m.end()
         claim_words = _content_words(span)
-        if len(claim_words) < 2:
-            continue  # too little to judge — don't false-reject
+        if len(claim_words) < 3:
+            # Too few content words to judge — skip neutrally (neither grounded
+            # nor ungrounded). A short intro "alpha [id]." must not inflate
+            # grounded_count and make a subsequent fabricated claim invisible
+            # to the grounded_count == 0 gate below.
+            continue
         chunk = by_id.get(cid)
         if chunk is None:
-            continue  # fabricated id is caught by the citation check below
+            # Fabricated id — already caught by Rule 2 before we get here.
+            # Skip neutrally: don't count it as grounded (it has no valid chunk).
+            continue
         if claim_words & _content_words(chunk.text):
-            continue  # anchored to its source
+            grounded_count += 1  # anchored to its source
+        else:
+            ungrounded_spans.append((cid, span))
+
+    # If every substantial span failed grounding, reject (likely fabrication).
+    # If at least one grounded span exists, treat ungrounded spans as "uncertain"
+    # (domain synonyms / paraphrases) and pass — they are not gross fabrication.
+    if ungrounded_spans and grounded_count == 0:
+        cid, span = ungrounded_spans[0]
         return (
             False,
             f"Cited claim not supported by source [{cid}]: ...{span.strip()[-70:]!r}",
         )
+
+    # Check trailing text after the last citation — it has no citation to ground it,
+    # so require it shares at least one content word with ANY retrieved chunk.
+    tail = answer[prev:].strip()
+    tail_words = _content_words(tail)
+    if len(tail_words) >= 2 and not (tail_words & all_chunk_words):
+        return False, "Uncited trailing claim not grounded in any source"
+
     return True, "ok"
 
 

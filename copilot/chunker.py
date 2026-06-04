@@ -19,7 +19,6 @@ Chunking strategy (spec §A / CONTRACTS):
 
 import hashlib
 import re
-from dataclasses import replace
 from pathlib import Path
 from typing import Any
 

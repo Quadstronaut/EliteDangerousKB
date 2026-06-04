@@ -7,7 +7,6 @@ No prompt assembly, no profile injection — see assemble.py for those concerns.
 from __future__ import annotations
 
 import dataclasses
-from functools import lru_cache
 
 from copilot import index as _index
 from copilot import ollama_client
@@ -16,8 +15,24 @@ from copilot.paths import load_config
 
 
 def _config() -> dict:
-    """Return the parsed config dict (thin wrapper so tests can patch it)."""
+    """Return the parsed config dict (thin wrapper so tests can patch it).
+
+    Intentionally NOT cached with lru_cache — test monkeypatching replaces this
+    function at the module level, so caching would bake in the real config on
+    first call and make the mock invisible to subsequent calls.
+    """
     return load_config()
+
+
+def retrieval_filters(cfg: dict) -> dict | None:
+    """Translate config[copilot][mode] into retrieve() filters.
+
+    verified_only (the default) restricts retrieval to chunks flagged
+    verified=True — the trust boundary the spec promises. include_unverified
+    drops the filter so lower-tier capture chunks are eligible.
+    """
+    mode = cfg.get("copilot", {}).get("mode", "verified_only")
+    return {"verified": True} if mode == "verified_only" else None
 
 
 def retrieve(
