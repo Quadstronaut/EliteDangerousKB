@@ -1,0 +1,532 @@
+<!DOCTYPE html><html class="APPLICATION_ENV_production h-100" lang="en">
+<head>
+    <title>Page not found / EDSM - Elite Dangerous Star Map</title>    <meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="/css/edsm/theme.css?v=1621583631" rel="stylesheet" type="text/css" />
+    <link href="/css/languages.css?v=1522055195" rel="stylesheet" type="text/css" />
+    <link href="/css/fontAwesome.css?v=1541166574" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet" type="text/css" />
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="https://static.edsm.net/img/favicons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="https://static.edsm.net/img/favicons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="https://static.edsm.net/img/favicons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="https://static.edsm.net/img/favicons/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="https://static.edsm.net/img/favicons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="https://static.edsm.net/img/favicons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="https://static.edsm.net/img/favicons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="https://static.edsm.net/img/favicons/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://static.edsm.net/img/favicons/apple-touch-icon-180x180.png" />
+    <link rel="icon" type="image/png" href="https://static.edsm.net/img/favicons/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="https://static.edsm.net/img/favicons/favicon-194x194.png" sizes="194x194" />
+    <link rel="icon" type="image/png" href="https://static.edsm.net/img/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="https://static.edsm.net/img/favicons/android-chrome-192x192.png" sizes="192x192" />
+    <link rel="icon" type="image/png" href="https://static.edsm.net/img/favicons/favicon-16x16.png" sizes="16x16" />
+    <link rel="manifest" href="https://static.edsm.net/img/favicons/manifest.json" />
+    <link rel="mask-icon" href="https://static.edsm.net/img/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="https://static.edsm.net/img/favicons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-TileImage" content="https://static.edsm.net/img/favicons/mstile-144x144.png" />
+    <meta name="theme-color" content="#272b30" />
+
+    <meta property="og:url" content="https://www.edsm.net" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="EDSM - Elite Dangerous Star Map" />
+    <meta property="og:description" content="The Galactic Positioning System of Elite: Dangerous at your service." />
+    <meta property="og:image" content="https://static.edsm.net/img/favicons/android-chrome-192x192.png" />
+
+    <meta name="google-site-verification" content="YySZRLFXoif_y2XjvlLSiD_QbiX7I58GAq_t5mE276M" />
+
+            <link rel="alternate" href="https://www.edsm.net/api-v1/stations" hreflang="en" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/en_GB" hreflang="en_GB" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/cs" hreflang="cs" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/de" hreflang="de" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/es" hreflang="es" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/fi" hreflang="fi" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/fr" hreflang="fr" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/ja" hreflang="ja" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/nl" hreflang="nl" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/pl" hreflang="pl" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/pt" hreflang="pt" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/ru" hreflang="ru" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/uk" hreflang="uk" />
+        <link rel="alternate" href="https://www.edsm.net/api-v1/stations/language/zh" hreflang="zh" />
+    
+        
+    
+        <!-- Venatus Ad Manager -->
+                <script src="https://hb.vntsm.com/v3/live/ad-manager.min.js" type="text/javascript" data-site-id="605201d7337bfd28970d5995" data-mode="scan" async></script>
+            <!-- / Venatus Ad Manager -->
+    </head>
+<body class="d-flex flex-column h-100">
+        
+<nav class="navbar navbar-expand-xl navbar-dark bg-primary sticky-top" id="header-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="/img/miniLogo.svg" />
+                        <span class="d-block d-md-none">EDSM</span>
+            <span class="d-none d-md-block">Elite Dangerous Star Map</span>
+                    </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar .navbar-collapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav w-100 nav-fill">
+                <li class="nav-item ">
+                    <a href="/en/expeditions" class="nav-link">
+                        Expeditions                    </a>
+                </li>
+                <li class="nav-item dropdown ">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
+                        Galactic Mapping                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item "
+                           href="/en/galactic-mapping">
+                            Galactic Map (Archived)                        </a>
+                        <a class="dropdown-item "
+                           href="/en/galactic-routes">
+                            Routes                        </a>
+                        <a class="dropdown-item "
+                           href="/en/poi-visitors-list">
+                            POI's visitors list                        </a>
+                        <a class="dropdown-item "
+                           href="/en/map/users">
+                            Commanders Map                        </a>
+                        <a class="dropdown-item "
+                           href="/en/map/traffic">
+                            Traffic reports                        </a>
+                        <a class="dropdown-item "
+                           href="/en/map/planner">
+                            Route Planner                        </a>
+                    </div>
+                </li>
+                <li class="nav-item ">
+                    <a href="/en/codex" class="nav-link">
+                        Codex                    </a>
+                </li>
+                <li class="nav-item dropdown  flex-grow-0 flex-shrink-1"
+                    data-hover="tooltip" data-placement="left" title="Records">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
+                        <i class="fas fa-trophy-alt fa-lg"></i>
+                        <span class="d-inline d-xl-none">Records</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item "
+                           href="/en/statistics/systems">
+                            Systems                        </a>
+                        <a class="dropdown-item "
+                           href="/en/statistics/bodies">
+                            Celestial bodies &gt; Stars                        </a>
+                        <a class="dropdown-item "
+                           href="/en/statistics/bodies/planets">
+                            Celestial bodies &gt; Planets                        </a>
+                        <h6 class="dropdown-header">Top 100</h6>
+                        <a class="dropdown-item "
+                           href="/en/top/logs">
+                            Flight logs entries                        </a>
+                        <a class="dropdown-item "
+                           href="/en/top/discovered">
+                            Systems discovered first                        </a>
+                        <a class="dropdown-item "
+                           href="/en/top/visited-systems">
+                            Visited systems                        </a>
+                        <a class="dropdown-item "
+                           href="/en/top/distances">
+                            Distances submitted                        </a>
+                        <a class="dropdown-item "
+                           href="/en/top/search-and-rescue">
+                            Search and Rescue                        </a>
+                    </div>
+                </li>
+
+                                <li class="nav-item  flex-grow-0 flex-shrink-1"
+                    data-hover="tooltip" data-placement="left" title="Guilds">
+                    <a href="/en/guilds" class="nav-link">
+                        <i class="fas fa-users-crown fa-lg"></i>
+                        <span class="d-inline d-xl-none">Guilds</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item  flex-grow-0 flex-shrink-1"
+                    data-hover="tooltip" data-placement="left" title="Engineers">
+                    <a href="/en/engineers" style="padding-top: 0.85rem;padding-bottom: 0.85rem;color: #ff7100;" class="nav-link">
+                        <span class="fa-stack fa-rotate-90 fa-sm">
+                            <i class="fal fa-hexagon fa-stack-2x"></i>
+                            <i class="far fa-circle fa-stack-1x"></i>
+                        </span>
+                        <span class="d-inline d-xl-none">&nbsp;Engineers</span>
+                    </a>
+                </li>
+
+                                <li class="nav-item dropdown  flex-grow-0 flex-shrink-1">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
+                        <i class="fas fa-user fa-lg"></i>
+                        <span class="d-inline d-xl-none">Account</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item "
+                           href="/en/auth/register">
+                            Register                        </a>
+                        <a class="dropdown-item "
+                           href="/en/auth/in">
+                            Log in                        </a>
+                    </div>
+                </li>
+                
+                            </ul>
+        </div>
+    </div>
+</nav>    
+    <main role="main" class="py-3 flex-fill">
+        
+                
+        
+                
+        
+                        <div class="container">
+            <div class="row d-flex align-items-stretch">
+                <div class="col-lg-8 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body p-1 text-center d-flex align-items-center" id="responsiveAds-2113652444"></div>
+                            <script type="text/javascript">
+                window.top.__vm_add = window.top.__vm_add || [];
+                (function(success){
+                    if(window.document.readyState !== "loading"){success();}
+                    else{window.document.addEventListener("DOMContentLoaded", function(){success();});}
+                })(function(){
+                    let placement = document.createElement("div");
+                        placement.setAttribute("class", "vm-placement");
+
+                        if(window.innerWidth > 1000)
+                        {
+                            placement.setAttribute("data-id", "6058b465e8fdeb39324f4b1b");
+                        }
+                        else
+                        {          placement.setAttribute("data-id", "6058b457337bfd28970d5aec");      }
+
+                    document.querySelector("#responsiveAds-2113652444").appendChild(placement);
+                    window.top.__vm_add.push(placement);
+                });
+                </script>
+                    </div>                </div>
+                <div class="col-lg-4 mb-3">
+                    <div class="card h-100">
+                    <div class="card-body p-1 text-center align-items-center">
+                        <div class="vm-placement" id="vm-av" data-format="isvideo"></div> 
+                    </div>
+                </div>                </div>
+            </div>
+        </div>
+        
+        <div id="space">
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>            
+</div>
+<div class="error">
+    <h2>404 - Page not found</h2>
+    <h3>Are you lost in space?</h3>
+</div>
+
+<style type="text/css">
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #000;
+  margin-bottom: 0;
+}
+
+#header-navbar, #subNavigation, footer {
+    z-index: 6;
+}
+
+.error {
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    text-align: center;
+}
+
+#space, .stars {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.stars {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: zoom 5s infinite;
+  opacity: 0;
+}
+
+.stars:nth-child(1) {
+  background-position: 50% 50%;
+  animation-delay: 0s;
+}
+.stars:nth-child(2) {
+  background-position: 20% 60%;
+  animation-delay: 1s;
+}
+.stars:nth-child(3) {
+  background-position: -20% -30%;
+  animation-delay: 2s;
+}
+.stars:nth-child(4) {
+  background-position: 40% -80%;
+  animation-delay: 3s;
+}
+.stars:nth-child(5) {
+  background-position: -20% 30%;
+  animation-delay: 4s;
+}
+
+@keyframes zoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    animation-timing-function: ease-in;
+  } 
+  85% {
+    opacity: 1;
+    transform: scale(2.8);
+    animation-timing-function: linear;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.5);
+  }
+}
+</style>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card h-100">
+                    <div class="card-body p-1 text-center d-flex align-items-center" id="responsiveAds-57430314"></div>
+                        <script type="text/javascript">
+                window.top.__vm_add = window.top.__vm_add || [];
+                (function(success){
+                    if(window.document.readyState !== "loading"){success();}
+                    else{window.document.addEventListener("DOMContentLoaded", function(){success();});}
+                })(function(){
+                    let placement = document.createElement("div");
+                        placement.setAttribute("class", "vm-placement");
+
+                        if(window.innerWidth > 1000)
+                        {
+                            placement.setAttribute("data-id", "6058b46de8fdeb39324f4b1d");
+                        }
+                        else
+                        {          placement.setAttribute("data-id", "6058b457337bfd28970d5aec");      }
+
+                    document.querySelector("#responsiveAds-57430314").appendChild(placement);
+                    window.top.__vm_add.push(placement);
+                });
+                </script>
+                </div>                </div>
+            </div>
+        </div>
+    </main>
+
+    
+    <footer>
+        <nav class="navbar navbar-expand navbar-dark bg-primary">
+    <div class="container flex-column-reverse flex-xl-row">
+        <span class="navbar-text">
+            EDSM - Elite Dangerous Star Map © 2015-2026 | <a href="https://satisfactory-calculator.com/" target="_blank"><img src="/img/satisfactoryCalculator.png" /></a>
+            <br />
+            <a href="https://www.elitedangerous.com/" target="_blank">Elite: Dangerous</a> © 2012, 2013 Frontier Developments plc. All rights reserved.        </span>
+
+        <ul class="navbar-nav dropup w-100 nav-fill flex-column flex-xl-row">
+            <li class="nav-item dropdown ">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
+                    FAQ                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item"
+                       href="/en/faq">
+                        FAQ                    </a>
+                    <a class="dropdown-item"
+                       href="/en/faq/privacy-policy">
+                        Privacy policy                    </a>
+                </div>
+            </li>
+            <li class="nav-item ">
+                <a href="/en/guilds" class="nav-link">
+                    Guilds                </a>
+            </li>
+            <li class="nav-item ">
+                <a href="/en/timeline/community-goals" class="nav-link">
+                    Community Goals                </a>
+            </li>
+            <li class="nav-item ">
+                <a href="/en/engineers" class="nav-link">
+                    Engineers                </a>
+            </li>
+            <li class="nav-item dropdown ">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
+                    Tools                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item "
+                       href="/en/systems/pairs">
+                        Systems pairs
+                    </a>
+                    <a class="dropdown-item "
+                       href="/en/systems/duplicates">
+                        Systems with duplicate names                    </a>
+                    <a class="dropdown-item "
+                       href="/en/systems/unresolved">
+                        Unresolved systems                    </a>
+                    <a class="dropdown-item "
+                       href="/en/systems/stations">
+                        Oldest stations                    </a>
+                    <a class="dropdown-item "
+                       href="/en/tools/embed/examples">
+                        Embeddable widgets                    </a>
+                    <a class="dropdown-item "
+                       href="/en/tools/streaming">
+                        Streaming widget                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown active">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
+                    API                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item "
+                       href="/en/nightly-dumps">
+                        Nightly Dumps                    </a>
+                    <a class="dropdown-item "
+                       href="/en/api-status-v1">
+                        API Status v1                    </a>
+                    <a class="dropdown-item "
+                       href="/en/api-commander-v1">
+                        API Commander v1                    </a>
+                    <a class="dropdown-item "
+                       href="/en/api-logs-v1">
+                        API Logs v1                    </a>
+                    <a class="dropdown-item "
+                       href="/en/api-system-v1">
+                        API System v1                    </a>
+                    <a class="dropdown-item active"
+                       href="/en/api-v1">
+                        API Systems v1                    </a>
+                    <a class="dropdown-item "
+                       href="/en/api-journal-v1">
+                        API Journal v1
+                    </a>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+<div class="navbar navbar-expand navbar-dark bg-primary">
+    <div class="container justify-content-center">
+        <p class="navbar-text">
+            <script>window.twttr = (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+              if (d.getElementById(id)) return t;
+              js = d.createElement(s);
+              js.id = id;
+              js.src = "https://www.edsm.net/js/twitterWidgets.js";
+              fjs.parentNode.insertBefore(js, fjs);
+
+              t._e = [];
+              t.ready = function(f) {
+                t._e.push(f);
+              };
+
+              return t;
+            }(document, "script", "twitter-wjs"));</script>
+            <a class="twitter-follow-button btn btn-sm btn-primary" href="https://twitter.com/AnthorNet" lang="en">
+                Follow @AnthorNet            </a>
+            <style type="text/css">
+            .twitter-follow-button {
+                vertical-align: middle;
+            }
+            </style>
+            <a href="https://www.patreon.com/bePatron?u=4682480" target="_blank" class="btn btn-sm btn-primary">Become a Patron!</a>
+            <a href="https://github.com/EDSM-NET/FrontEnd/issues" target="_blank" class="btn btn-sm btn-primary">
+                GitHub Issues tracker
+            </a>
+            <a href="https://discord.gg/0sFOD6GxFZRc1ad0" target="_blank" class="btn btn-sm btn-primary">
+                <i class="fab fa-discord"></i>
+                Discord
+            </a>
+            <a href="https://forums.frontier.co.uk/threads/edsm-elite-dangerous-star-map.179063/" target="_blank" class="btn btn-sm btn-primary">
+                Forum
+            </a>
+        </p>
+    </div>
+</div>    </footer>
+
+    <div class="vm-placement" data-id="6058b450e8fdeb39324f4b17" style="display:none"></div>
+    <script type="text/javascript" src="/js/jquery-3.5.1.min.js?v=1639989408"></script>
+<script type="text/javascript" src="/js/popper.min.js?v=1639989444"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js?v=1639989455"></script>
+<script type="text/javascript" src="/js/clipboard.min.js?v=1639989466"></script>
+<script type="text/javascript" src="/js/EDSM.js?v=1545042800"></script>    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+    
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener("load", function(){
+        if(window.cookieconsent != undefined && 'function' === typeof window.cookieconsent.initialise){
+            window.cookieconsent.initialise({
+              "palette": {
+                "popup": {
+                  "background": "#000"
+                },
+                "button": {
+                  "background": "#f1d600"
+                }
+              },
+              "content": {
+                "message": "We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information you’ve provided to them or they’ve collected from your use of their services."
+              }
+            });
+        }
+    });
+    </script>
+
+        <script type="text/javascript">
+        var disableStr = 'ga-disable-UA-496332-22';
+        if(document.cookie.indexOf(disableStr + '=true') > -1)
+        {
+            window[disableStr] = true;
+        }
+
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-496332-22', 'auto');
+        ga('send', 'pageview');
+    </script>
+    </body>
+</html>
