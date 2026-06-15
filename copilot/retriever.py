@@ -12,6 +12,7 @@ from copilot import index as _index
 from copilot import ollama_client
 from copilot.models import Chunk, RetrievalResult
 from copilot.paths import load_config
+from copilot.query_expand import expand_query, EXPAND_QUERY_DEFAULT
 
 
 def _config() -> dict:
@@ -51,8 +52,12 @@ def retrieve(
     tau: float = cfg["retrieval"]["tau"]
     k: int = top_k if top_k is not None else cfg["retrieval"]["top_k"]
 
-    # 1. Embed the query into a single (1024,) normalised vector.
-    query_vec = ollama_client.embed([query])[0]  # shape (1024,)
+    # 1. Expand the query with ED synonym/abbreviation expansions before
+    #    embedding.  The expansion appends known terms so dense embeddings match
+    #    both abbreviated and full-form ED terminology.  RetrievalResult.query
+    #    is always set to the ORIGINAL query so citations and UX are unchanged.
+    embed_text = expand_query(query) if EXPAND_QUERY_DEFAULT else query
+    query_vec = ollama_client.embed([embed_text])[0]  # shape (1024,)
 
     # 2. Search index.
     hits = _index.search(query_vec, k)
