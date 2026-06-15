@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Optional
 
 from copilot.atomic import write_json_atomic
+from copilot.locking import file_lock
 
 # ---------------------------------------------------------------------------
 # Phase ordering
@@ -86,25 +87,35 @@ def is_resumable(
     return content_sha256 != stored_sha  # True = content changed -> re-fetch
 
 
+def _seen_lock_path(seen_path: str) -> str:
+    """Lock token path for a given seen.json — sibling '.lock' file."""
+    return seen_path + ".lock"
+
+
 def record_source(url: str, content_sha256: str, seen_path: str) -> None:
     """
     Record a URL + content hash in seen.json atomically.
 
     Preserves `first_seen` on subsequent updates; updates `content_sha256`.
     Creates seen.json if it does not exist.
+
+    The ENTIRE load -> mutate -> write cycle runs under a cross-process file
+    lock (Bug 1 fix).  Lock path is derived from seen_path so each seen.json
+    has its own lock, and monkeypatched tmp_path tests stay isolated.
     """
-    data = _load_seen(seen_path)
-    key = _url_sha(url)
-    now_iso = datetime.now(timezone.utc).isoformat()
-    if key in data:
-        # Preserve first_seen; update content hash only.
-        data[key]["content_sha256"] = content_sha256
-    else:
-        data[key] = {
-            "first_seen": now_iso,
-            "content_sha256": content_sha256,
-        }
-    write_json_atomic(Path(seen_path), data)
+    with file_lock(_seen_lock_path(seen_path), timeout=30.0):
+        data = _load_seen(seen_path)
+        key = _url_sha(url)
+        now_iso = datetime.now(timezone.utc).isoformat()
+        if key in data:
+            # Preserve first_seen; update content hash only.
+            data[key]["content_sha256"] = content_sha256
+        else:
+            data[key] = {
+                "first_seen": now_iso,
+                "content_sha256": content_sha256,
+            }
+        write_json_atomic(Path(seen_path), data)
 
 
 # ---------------------------------------------------------------------------

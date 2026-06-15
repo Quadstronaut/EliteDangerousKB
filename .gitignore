@@ -36,6 +36,11 @@ journal/daemon.log
 # Claude Code harness state — transient council worktrees + local decision ledger
 .claude/
 
+# Cross-process lock tokens (copilot/locking.py) — transient runtime state.
+*.lock
+indexes/index.lock
+indexes/seen.json.lock
+
 # OS
 Thumbs.db
 desktop.ini

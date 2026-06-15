@@ -23,12 +23,46 @@ from copilot import ollama_client
 from copilot import paths
 from copilot.atomic import write_json_atomic
 from copilot.chunker import chunk_page
+from copilot.locking import file_lock, LockTimeout
 from copilot.models import Chunk
 
 
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+def _index_lock_path() -> str:
+    """
+    Lock token for the three-file index set (vectors.npy, chunk_ids.json,
+    manifest.json).  Flows through paths.indexes_dir() so test monkeypatching
+    of that function redirects the lock into tmp — no cross-test pollution and
+    no lock written to the real repo during tests.
+    """
+    return str(paths.indexes_dir() / "index.lock")
+
+
+def _replace_with_retry(src: Path, dst: Path, *, retries: int = 20, delay: float = 0.01) -> None:
+    """
+    Atomic rename with retry for WinError 32 (file in use) / WinError 5 (access
+    denied) — Windows holds an open handle on an mmap'd numpy array briefly
+    after np.load returns; a lock-free reader can trigger this even inside
+    _save_index's critical section if there are legacy callers.  Within the
+    lock this should be rare, but defend anyway.
+    """
+    import errno as _errno
+    for attempt in range(retries):
+        try:
+            src.replace(dst)
+            return
+        except OSError as exc:
+            winerr = getattr(exc, "winerror", 0)
+            if winerr in (5, 32) or exc.errno in (_errno.EACCES, _errno.EBUSY):
+                if attempt < retries - 1:
+                    import time as _time
+                    _time.sleep(delay)
+                    continue
+            raise
+
 
 def _content_hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
@@ -47,21 +81,30 @@ def _save_index(
     vectors: np.ndarray,
     manifest: dict,
 ) -> None:
+    """
+    Write the three-file index set atomically as a group.
+
+    All three writes are wrapped in the index file_lock so no reader can
+    observe a mid-write skew where vectors.shape[0] != len(chunk_ids)
+    (Bug 2 fix).  Lock path flows through _index_lock_path() -> paths.*
+    so monkeypatching in tests redirects to tmp_path.
+    """
     # Reference via the paths module so test monkeypatching takes effect.
     emb = paths.embeddings_dir()
     emb.mkdir(parents=True, exist_ok=True)
     idx = paths.indexes_dir()
     idx.mkdir(parents=True, exist_ok=True)
 
-    # vectors.npy — write to tmp then replace for atomicity.
-    # np.save auto-appends ".npy" unless the name already ends in it, so use a
-    # temp name that already ends in .npy to keep the written path predictable.
-    tmp_npy = emb / "vectors.tmp.npy"
-    np.save(str(tmp_npy), vectors)
-    tmp_npy.replace(emb / "vectors.npy")
+    with file_lock(_index_lock_path(), timeout=60.0):
+        # vectors.npy — write to tmp then replace for atomicity.
+        # np.save auto-appends ".npy" unless the name already ends in it, so use
+        # a temp name that already ends in .npy to keep the path predictable.
+        tmp_npy = emb / "vectors.tmp.npy"
+        np.save(str(tmp_npy), vectors)
+        _replace_with_retry(tmp_npy, emb / "vectors.npy")
 
-    write_json_atomic(emb / "chunk_ids.json", chunk_ids)
-    write_json_atomic(idx / "manifest.json", manifest)
+        write_json_atomic(emb / "chunk_ids.json", chunk_ids)
+        write_json_atomic(idx / "manifest.json", manifest)
 
 
 def _embed_chunks(chunks: list[Chunk]) -> np.ndarray:
@@ -119,30 +162,37 @@ def upsert_changed(kb_dir: Path) -> dict:
     Re-embeds only added/changed chunks; tombstones removed ones.
     Returns {"added": int, "removed": int, "unchanged": int}.
     """
-    old_manifest = load_manifest()
+    # Read the three index files under ONE lock so the baseline triple is
+    # consistent (gen-opus-1 pattern; Bug 2 fix for readers).
     emb_path = paths.embeddings_dir() / "vectors.npy"
     ids_path = paths.embeddings_dir() / "chunk_ids.json"
 
-    _corrupt = False
-    if emb_path.exists() and ids_path.exists():
-        try:
-            old_vectors = np.load(str(emb_path))
-            old_ids: list[str] = json.loads(ids_path.read_text(encoding="utf-8"))
-        except (ValueError, OSError) as exc:
-            print(
-                f"[index] WARNING: vectors.npy unreadable ({exc}) — rebuild with build_index()",
-                file=sys.stderr,
-            )
-            _corrupt = True
+    old_vectors = np.empty((0, 1024), dtype=np.float32)
+    old_ids: list[str] = []
+    old_manifest: dict = {}
 
-    if not (emb_path.exists() and ids_path.exists()) or _corrupt:
-        # Vectors/ids are gone (e.g. a crash before they were written). The
-        # manifest alone is untrustworthy — keeping it would mark chunks
-        # "unchanged" and then KeyError when stacking their (absent) rows.
-        # Discard it so every current chunk is treated as added (full re-embed).
-        old_vectors = np.empty((0, 1024), dtype=np.float32)
-        old_ids = []
-        old_manifest = {}
+    with file_lock(_index_lock_path(), timeout=60.0):
+        old_manifest = load_manifest()
+        _corrupt = False
+        if emb_path.exists() and ids_path.exists():
+            try:
+                old_vectors = np.load(str(emb_path))
+                old_ids = json.loads(ids_path.read_text(encoding="utf-8"))
+            except (ValueError, OSError) as exc:
+                print(
+                    f"[index] WARNING: vectors.npy unreadable ({exc}) — rebuild with build_index()",
+                    file=sys.stderr,
+                )
+                _corrupt = True
+
+        if not (emb_path.exists() and ids_path.exists()) or _corrupt:
+            # Vectors/ids are gone (e.g. a crash before they were written). The
+            # manifest alone is untrustworthy — keeping it would mark chunks
+            # "unchanged" and then KeyError when stacking their (absent) rows.
+            # Discard it so every current chunk is treated as added (full re-embed).
+            old_vectors = np.empty((0, 1024), dtype=np.float32)
+            old_ids = []
+            old_manifest = {}
 
     # Gather current chunks
     current_chunks: list[Chunk] = []
@@ -225,15 +275,27 @@ def search(query_vec: np.ndarray, top_k: int) -> list[tuple[str, float]]:
     if not emb_path.exists() or not ids_path.exists():
         return []
 
+    # Read the two index files under the same lock that _save_index holds
+    # during writes, so the reader always sees a consistent (vectors, chunk_ids)
+    # pair (Bug 2 fix).  The in-memory snapshot is taken under the lock;
+    # the scoring arithmetic runs after, without holding the lock.
     try:
-        vectors: np.ndarray = np.load(str(emb_path))  # (N, 1024)
-    except (ValueError, OSError) as exc:
+        with file_lock(_index_lock_path(), timeout=30.0):
+            try:
+                vectors: np.ndarray = np.load(str(emb_path))  # (N, 1024)
+            except (ValueError, OSError) as exc:
+                print(
+                    f"[index] WARNING: vectors.npy unreadable ({exc}) — rebuild with build_index()",
+                    file=sys.stderr,
+                )
+                return []
+            chunk_ids: list[str] = json.loads(ids_path.read_text(encoding="utf-8"))
+    except LockTimeout:
         print(
-            f"[index] WARNING: vectors.npy unreadable ({exc}) — rebuild with build_index()",
+            "[index] WARNING: search() could not acquire index lock — returning []",
             file=sys.stderr,
         )
         return []
-    chunk_ids: list[str] = json.loads(ids_path.read_text(encoding="utf-8"))
 
     if vectors.shape[0] == 0:
         return []
@@ -243,6 +305,8 @@ def search(query_vec: np.ndarray, top_k: int) -> list[tuple[str, float]]:
     # either IndexError or, worse, return a real id for the wrong vector (a
     # silent mis-citation that sails past τ and the gate). Refuse instead;
     # build_index() restores a consistent index.
+    # Under the new locking scheme this guard should NEVER trip on a concurrent
+    # write; it is retained as defence-in-depth (spec I13).
     if vectors.shape[0] != len(chunk_ids):
         print(
             f"[index] WARNING: vectors ({vectors.shape[0]}) vs chunk_ids "
