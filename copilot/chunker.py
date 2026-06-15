@@ -253,7 +253,7 @@ def chunk_page(path: Path) -> list[Chunk]:
     # Derive kb_path relative to the path itself (forward-slashes for cross-platform)
     # We store the path as given if it's already relative, otherwise use the name.
     # Callers passing absolute paths get the last three components by convention.
-    # For a path like G:\...\kb\engineers\file.md we want kb/engineers/file.md.
+    # For a path like .../kb/engineers/file.md we want kb/engineers/file.md.
     parts = list(path.parts)
     try:
         kb_idx = next(i for i, p in enumerate(parts) if p == "kb")

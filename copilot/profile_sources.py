@@ -377,10 +377,10 @@ except ImportError:  # pragma: no cover
         return []
 
 
-_DEFAULT_SCREENSHOT = (
-    r"C:\Users\Quadstronaut\.claude\image-cache"
-    r"\45518cb0-435b-47c5-9711-56ce5054f178\1.png"
-)
+# Optional bootstrap screenshot. Portable: NO hardcoded machine path — set the
+# ED_KB_SCREENSHOT env var (or pass --screenshot PATH) to point at a rank
+# screenshot. None => bootstrap skips vision ingest entirely.
+_DEFAULT_SCREENSHOT = os.environ.get("ED_KB_SCREENSHOT") or None
 
 
 def _write_profile_md(state: "CmdrState", path: Path) -> None:
@@ -486,7 +486,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--screenshot",
         default=_DEFAULT_SCREENSHOT,
-        help=f"Path to rank screenshot (default: {_DEFAULT_SCREENSHOT}).",
+        help="Path to rank screenshot. Default: $ED_KB_SCREENSHOT if set, else none.",
     )
     args = parser.parse_args()
 

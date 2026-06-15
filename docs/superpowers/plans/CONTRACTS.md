@@ -10,7 +10,7 @@
 
 - **Language:** Python 3.11+ in a repo-local venv at `.venv/`. PowerShell launchers/daemon are Windows-native.
 - **Tests:** `pytest`. Test files mirror source under `tests/` (e.g. `copilot/retriever.py` → `tests/test_retriever.py`).
-- **Paths:** repo root = `G:\Documents\EliteDangerousKB`. All Python uses `pathlib.Path`; never hardcode separators. Resolve paths relative to repo root via `copilot/paths.py::repo_root()`.
+- **Paths:** repo root = the directory containing `config.toml`, resolved dynamically by `copilot/paths.py::repo_root()`. **The repo is clone-anywhere portable — never hardcode an absolute machine path in any tracked file.** All Python uses `pathlib.Path`; never hardcode separators. Resolve paths relative to repo root via `repo_root()`; PowerShell uses `$PSScriptRoot`; `.mcp.json` uses `${CLAUDE_PROJECT_DIR:-.}`.
 - **Encoding:** all file I/O is UTF-8, newline `\n`. JSON via stdlib `json`. TOML read via `tomllib` (stdlib 3.11+), write via `tomli_w`.
 - **Numerics:** `numpy` only for vectors. No faiss/chroma/sqlite-vec in v1 (see spec §E; revisit > 100k chunks).
 - **Ollama:** local at `http://localhost:11434`. Models: chat `qwen3:8b`, embed `bge-m3`, vision `qwen3-vl:8b`, loop `qwen3-coder:30b`.

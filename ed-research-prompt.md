@@ -12,7 +12,7 @@ index -> commit — checkpointing `STATE.toml` after each phase, then STOP (the 
 and enforces the -MaxLoops bound; do not start a second loop). **Begin immediately** with
 LOOP-STATE DETECTION step 1 below; your first action is to run that command.
 
-Environment: CWD = repo root `G:\Documents\EliteDangerousKB`. `PY` = the venv interpreter
+Environment: CWD = the repo root (the directory containing `config.toml` and this prompt; resolved dynamically, never a fixed path). `PY` = the venv interpreter
 `.venv\Scripts\python.exe`. Print a timestamped `[PHASE] message` line for every action.
 
 ---

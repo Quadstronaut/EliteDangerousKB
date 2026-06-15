@@ -33,6 +33,9 @@ live/_staging.md
 journal/daemon.log
 *.log
 
+# Claude Code harness state — transient council worktrees + local decision ledger
+.claude/
+
 # OS
 Thumbs.db
 desktop.ini
