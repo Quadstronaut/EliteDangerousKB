@@ -70,3 +70,26 @@ enabled = true
 local_models = ["qwen3-coder:30b", "qwen3:8b"]   # blind assessors; first model also arbitrates
 escalate_threshold = 0.66  # escalate when confidence < this value
 min_sources_for_consensus = 2  # NOTE: threshold read by loop; verify_claim() uses sources list length
+
+# Web-acquisition layer (copilot/acquire.py + copilot/ssrf.py). Every key has a
+# safe default in load_acquire_config(); allow_private/allow_any default False
+# even if absent, and are honored as True ONLY when explicitly set true.
+[acquire]
+user_agent   = "EliteDangerousKB-research/0.1 (+local; polite)"
+timeout      = 30.0
+min_interval = 1.0          # polite floor, seconds (Tier-0 "~1 req/sec")
+jitter       = 0.5
+max_attempts = 3
+max_bytes    = 5000000
+render       = false        # Playwright OFF by default
+allow_any    = false        # allowlist ENFORCED
+allow_private = false       # NEVER true in committed config
+allowed_ports = [80, 443]
+# allowlist defaults to acquire_sources.default_allowlist() when omitted/empty;
+# an explicit non-empty list here OVERRIDES (config-overridable).
+allowlist = [
+  "edsm.net", "spansh.co.uk", "inara.cz",
+  "raw.githubusercontent.com", "api.canonn.tech",
+  "elite-dangerous.fandom.com", "edsy.org", "coriolis.io",
+  "forums.frontier.co.uk",
+]

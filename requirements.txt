@@ -3,3 +3,7 @@ requests
 tomli-w
 pytest
 mcp  # installed: 1.27.2
+httpx[http2]==0.28.1   # web-acquisition client (acquire.py); pinned
+tenacity==9.1.4        # retry policy for acquire.py; pinned
+# playwright is OPTIONAL and intentionally NOT pinned here. Install only if you
+# need the JS-render path: pip install playwright && playwright install chromium
