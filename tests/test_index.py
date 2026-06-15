@@ -250,3 +250,26 @@ def test_upsert_corrupt_vectors_triggers_full_reembed(kb, tmp_path, monkeypatch,
     assert result["added"] >= 2, f"Expected full re-embed, got added={result['added']}"
     stderr = capsys.readouterr().err
     assert "WARNING" in stderr and "vectors.npy" in stderr
+
+
+def test_upsert_corrupt_manifest_degrades_to_full_rebuild(kb, tmp_path, monkeypatch, capsys):
+    """final-review B2: upsert_changed() on a corrupt manifest.json must NOT raise an
+    unhandled JSONDecodeError; it treats the manifest as empty and re-embeds all chunks
+    (the parallel vectors.npy path was already guarded; load_manifest() was not)."""
+    monkeypatch.setenv("EDKB_ROOT", str(tmp_path))
+    _patch_dirs(monkeypatch, tmp_path)
+
+    with patch("copilot.ollama_client.embed", side_effect=_fake_embed):
+        from copilot import index
+        index.build_index(kb)
+
+    # Corrupt manifest.json but leave vectors/ids intact.
+    (tmp_path / "indexes" / "manifest.json").write_text("{ not valid json", encoding="utf-8")
+
+    with patch("copilot.ollama_client.embed", side_effect=_fake_embed):
+        from copilot import index
+        result = index.upsert_changed(kb)  # must not raise
+
+    assert result["added"] >= 2, f"Expected full re-embed on corrupt manifest, got added={result['added']}"
+    stderr = capsys.readouterr().err
+    assert "WARNING" in stderr and "manifest.json" in stderr

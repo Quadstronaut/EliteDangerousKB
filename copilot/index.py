@@ -198,7 +198,18 @@ def upsert_changed(kb_dir: Path) -> dict:
     old_manifest: dict = {}
 
     with file_lock(_index_lock_path(), timeout=60.0):
-        old_manifest = load_manifest()
+        try:
+            old_manifest = load_manifest()
+        except (ValueError, OSError) as exc:
+            # Corrupt/unreadable manifest.json: treat as a full rebuild instead of
+            # aborting the incremental upsert with an unhandled JSONDecodeError.
+            # Symmetric with the vectors.npy corruption path below — every current
+            # chunk is then classified "added" and re-embedded (final-review B2).
+            print(
+                f"[index] WARNING: manifest.json unreadable ({exc}) — treating as full rebuild",
+                file=sys.stderr,
+            )
+            old_manifest = {}
         _corrupt = False
         if emb_path.exists() and ids_path.exists():
             try:
