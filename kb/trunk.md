@@ -31,6 +31,7 @@ See [[mechanics/frame-shift-drive]] for FSD grades, optimisation, and neutron bo
 
 Systems, stations, and points of interest.
 See [[locations/deciat]] — home of engineer Felicity Farseer.
+See [[locations/hip-23759]] — Witch Head Nebula Meta-Alloys source for the Farseer unlock.
 
 ## Careers
 
