@@ -131,10 +131,18 @@ def _is_ip_literal(host: str) -> bool:
         return False
 
 
-def assert_url_safe(url: str, cfg: GuardConfig) -> str:
-    """The ONE guard. Validates a SINGLE url (one hop). Returns url unchanged on success.
+def resolve_and_vet(url: str, cfg: GuardConfig) -> list[str]:
+    """Validate a SINGLE url (one hop) AND surface the SET of vetted IPs.
 
-    Steps, in order (each failure raises SSRFError with the exact .reason):
+    This is the single source of truth for the guard. ``assert_url_safe``
+    delegates here and discards the IP list; the acquire layer calls it
+    directly so it can PIN the connection to exactly one of these vetted IPs
+    (M1 DNS-rebind TOCTOU defense — the guard resolves once, the socket
+    connects to that same resolved IP, with no independent re-resolution at
+    connect time that a rebinding resolver could race).
+
+    Steps, in order (each failure raises SSRFError with the exact .reason —
+    identical to the historic ``assert_url_safe`` behavior):
       1. parse; refuse non-http(s) scheme            -> 'scheme'
       2. refuse missing host                          -> 'no_host'
       3. refuse port not in allowed_ports             -> 'port_blocked'
@@ -145,6 +153,13 @@ def assert_url_safe(url: str, cfg: GuardConfig) -> str:
       6. resolve host -> list[ip]; empty/raises       -> 'resolve_failed'
       7. for EVERY resolved ip: if is_ip_blocked (unless allow_private)
                                                        -> 'resolved_ip_blocked'
+
+    Returns the vetted IPs the connection may target:
+      * IP-literal host  -> [the literal itself] (connection binds to it).
+      * hostname host    -> the resolved IPs (all vetted public, or all
+                            permitted when allow_private=True).
+    The resolver runs EXACTLY ONCE per call (single resolve = nothing left to
+    re-resolve/rebind). cfg.resolver stays injectable so tests make no real DNS.
     Pure/synchronous; the only I/O is cfg.resolver().
     """
     parts = urlsplit(url)
@@ -173,13 +188,14 @@ def assert_url_safe(url: str, cfg: GuardConfig) -> str:
         # A non-blocked IP literal is only allowed when the allowlist is disabled.
         if not cfg.allow_any:
             raise SSRFError("not_allowlisted", f"IP literal not allowed: {host}")
-        # allow_any + non-blocked literal: nothing left to resolve; accept.
-        return url
+        # allow_any + non-blocked literal: nothing to resolve; the literal IS
+        # its own vetted target. Pin the connection to exactly this literal.
+        return [host]
     else:
         if not cfg.allow_any and not host_is_allowlisted(host, cfg.allowlist):
             raise SSRFError("not_allowlisted", f"host not allowlisted: {host}")
 
-    # 6. resolve
+    # 6. resolve (ONCE — this single result is what the socket will connect to)
     try:
         ips = cfg.resolver(host)
     except Exception as exc:  # gaierror, timeout, anything from the resolver
@@ -196,6 +212,19 @@ def assert_url_safe(url: str, cfg: GuardConfig) -> str:
                     f"{host} resolved to blocked IP {ip}",
                 )
 
+    # The vetted IP set — the acquire layer pins the connection to one of these.
+    return list(ips)
+
+
+def assert_url_safe(url: str, cfg: GuardConfig) -> str:
+    """The ONE guard. Validates a SINGLE url (one hop). Returns url unchanged on success.
+
+    Thin wrapper over ``resolve_and_vet`` (the single source of truth). Kept
+    byte-for-byte backward compatible: same signature, same return value (the
+    url string, unchanged), same SSRFError reasons. Callers that need the
+    vetted IPs (acquire's IP-pinning path) call ``resolve_and_vet`` directly.
+    """
+    resolve_and_vet(url, cfg)
     return url
 
 

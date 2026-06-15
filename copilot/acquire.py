@@ -134,13 +134,19 @@ class Fetcher:
     """Hardened GET + optional render, all behind ssrf.assert_url_safe."""
 
     def __init__(self, cfg: AcquireConfig, *, client: httpx.Client | None = None) -> None:
-        # SECURITY (final-review B2): an INJECTED client must not auto-follow
+        # SECURITY (final-review B2 + M2): an INJECTED client must not auto-follow
         # redirects, or it bypasses the per-hop SSRF guard — httpx would follow a
         # 302 to a private/metadata host inside one send() before fetch() ever
         # re-validates the hop. Owned clients are built follow_redirects=False
-        # below; reject any injected client that is not. Plain ValueError (a
-        # client-config error), NOT SSRFError (which is for URL/scheme rejection).
-        if client is not None and getattr(client, "follow_redirects", False) is not False:
+        # below; reject any injected client that WILL follow.
+        #
+        # M2 precision: reject only clients whose follow_redirects is TRUTHY.
+        # httpx treats both False and None as non-following, so accept both —
+        # the old `is not False` check wrongly rejected follow_redirects=None.
+        # bool(...) is the documented intent ("reject any client that WILL
+        # follow"). Plain ValueError (a client-config error), NOT SSRFError
+        # (reserved for URL/scheme rejection) — see test_injected_client_*.
+        if client is not None and bool(getattr(client, "follow_redirects", False)):
             raise ValueError(
                 "Fetcher: an injected httpx.Client must have follow_redirects=False "
                 "(an auto-redirecting client bypasses the per-hop SSRF guard)"
@@ -187,10 +193,64 @@ class Fetcher:
             chunks.append(chunk)
         return b"".join(chunks)
 
+    def _build_pinned_request(self, url: str, vetted_ips: list[str]) -> httpx.Request:
+        """Build a GET whose CONNECTION targets a vetted IP, not a fresh resolve.
+
+        M1 DNS-rebind TOCTOU defense. The guard (resolve_and_vet) already
+        validated `url` and returned the exact IP set the socket may target.
+        We rewrite the request URL's host to one of those literal IPs so httpx
+        connects there directly (no second resolution a rebinding resolver
+        could race), while preserving:
+          * the Host header  -> original hostname (virtual-hosting unchanged)
+          * sni_hostname ext -> original hostname (TLS cert verification + SNI
+                                unchanged; the cert is checked against the real
+                                hostname, not the IP literal).
+        Degrade CLOSED: if no usable vetted IP exists, raise SSRFError rather
+        than fall back to an unpinned (re-resolving) connect.
+        """
+        parts = httpx.URL(url)
+        original_host = parts.host
+        if not vetted_ips:
+            # Should be unreachable (resolve_and_vet raises on empty), but never
+            # fall back to an unpinned connect — fail closed (I10 / AC-M1b).
+            raise ssrf.SSRFError(
+                "resolved_ip_blocked",
+                f"no vetted IP to pin for {original_host!r}; refusing unpinned connect",
+            )
+        pin_ip = vetted_ips[0]
+        # IPv6 literals must be bracketed for httpx.URL host assignment.
+        host_literal = f"[{pin_ip}]" if ":" in pin_ip else pin_ip
+        try:
+            pinned_url = parts.copy_with(host=host_literal)
+        except Exception as exc:
+            # Pinning impossible (malformed IP, URL rewrite failure) -> fail
+            # closed. Never connect to an un-pinned (re-resolving) target.
+            raise ssrf.SSRFError(
+                "resolved_ip_blocked",
+                f"could not pin {original_host!r} to {pin_ip!r}: {exc}; refusing connect",
+            ) from exc
+        # Host header carries the original hostname so virtual-hosting + cert
+        # validation work; sni_hostname pins TLS SNI to the hostname too.
+        return self._client.build_request(
+            "GET",
+            pinned_url,
+            headers={"Host": original_host},
+            extensions={"sni_hostname": original_host},
+        )
+
     def _guarded_get(self, url: str) -> httpx.Response:
-        """One guarded, throttled, retried GET (no redirect following)."""
-        # SSRF guard BEFORE any socket opens (I1). Raised SSRFError is terminal.
-        ssrf.assert_url_safe(url, self._cfg.guard)
+        """One guarded, throttled, retried GET (no redirect following).
+
+        Resolves+vets the host EXACTLY ONCE (ssrf.resolve_and_vet), then — on
+        the owned/real-transport path — pins the connection to one of those
+        vetted IPs so no rebinding re-resolution can occur at connect time
+        (M1). Injected (MockTransport) clients never resolve a socket, so we
+        send the hostname URL unchanged for them (pinning is invisible and the
+        test handlers that dispatch on the hostname URL keep working).
+        """
+        # SSRF guard BEFORE any socket opens (I1). Single resolve = the vetted
+        # IP set we will pin to. Raised SSRFError is terminal.
+        vetted_ips = ssrf.resolve_and_vet(url, self._cfg.guard)
 
         @retry(
             retry=retry_if_exception(_is_retryable),
@@ -200,10 +260,23 @@ class Fetcher:
         )
         def _do() -> httpx.Response:
             self._throttle()
+            if self._owns_client:
+                # Real transport: PIN the connection to a vetted IP (M1).
+                request = self._build_pinned_request(url, vetted_ips)
+            else:
+                # Injected client (tests / MockTransport): no socket re-resolves,
+                # so pinning is moot; keep the hostname URL so injected handlers
+                # match. The guard above already vetted this hop.
+                request = self._client.build_request("GET", url)
             # stream=True so we can cap the body before buffering it whole.
+            # follow_redirects=False per-send (M2): a per-call value OVERRIDES
+            # the client attribute, so a caller who mutated an injected client to
+            # follow_redirects=True post-construction still cannot auto-follow —
+            # belt (built False) + suspenders (per-send False).
             resp = self._client.send(
-                self._client.build_request("GET", url),
+                request,
                 stream=True,
+                follow_redirects=False,
             )
             self._last_request_at = time.monotonic()
             # Only raise (and thus retry) on retryable statuses; redirects and
@@ -226,8 +299,10 @@ class Fetcher:
         """Hardened GET with manual, per-hop-guarded redirect following.
 
         Guards the initial URL and EVERY redirect Location before the next
-        request. Enforces MAX_REDIRECTS and max_bytes. Routes the final body
-        through sanitize.sanitize_context_text. SSRFError on any hop propagates
+        request. Each hop is independently re-vetted AND re-pinned to its OWN
+        vetted IP (M1 per-hop re-pin) inside _guarded_get. Enforces
+        MAX_REDIRECTS and max_bytes. Routes the final body through
+        sanitize.sanitize_context_text. SSRFError on any hop propagates
         immediately and is NEVER retried (I10).
         """
         chain: list[str] = []
@@ -241,8 +316,11 @@ class Fetcher:
                     if not loc:
                         # Redirect status with no Location — treat as terminal.
                         return self._finalize(resp, current, chain)
-                    # Resolve relative redirects against the current URL.
-                    nxt = str(httpx.URL(resp.url).join(loc))
+                    # Resolve relative redirects against the ORIGINAL hostname URL
+                    # (`current`), NOT resp.url — on the pinned/owned path resp.url
+                    # is the literal-IP URL we connected to, so joining against it
+                    # would lose the hostname. `current` is always the hostname URL.
+                    nxt = str(httpx.URL(current).join(loc))
                     resp.close()
                     current = nxt
                     continue
