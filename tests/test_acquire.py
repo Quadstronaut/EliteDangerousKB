@@ -341,8 +341,14 @@ def test_injected_client_must_not_follow_redirects():
     the per-hop SSRF guard (httpx would follow a 302 to a private/metadata host inside
     one send()), so Fetcher must refuse it. A follow_redirects=False client is accepted."""
     cfg = acquire.load_acquire_config({})
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as excinfo:
         acquire.Fetcher(cfg, client=httpx.Client(follow_redirects=True))
+    # AC1c (confirmation council): the raise must be a PLAIN ValueError — a
+    # client-config error — NOT an SSRFError. SSRFError subclasses ValueError and is
+    # reserved for URL/scheme rejection, so a bare pytest.raises(ValueError) would also
+    # accept an SSRFError; assert the exact type so a future refactor to SSRFError fails.
+    assert type(excinfo.value) is ValueError
+    assert not isinstance(excinfo.value, ssrf.SSRFError)
     # A correctly-configured injected client is fine.
     ok = acquire.Fetcher(cfg, client=httpx.Client(follow_redirects=False))
     ok.close()
