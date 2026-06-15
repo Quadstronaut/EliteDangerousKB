@@ -605,11 +605,10 @@ class TestT8NoLitter:
                     for cid in chunk_ids}
         _save_index(chunk_ids, vecs, manifest)
 
-        # No .lock files should remain after clean exit.
-        lock_files = list(tmp_path.rglob("*.lock"))
-        assert not lock_files, f"Lock litter found: {lock_files}"
-
-        # No .tmp files either.
+        # Lock files PERSIST by design: the OS byte-range lock (msvcrt/fcntl) lives
+        # on the open handle of a stable lock-file inode that all contenders must
+        # share, so we never delete it. They are empty/inert and gitignored. We DO
+        # require that no .tmp write-staging litter remains.
         tmp_files = list(tmp_path.rglob("*.tmp")) + list(tmp_path.rglob("*.tmp.npy"))
         assert not tmp_files, f"Tmp litter found: {tmp_files}"
 
@@ -680,6 +679,7 @@ class TestT10Portability:
             "contextlib", "errno", "os", "pathlib", "threading", "time",
             "typing", "ctypes", "__future__", "abc", "collections",
             "functools", "weakref", "warnings",
+            "msvcrt", "fcntl",  # platform-specific stdlib byte-range lock primitives
         }
 
         third_party = []

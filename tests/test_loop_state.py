@@ -33,8 +33,11 @@ class TestAdvancePhase:
     def test_summarize_advances_to_synthesize(self):
         assert advance_phase("summarize") == "synthesize"
 
-    def test_synthesize_advances_to_index(self):
-        assert advance_phase("synthesize") == "index"
+    def test_synthesize_advances_to_verify(self):
+        assert advance_phase("synthesize") == "verify"
+
+    def test_verify_advances_to_index(self):
+        assert advance_phase("verify") == "index"
 
     def test_index_advances_to_commit(self):
         assert advance_phase("index") == "commit"
@@ -48,8 +51,8 @@ class TestAdvancePhase:
             advance_phase("unknown-phase")
 
     def test_phase_order_complete(self):
-        """PHASE_ORDER must contain all 7 canonical phase names."""
-        expected = {"none", "triage", "search", "summarize", "synthesize", "index", "commit"}
+        """PHASE_ORDER must contain all 8 canonical phase names (incl. verify, PHASE 4.5)."""
+        expected = {"none", "triage", "search", "summarize", "synthesize", "verify", "index", "commit"}
         assert set(PHASE_ORDER) == expected
 
 
