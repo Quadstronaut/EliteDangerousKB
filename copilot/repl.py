@@ -4,19 +4,56 @@ COVAS interactive REPL.
 answer():  retrieve → gate on grounded → build_messages → chat_stream
            → validate_answer → regen once if invalid → else REFUSAL.
 main():    load CmdrState once; read-print loop streaming to stdout.
+
+Multi-hop path (config [copilot] multihop = true):
+  decompose(query) → sub-queries → retrieve each → union chunks
+  → single generation pass → UNCHANGED validate_answer gate over union.
+  Default is false (byte-identical to today's single-hop path).
 """
 
 from __future__ import annotations
 
+import dataclasses
 import io
 import sys
 
 from copilot import assemble, ollama_client, retriever
 from copilot.assemble import REFUSAL
-from copilot.models import CmdrState
+from copilot.models import CmdrState, RetrievalResult
 from copilot.ollama_client import OllamaUnavailable
 from copilot.paths import load_config
 from copilot.retriever import retrieval_filters
+
+
+def _union_results(results: list[RetrievalResult], tau: float) -> RetrievalResult:
+    """Merge multiple RetrievalResults into one for a single generation pass.
+
+    - Deduplicates chunks by chunk_id, keeping the copy with the higher score.
+    - max_score = max over all chunks in the union.
+    - grounded = union max_score >= tau.
+    - query is taken from the first result (the original query).
+    """
+    if not results:
+        # Edge case: return an empty, ungrounded result.
+        return RetrievalResult(query="", chunks=[], max_score=0.0, grounded=False)
+
+    by_id: dict[str, object] = {}  # chunk_id → Chunk (highest score wins)
+    for res in results:
+        for chunk in res.chunks:
+            existing = by_id.get(chunk.chunk_id)
+            if existing is None or chunk.score > existing.score:  # type: ignore[union-attr]
+                by_id[chunk.chunk_id] = chunk
+
+    union_chunks = list(by_id.values())
+    max_score = max((c.score for c in union_chunks), default=0.0)  # type: ignore[union-attr]
+    grounded = max_score >= tau
+
+    return RetrievalResult(
+        query=results[0].query,
+        chunks=union_chunks,  # type: ignore[arg-type]
+        max_score=max_score,
+        grounded=grounded,
+    )
 
 
 def answer(query: str, state: CmdrState | None) -> str:
@@ -24,12 +61,38 @@ def answer(query: str, state: CmdrState | None) -> str:
     Full retrieval + generation pipeline with anti-hallucination gate.
 
     Returns the answer string, or REFUSAL when the gate fires.
+
+    When config [copilot] multihop = true (default false):
+      Uses copilot.multihop.decompose() to split the query into sub-queries,
+      retrieves each independently, unions the chunks into one RetrievalResult
+      (dedup by chunk_id, max_score = max over union), then runs a SINGLE
+      generation pass and UNCHANGED validate_answer gate over the union.
+      The empty-context refusal, tau floor, forced citation, and claim-grounding
+      invariants all hold identically on the union path.
     """
     cfg = load_config()
     max_regen: int = cfg.get("copilot", {}).get("max_regen", 1)
+    multihop: bool = bool(cfg.get("copilot", {}).get("multihop", False))
+    filters = retrieval_filters(cfg)
 
-    # 1. Retrieve (honouring verified_only / include_unverified mode).
-    result = retriever.retrieve(query, filters=retrieval_filters(cfg))
+    if multihop:
+        # --- Multi-hop path ---
+        # tau is only needed for union grounding; use 0.55 as the spec-defined floor.
+        tau: float = float(cfg.get("retrieval", {}).get("tau", 0.55))
+        from copilot.multihop import decompose
+        sub_queries = decompose(query)
+        sub_results = [
+            retriever.retrieve(sq, filters=filters)
+            for sq in sub_queries
+        ]
+        result = _union_results(sub_results, tau)
+        # Restore original query for prompt assembly.
+        result = dataclasses.replace(result, query=query)
+    else:
+        # --- Default single-hop path (byte-identical to before) ---
+        # 1. Retrieve (honouring verified_only / include_unverified mode).
+        result = retriever.retrieve(query, filters=filters)
+
     if not result.grounded:
         return REFUSAL
 
