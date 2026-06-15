@@ -5,16 +5,16 @@ chat copilot ("COVAS") for **CMDR Duvrazh**, grounded only in the verified KB wi
 citations. Built for capability/progression mastery (engineering, combat & AX/Thargoid,
 exobiology, system colonisation, Odyssey on-foot).
 
-## Status — 2026-06-01
+## Status — 2026-06-14
 
 | Subsystem | Plan | State |
 |---|---|---|
 | Foundation + Copilot Core | A | ✅ **built** — 13 tasks, working end-to-end |
 | Data-First Profile | B | ✅ **built** — discovery + journal/game-state/screenshot ingest |
 | MCP Server | C | ✅ **built** — `ed_kb_search` / `ed_kb_answer` / `ed_cmdr_state` |
-| Research Loop | D | 📝 **authored, NOT run** — start it yourself (see below) |
+| Research Loop | D | ✅ **built + ran live** — 1 genuine loop wrote `kb/locations/deciat.md`; wrapper gates on `loop_number` advance (see below) |
 
-- **188 tests passing** (`-m "not integration"`) — incl. 17 regression tests from
+- **234 tests passing** (`-m "not integration"`) — incl. portability + keep_alive guards and 17 regression tests from
   the 2026-06-03 review-council hardening pass (exception paths, index integrity,
   chunker collisions, `verified_only` enforcement).
 - Real end-to-end verified against live `bge-m3` + `qwen3:8b`: grounded queries return
@@ -39,14 +39,17 @@ If the index isn't built yet (or after editing the KB):
 
 `.mcp.json` registers the server. In Claude Code, `/mcp` should list **ed-covas** with
 the three tools. This sleeves Claude onto the identical KB when qwen's answer isn't enough.
+The launch path is **clone-anywhere portable** (`${CLAUDE_PROJECT_DIR}`) — the repo works
+from any path you clone it to.
 
 ## Pending / next steps
 
-1. **Run the research loop (Plan D)** to grow the KB — `docs/superpowers/plans/2026-06-01-plan-D-research-loop.md`.
-   It builds `ed-research-prompt.md` + an idempotent, verbose `wrapper.ps1`. *Not started — your call.*
+1. **Grow the KB via the research loop (Plan D)** — `.\wrapper.ps1 -MaxLoops 3 -SkipPermissions`.
+   Proven live (1 loop). Each loop researches ED sources and commits a KB page; `STATE.toml`
+   checkpoints per phase so Ctrl-C + relaunch resumes cleanly.
 2. **Bootstrap your real profile:** with the game running (or its journals present), run the
-   Plan B bootstrap to populate `cmdr/duvrazh.md` from live data + a screenshot. The default
-   screenshot path was absent at build time — drop one and re-run.
+   Plan B bootstrap to populate `cmdr/duvrazh.md` from live data + an optional screenshot:
+   `python -m copilot.profile_sources --bootstrap [--screenshot PATH]` (or set `$env:ED_KB_SCREENSHOT`).
 3. Journal-watcher live mode + verification Phase 2/3 are v1.1 (separate plans).
 
 ## Docs

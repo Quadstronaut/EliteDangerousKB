@@ -50,6 +50,18 @@ def _model(key: str) -> str:
         return defaults.get(key, "qwen3:8b")
 
 
+def _keep_alive() -> str:
+    """Read keep_alive from config[ollama]; controls how long Ollama keeps a model
+    resident after a call. Wiring it (CONTRACTS lists keep_alive but it was never
+    sent — DRIFT-6) avoids cold-reloads between loop phases and REPL turns. Default
+    '5m' matches config.toml."""
+    try:
+        from copilot.paths import load_config
+        return str(load_config()["ollama"].get("keep_alive", "5m"))
+    except Exception:
+        return "5m"
+
+
 # ---------------------------------------------------------------------------
 # Embedding
 # ---------------------------------------------------------------------------
@@ -63,7 +75,7 @@ def embed(texts: list[str]) -> np.ndarray:
     try:
         resp = requests.post(
             f"{_base_url()}/api/embed",
-            json={"model": _model("embed_model"), "input": texts},
+            json={"model": _model("embed_model"), "input": texts, "keep_alive": _keep_alive()},
             timeout=120,
         )
         resp.raise_for_status()
@@ -188,12 +200,20 @@ def chat_stream(
     - Raises OllamaUnavailable on connection failure.
     """
     use_model = model or _model("chat_model")
+    # think=False disables qwen3's chain-of-thought at the source: otherwise the
+    # model spends the entire timeout emitting reasoning we'd only strip anyway
+    # (a cold load + thinking blew past 300s; think=False returns in ~load time).
+    # The _ThinkStripper below stays as a safety net for models that ignore the flag.
     try:
         resp = requests.post(
             f"{_base_url()}/api/chat",
-            json={"model": use_model, "messages": messages, "stream": True},
+            json={"model": use_model, "messages": messages, "stream": True,
+                  "think": False, "keep_alive": _keep_alive()},
             stream=True,
-            timeout=300,
+            # First-token timeout. A cold model swap under VRAM pressure can take
+            # minutes (observed ~298s); keep headroom so a load never trips it.
+            # The launch healthcheck (5s /api/tags) already catches a down server.
+            timeout=600,
         )
         resp.raise_for_status()
     except requests.RequestException as exc:
@@ -258,6 +278,7 @@ def vision(image_path: str, prompt: str) -> str:
                     }
                 ],
                 "stream": False,
+                "keep_alive": _keep_alive(),
             },
             timeout=300,
         )
