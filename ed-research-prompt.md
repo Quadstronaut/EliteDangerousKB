@@ -105,6 +105,32 @@ For each kept summary:
 5. Ensure `kb/trunk.md` links the new page. Append any follow-on targets to `queue/next-targets.md`.
 6. Print `[SYNTHESIZE] wrote <kb_path> — tier=<N> verified=<bool> availability=<...>`. Checkpoint phase=synthesize.
 
+## PHASE 4.5 — VERIFY (local council; escalate conflicts to cloud)
+
+For each KB page written in PHASE 4, run a hybrid fact-check:
+
+1. **Skip if disabled**: check `PY -c "from copilot.verify import _verify_enabled; print(_verify_enabled())"`.
+   If `False`, log `[VERIFY] disabled — skipping` and continue to PHASE 5.
+
+2. **Collect claims**: from the summary/page, extract the 1-3 most specific factual claims
+   (e.g. "Shield Generator Class 4A has base shield strength 660 MJ").
+
+3. **Run local council**: for each claim where `source_count >= 2` OR a `<!-- CONFLICT -->` marker
+   exists in the page, run:
+   `PY -c "from copilot.verify import verify_claim; from copilot.paths import load_config; import json; sources=[<source_text_1>, <source_text_2>]; r=verify_claim('<claim>', sources); print(json.dumps(r))"`
+
+4. **Apply verdict**:
+   - `verified` with `escalate=false`: set frontmatter `verified: true` (write atomically).
+   - `conflict` or `escalate=true`: **DO NOT auto-resolve**. Log the full result to
+     `journal/loop-<n>.md` under heading `## VERIFY ESCALATION — <slug>`. Write a
+     `<!-- ESCALATION: confidence=<c> verdict=<v> — cloud council required -->` comment
+     into the KB page. Set `verified: false`. The cloud council (`council` skill /
+     council.workflow.js) must be invoked by the human operator on the next attended run.
+   - `uncertain`: leave `verified: false`; log to journal.
+   - `refuted`: add `<!-- CONFLICT: local council refuted this claim -->` and set `verified: false`.
+
+5. Print `[VERIFY] <slug> — verdict=<v> confidence=<c> escalate=<bool>`. Checkpoint phase=verify.
+
 ## PHASE 5 — INDEX
 
 `PY -c "from copilot.index import upsert_changed; from copilot.paths import kb_dir; print(upsert_changed(kb_dir()))"`

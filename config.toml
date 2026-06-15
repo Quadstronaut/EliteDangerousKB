@@ -35,3 +35,13 @@ cmdr_profile = "cmdr/duvrazh.md"
 verification_tier = 1               # 1=capture, 2=consensus, 3=currency-purge
 git_commit_every_loop = true
 deep_analysis_after_empty_loops = 5
+
+# Council-v2-style local verification for KB fact-checking.
+# verify_claim() reads all keys here; the loop integration (ed-research-prompt.md PHASE 4.5)
+# is wired but the cloud-council escalation path requires manual invocation of the `council`
+# skill — it cannot be auto-triggered from inside an autonomous headless loop.
+[verify]
+enabled = true
+local_models = ["qwen3-coder:30b", "qwen3:8b"]   # blind assessors; first model also arbitrates
+escalate_threshold = 0.66  # escalate when confidence < this value
+min_sources_for_consensus = 2  # NOTE: threshold read by loop; verify_claim() uses sources list length
