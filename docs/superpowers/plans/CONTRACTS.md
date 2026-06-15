@@ -59,11 +59,20 @@ embed_dim = 1024
 chunk_min_tokens = 128
 chunk_max_tokens = 512
 chunk_overlap = 0.15
+# Hybrid retrieval (2026-06-15). fusion="dense" is the kill switch / shipped default
+# (rrf regresses MRR on the current tiny corpus); "rrf" fuses BM25+dense. Grounding
+# always uses dense cosine vs tau regardless of this value.
+fusion = "dense"        # "rrf" | "dense"
+rrf_k = 60
+candidate_k = 32
+rerank = "off"          # "off" | "llm" | "cross_encoder"
 
 [copilot]
 mode = "verified_only"  # "verified_only" | "include_unverified"
 forced_citation = true
 max_regen = 1
+claim_grounding_check = true   # cited claim must share content with its chunk (anti-fabrication)
+multihop = false               # multi-hop decomposition seam (scaffold; default off = single retrieve)
 
 [paths]
 kb = "kb"
@@ -75,6 +84,30 @@ cmdr_profile = "cmdr/duvrazh.md"
 verification_tier = 1               # 1=capture, 2=consensus, 3=currency-purge
 git_commit_every_loop = true
 deep_analysis_after_empty_loops = 5
+
+# Local council-v2-style fact verification (verify.py). Cloud escalation is manual.
+[verify]
+enabled = true
+local_models = ["qwen3-coder:30b", "qwen3:8b"]
+escalate_threshold = 0.66
+min_sources_for_consensus = 2
+
+# Web-acquisition layer (acquire.py + ssrf.py). allow_any/allow_private are honored
+# True ONLY when explicitly set true; allowlist defaults to acquire_sources roster.
+[acquire]
+user_agent   = "EliteDangerousKB-research/0.1 (+local; polite)"
+timeout      = 30.0
+min_interval = 1.0
+jitter       = 0.5
+max_attempts = 3
+max_bytes    = 5000000
+render       = false
+allow_any    = false
+allow_private = false
+allowed_ports = [80, 443]
+allowlist = ["edsm.net", "spansh.co.uk", "inara.cz", "raw.githubusercontent.com",
+             "api.canonn.tech", "elite-dangerous.fandom.com", "edsy.org",
+             "coriolis.io", "forums.frontier.co.uk"]
 ```
 
 Load via `copilot/paths.py::load_config() -> dict`.
@@ -85,7 +118,7 @@ Load via `copilot/paths.py::load_config() -> dict`.
 
 ```toml
 loop_number = 0
-last_completed_phase = "none"   # none|triage|search|summarize|synthesize|index|commit
+last_completed_phase = "none"   # none|triage|search|summarize|synthesize|verify|index|commit
 mode = "search"                 # search|deep-analysis
 consecutive_empty_loops = 0
 halt = false
@@ -278,6 +311,83 @@ def ingest_screenshot(image_path: str) -> list[ProfileFact]   # via ollama_clien
 
 ---
 
+## Retrieval / verification / acquisition modules (2026-06-15 — council slice)
+
+These shipped after the original A–D plans, via four council-v2 reviews. Signatures
+are stable contracts; grounding/trust invariants below are load-bearing.
+
+### copilot/sparse.py — BM25 sparse retrieval (zero new deps)
+```python
+def tokenize(text: str) -> list[str]                                   # lowercase, punctuation-split; same at build & query
+def build_from_corpus(corpus: dict[str, str]) -> SparseIndex           # in-memory BM25+; guards avgdl==0 (no ZeroDivisionError)
+def search_index(idx: SparseIndex, query: str, top_k: int) -> list[tuple[str, float]]   # top_k<=0 -> []
+def persist(corpus: dict[str, str]) -> None                            # writes embeddings/sparse_index.json; CALL INSIDE index lock
+def load_ids() -> list[str]                                            # ids the persisted sparse index knows; never raises
+def search(query: str, top_k: int) -> list[tuple[str, float]]          # load+query; [] if no artifact (degrade-to-dense)
+```
+
+### copilot/fusion.py — Reciprocal Rank Fusion
+```python
+def rrf_fuse(dense, sparse, *, k: int = 60, top_k: int | None = None) -> list[tuple[str, float]]   # top_k<=0 -> []
+# rerank(query, candidate_ids, *, top_m) is INTENTIONALLY ABSENT while [retrieval].rerank == "off".
+```
+
+### copilot/ssrf.py — the single SSRF chokepoint (security-critical)
+```python
+class SSRFError(ValueError): reason: str   # scheme|no_host|literal_ip_blocked|resolved_ip_blocked|not_allowlisted|resolve_failed|port_blocked
+@dataclass(frozen=True)
+class GuardConfig: allowlist; allow_any=False; allowed_ports=frozenset({80,443}); allow_private=False; resolver
+def is_ip_blocked(ip: str) -> bool                       # private/loopback/link-local/reserved/metadata; fail-closed
+def host_is_allowlisted(host, allowlist) -> bool         # exact-or-subdomain suffix; IP literal never allowlisted
+def assert_url_safe(url: str, cfg: GuardConfig) -> str   # the ONE guard; checks RESOLVED ip, one hop. allow_*=True only via `is True`.
+```
+
+### copilot/acquire.py — hardened fetch primitive (uses ssrf on every hop)
+```python
+@dataclass(frozen=True)
+class FetchResult: url; status; content_type; text(SANITIZED); raw_sha256(pre-sanitize); rendered; redirect_chain   # NO 'verified' field
+def load_acquire_config(cfg: dict | None = None) -> AcquireConfig      # secure defaults; allow_*=False unless `is True`
+class Fetcher:                                                         # client follow_redirects=False; manual per-hop guard
+    def fetch(self, url: str) -> FetchResult                          # retry (SSRFError terminal); streaming body cap; sanitize on return
+    def render(self, url: str) -> FetchResult                        # optional Playwright behind guard; PlaywrightUnavailable if absent
+```
+
+### copilot/acquire_sources.py — declarative ED source roster
+```python
+ED_SOURCES: list[EDSource]                       # 9 sources, tiers 0..3, robots/ToS notes; Reddit excluded (Tier-3 only)
+def default_allowlist() -> list[str]             # union of all source domains
+def source_for_url(url: str) -> EDSource | None  # same host-suffix rule as the SSRF allowlist
+```
+
+### copilot/multihop.py — multi-hop decomposition seam (deferred scaffold)
+```python
+MULTIHOP_ENABLED: bool = False
+def decompose(query: str) -> list[str]           # pure; [query] for single-hop; >=2 sub-queries for explicit multi-hop shapes
+```
+
+### copilot/verify.py — local council-v2 fact verification
+```python
+def verify_claim(claim: str, sources: list[str], *, models=None) -> dict   # sources sanitized+fenced; 'verified' needs >= min_sources
+def needs_escalation(result: dict) -> bool                                  # low confidence -> escalate to cloud council (manual)
+```
+
+### Prior-session modules (also load-bearing, pre-dating this slice)
+`copilot/locking.py` (`file_lock` — OS byte-range lock), `copilot/sanitize.py`
+(`sanitize_context_text`/`make_nonce`/`fence`), `copilot/eval.py`
+(`load_golden`/`retrieval_metrics`/`refusal_calibration`, `python -m copilot.eval`),
+`copilot/query_expand.py` (`expand_query`).
+
+### Hybrid retrieval invariants (do not break)
+- `index.build_index`/`upsert_changed` build a `{chunk_id: text}` corpus and persist the
+  sparse index **inside `_save_index`'s `file_lock`** — dense + sparse are one atomic group.
+- `retriever.retrieve` under `fusion="rrf"`: dense (wide `candidate_k`) + `sparse.search`
+  (LITERAL query, not the expanded form) → `rrf_fuse` → hydrate in fused order. Under
+  `fusion="dense"`: exact legacy path, sparse never called.
+- **Grounding/refusal ALWAYS uses the post-filter dense cosine vs τ — never an RRF/BM25
+  score.** A high BM25 score cannot launder a false positive past the gate.
+
+---
+
 ## chunk_id scheme (one definition, used everywhere)
 ```python
 import hashlib
@@ -289,8 +399,11 @@ Lives in `copilot/chunker.py`; imported by `index.py`.
 ---
 
 ## Anti-hallucination gate (spec §B) — where each piece lives
-- **τ floor:** `retriever.retrieve` sets `grounded`; `repl.answer` refuses if `not grounded`.
+- **τ floor:** `retriever.retrieve` sets `grounded` (post-filter dense cosine, never RRF); `repl.answer` refuses if `not grounded`.
 - **Forced citation + cited-id-exists:** `assemble.validate_answer`; `repl.answer` regenerates once then refuses.
+- **Claim-grounding:** `[copilot].claim_grounding_check` — a cited claim must share content with its chunk, so a confident-wrong answer with a real `[id]` is rejected (anti-fabrication).
+- **Multi-hop union:** when `[copilot].multihop=true`, `repl.answer` unions per-sub-query results and runs the SAME `validate_answer` over the union — no second/weakened gate.
+- **Acquisition trust boundary:** fetched text is `sanitize.sanitize_context_text`-cleaned before any LLM/KB write; `FetchResult` has no `verified` field; ingested chunks are never auto-verified.
 - **Refusal-calibration tests:** `tests/test_gate.py` — empty retrieval AND non-empty-but-below-τ both refuse.
 
 ## Idempotency & output (spec §J) — Plan D
