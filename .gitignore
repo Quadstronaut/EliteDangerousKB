@@ -20,6 +20,8 @@ build/
 
 # Embeddings (large binary — regenerate from KB)
 embeddings/chunk_ids.json
+# BM25 sparse index (derived artifact, rebuilt alongside the dense index)
+embeddings/sparse_index.json
 
 # Index (derived artifact)
 indexes/manifest.json

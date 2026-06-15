@@ -14,6 +14,23 @@ embed_dim = 1024
 chunk_min_tokens = 128
 chunk_max_tokens = 512
 chunk_overlap = 0.15
+# --- Hybrid retrieval (BM25 sparse + dense fusion). Scaffolding for KB growth. ---
+# fusion: "rrf" = Reciprocal Rank Fusion of dense+sparse; "dense" = exact legacy
+#         dense-only path (kill switch, byte-for-byte pre-hybrid behaviour).
+# DEFAULT = "dense" (resolves the hybrid council's unresolved dissent with LIVE
+#   eval evidence): on the current 27-chunk golden set, fusion="rrf" REGRESSES
+#   MRR 1.000 -> 0.962 (BM25 promotes a lexical near-miss, "Python Mk II"),
+#   while "dense" holds recall@5=1.000 / MRR=1.000. The spec mandates a
+#   non-regression gate, so we ship the non-regressing default; the full RRF
+#   path is built, tested, and ONE flip away. Flip to "rrf" once the KB grows
+#   and eval shows rrf MRR/recall >= dense (the falsifiable scaffold-for-growth
+#   condition; see copilot/sparse.py value-now verdict + .claude council ledger).
+# Grounding ALWAYS uses dense cosine vs tau (never the RRF score), so refusal
+# can't be laundered by a high BM25 score regardless of this setting.
+fusion = "dense"
+rrf_k = 60              # RRF smoothing constant (Cormack & Clarke 2009)
+candidate_k = 32        # wide per-backend candidate set before fusion narrows to top_k
+rerank = "off"          # "off" | "llm" | "cross_encoder"; off at this corpus size (no measured gain)
 
 [copilot]
 mode = "verified_only"  # "verified_only" | "include_unverified"

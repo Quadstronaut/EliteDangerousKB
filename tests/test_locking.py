@@ -613,12 +613,22 @@ class TestT8NoLitter:
         assert not tmp_files, f"Tmp litter found: {tmp_files}"
 
     def test_real_repo_untouched(self, tmp_path, monkeypatch):
-        """Nothing should be written into the real repo indexes/embeddings during tests."""
+        """The test's monkeypatched operations must not write into the real repo.
+
+        NOTE: the byte-range index.lock is persistent-by-design — created on first
+        lock acquisition by any real eval/build CLI run, never deleted, gitignored.
+        It may already exist in the real repo. We snapshot its presence and assert
+        only that THIS test did not CREATE it, rather than asserting the ambient
+        repo lacks one (which would make the test fail after any legitimate CLI run
+        such as `python -m copilot.eval`).
+        """
         import copilot.paths as _paths
         from copilot.paths import repo_root
 
         real_indexes = repo_root() / "indexes"
         real_emb = repo_root() / "embeddings"
+        # Snapshot a pre-existing CLI-created lock so it is not blamed on this test.
+        lock_existed_before = (real_indexes / "index.lock").exists()
 
         emb_dir = tmp_path / "embeddings"
         idx_dir = tmp_path / "indexes"
@@ -633,10 +643,11 @@ class TestT8NoLitter:
         from copilot.loop_state import record_source
         record_source("https://example.com/test", "hash", str(seen))
 
-        # The real repo index dir must not have a new index.lock.
-        if real_indexes.exists():
+        # THIS test must not have CREATED index.lock in the real repo (a lock that
+        # pre-existed from a real CLI run is exempt — not this test's doing).
+        if real_indexes.exists() and not lock_existed_before:
             assert not (real_indexes / "index.lock").exists(), (
-                "index.lock was written to the real repo indexes/ dir"
+                "index.lock was written to the real repo indexes/ dir by this test"
             )
         if real_emb.exists():
             assert not (real_emb / "vectors.lock").exists()

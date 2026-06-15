@@ -2,11 +2,16 @@
 KB vector index: full rebuild, incremental upsert, cosine search.
 
 Artifacts (all written atomically via write_json_atomic / numpy save):
-  embeddings/vectors.npy      — (N, 1024) float32, L2-normalised, row-order = chunk_ids.json
-  embeddings/chunk_ids.json   — [chunk_id, ...]  (row index → id)
-  indexes/manifest.json       — {chunk_id: {content_hash, kb_path, heading_path, payload}}
+  embeddings/vectors.npy       — (N, 1024) float32, L2-normalised, row-order = chunk_ids.json
+  embeddings/chunk_ids.json    — [chunk_id, ...]  (row index → id)
+  embeddings/sparse_index.json — BM25 sparse index (written alongside dense, under same lock)
+  indexes/manifest.json        — {chunk_id: {content_hash, kb_path, heading_path, payload}}
 
 content_hash = sha256 of the raw markdown section text for the chunk.
+
+Hybrid retrieval: sparse.persist() is called inside _save_index's lock critical
+section so dense + sparse are always written as a single atomic group.  There is
+no window where a reader can see dense without a matching sparse artifact.
 """
 
 from __future__ import annotations
@@ -21,6 +26,7 @@ import numpy as np
 
 from copilot import ollama_client
 from copilot import paths
+from copilot import sparse as _sparse
 from copilot.atomic import write_json_atomic
 from copilot.chunker import chunk_page
 from copilot.locking import file_lock, LockTimeout
@@ -80,14 +86,26 @@ def _save_index(
     chunk_ids: list[str],
     vectors: np.ndarray,
     manifest: dict,
+    corpus: dict[str, str] | None = None,
 ) -> None:
     """
-    Write the three-file index set atomically as a group.
+    Write the dense + sparse index set atomically as a group.
 
-    All three writes are wrapped in the index file_lock so no reader can
-    observe a mid-write skew where vectors.shape[0] != len(chunk_ids)
-    (Bug 2 fix).  Lock path flows through _index_lock_path() -> paths.*
-    so monkeypatching in tests redirects to tmp_path.
+    All writes are wrapped in the index file_lock so no reader can observe a
+    mid-write skew where vectors.shape[0] != len(chunk_ids) (Bug 2 fix).
+    When corpus is provided, sparse.persist() is called INSIDE the lock so the
+    sparse artifact is always written in the same atomic group as the dense
+    artifacts — there is no window where dense and sparse are out of sync.
+    Lock path flows through _index_lock_path() -> paths.* so monkeypatching in
+    tests redirects to tmp_path.
+
+    Args:
+        chunk_ids: ordered list of chunk ids matching vectors rows.
+        vectors:   (N, 1024) float32 L2-normalised embedding matrix.
+        manifest:  {chunk_id: {content_hash, kb_path, heading_path, payload}}.
+        corpus:    {chunk_id: text} for the sparse BM25 build.  None means
+                   "skip sparse write" — only occurs on the empty-index fast
+                   path where corpus would also be empty.
     """
     # Reference via the paths module so test monkeypatching takes effect.
     emb = paths.embeddings_dir()
@@ -105,6 +123,12 @@ def _save_index(
 
         write_json_atomic(emb / "chunk_ids.json", chunk_ids)
         write_json_atomic(idx / "manifest.json", manifest)
+
+        # Sparse BM25 artifact — written INSIDE the same lock so dense + sparse
+        # are always consistent.  If corpus is None (empty-index fast path),
+        # we write an empty sparse index so load_ids() returns [] consistently.
+        sparse_corpus = corpus if corpus is not None else {}
+        _sparse.persist(sparse_corpus)
 
 
 def _embed_chunks(chunks: list[Chunk]) -> np.ndarray:
@@ -128,7 +152,7 @@ def build_index(kb_dir: Path) -> int:
             print(f"[index] WARNING: skipping unreadable {md_path}: {exc}", file=sys.stderr)
 
     if not all_chunks:
-        _save_index([], np.empty((0, 1024), dtype=np.float32), {})
+        _save_index([], np.empty((0, 1024), dtype=np.float32), {}, corpus={})
         return 0
 
     # Deduplicate by chunk_id, keeping the last occurrence (last-write-wins —
@@ -144,6 +168,7 @@ def build_index(kb_dir: Path) -> int:
 
     chunk_ids = [c.chunk_id for c in deduped]
     manifest: dict[str, dict] = {}
+    corpus: dict[str, str] = {}    # {chunk_id: text} for sparse BM25
     for chunk in deduped:
         manifest[chunk.chunk_id] = {
             "content_hash": _content_hash(chunk.text),
@@ -151,8 +176,9 @@ def build_index(kb_dir: Path) -> int:
             "heading_path": chunk.heading_path,
             "payload": _chunk_payload(chunk),
         }
+        corpus[chunk.chunk_id] = chunk.text
 
-    _save_index(chunk_ids, vectors, manifest)
+    _save_index(chunk_ids, vectors, manifest, corpus=corpus)
     return len(deduped)
 
 
@@ -241,10 +267,15 @@ def upsert_changed(kb_dir: Path) -> dict:
     else:
         all_vectors = kept_vectors.astype(np.float32)
 
-    # 3. Build new manifest.
+    # 3. Build new manifest and corpus (for sparse BM25 rebuild).
     new_manifest: dict[str, dict] = {}
+    new_corpus: dict[str, str] = {}   # {chunk_id: text} for sparse index
     for cid in unchanged_ids:
         new_manifest[cid] = old_manifest[cid]
+        # Recover text for unchanged chunks from the current corpus.
+        chunk = current_by_id.get(cid)
+        if chunk is not None:
+            new_corpus[cid] = chunk.text
     for cid in added_ids:
         chunk = current_by_id[cid]
         new_manifest[cid] = {
@@ -253,9 +284,10 @@ def upsert_changed(kb_dir: Path) -> dict:
             "heading_path": chunk.heading_path,
             "payload": _chunk_payload(chunk),
         }
+        new_corpus[cid] = chunk.text
     # removed_ids are simply omitted (tombstoned).
 
-    _save_index(new_ids, all_vectors, new_manifest)
+    _save_index(new_ids, all_vectors, new_manifest, corpus=new_corpus)
     return {
         "added": len(added_ids),
         "removed": len(removed_ids),
