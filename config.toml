@@ -23,6 +23,14 @@ max_regen = 1
 # confident WRONG answer with a real [id] attached is rejected, not trusted.
 # Lexical/conservative (catches fabrication, passes paraphrase). 2026-06-03.
 claim_grounding_check = true
+# Multi-hop query decomposition (Decision A: DEFER). Default false = today's
+# exact single-retrieve path. When true, copilot.multihop.decompose() splits
+# the query into sub-queries, retrieves each, unions the chunks (dedup by
+# chunk_id, max_score = max over union), then runs a SINGLE generation pass
+# over the union result with the UNCHANGED validate_answer gate.
+# Flip to true only after copilot.eval.retrieval_metrics shows recall_at_k on
+# the "multihop": true golden subset materially below single-hop recall_at_k.
+multihop = false
 
 [paths]
 kb = "kb"

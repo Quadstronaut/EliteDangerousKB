@@ -151,6 +151,182 @@ def _approx_tokens(text: str) -> int:
 
 
 # ---------------------------------------------------------------------------
+# Table detection and section splitting (Decision B: KEEP-ATOMIC)
+# ---------------------------------------------------------------------------
+
+# A GFM table header row: starts with |, ends with |, contains text cells.
+_TABLE_HEADER_RE = re.compile(r"^\|.+\|[ \t]*$", re.MULTILINE)
+
+# A GFM table delimiter row: only |, -, :, spaces, tabs.
+_TABLE_DELIM_RE = re.compile(r"^\|[\s|:\-]+\|[ \t]*$", re.MULTILINE)
+
+
+def _is_table_block(text: str) -> bool:
+    """Return True if *text* contains a GFM table (header + delimiter + >=1 data row).
+
+    Detects: a line matching |...| (header), followed by a line matching
+    |---|---| (delimiter), followed by at least one more |...| line (data).
+    """
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        # Look for a header-like row
+        if not (line.strip().startswith("|") and line.strip().endswith("|")):
+            continue
+        # Next non-empty line should be a delimiter row
+        for j in range(i + 1, len(lines)):
+            nxt = lines[j]
+            if not nxt.strip():
+                continue  # skip blanks between header and delim
+            if _TABLE_DELIM_RE.match(nxt.strip()):
+                # Look for at least one data row after the delimiter
+                for k in range(j + 1, len(lines)):
+                    data = lines[k]
+                    if not data.strip():
+                        continue
+                    if data.strip().startswith("|") and data.strip().endswith("|"):
+                        return True  # header + delim + data found
+                    break  # non-pipe line after delim — not a table
+            break  # first non-blank after header was not a delimiter
+    return False
+
+
+def _extract_table_blocks(text: str) -> list[tuple[int, int]]:
+    """Return list of (start_line, end_line) ranges (inclusive) for each GFM table in *text*.
+
+    A table block is: optional leading blank lines, then header row, delimiter
+    row, and contiguous data rows. The range covers header through last data row.
+    """
+    lines = text.splitlines()
+    blocks: list[tuple[int, int]] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+        # Candidate table header
+        if stripped.startswith("|") and stripped.endswith("|"):
+            # Scan ahead for delimiter
+            j = i + 1
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            if j < len(lines) and _TABLE_DELIM_RE.match(lines[j].strip()):
+                # Found header at i, delimiter at j — collect data rows
+                k = j + 1
+                while k < len(lines):
+                    dline = lines[k].strip()
+                    if dline.startswith("|") and dline.endswith("|"):
+                        k += 1
+                    elif not dline:
+                        # blank line — peek ahead to see if more table rows follow
+                        # GFM tables end at the first blank line normally, but we
+                        # stop here to be conservative (safe for spec).
+                        break
+                    else:
+                        break
+                if k > j + 1:  # at least one data row
+                    blocks.append((i, k - 1))
+                    i = k
+                    continue
+        i += 1
+    return blocks
+
+
+def _split_section_preserving_tables(
+    section_body: str,
+    min_tok: int,
+    max_tok: int,
+    overlap: float,
+) -> list[str]:
+    """Split *section_body* into windows, keeping any GFM table(s) intact.
+
+    Algorithm:
+      1. Find all table blocks in the section (line ranges).
+      2. Split the section into non-table prose segments and table segments.
+      3. Window each prose segment normally with _window_text.
+      4. Emit each table segment as a single chunk (never windowed), even if
+         it exceeds max_tok — this is the KEEP-ATOMIC guarantee.
+      5. Return segments in their original order.
+
+    If the section contains no table, falls back to _window_text normally.
+    """
+    if not _is_table_block(section_body):
+        if _approx_tokens(section_body) > max_tok:
+            return _window_text(section_body, min_tok, max_tok, overlap)
+        return [section_body]
+
+    lines = section_body.splitlines(keepends=True)
+    table_ranges = _extract_table_blocks(section_body)
+    if not table_ranges:
+        # Detection said yes but extraction found nothing — fall back.
+        if _approx_tokens(section_body) > max_tok:
+            return _window_text(section_body, min_tok, max_tok, overlap)
+        return [section_body]
+
+    # Build a set of line indices belonging to tables.
+    table_line_set: set[int] = set()
+    for start, end in table_ranges:
+        for li in range(start, end + 1):
+            table_line_set.add(li)
+
+    # Walk lines, collecting runs of prose vs table.
+    # Each "segment" is (is_table: bool, text: str).
+    segments: list[tuple[bool, str]] = []
+    prose_buf: list[str] = []
+
+    def _flush_prose():
+        if prose_buf:
+            segments.append((False, "".join(prose_buf)))
+            prose_buf.clear()
+
+    in_table = False
+    table_start: int = 0
+    for idx, line in enumerate(lines):
+        if idx in table_line_set:
+            if not in_table:
+                _flush_prose()
+                in_table = True
+                table_start = idx
+            # Accumulate table line into the current table segment.
+            # We'll emit the whole table when it ends.
+        else:
+            if in_table:
+                # End of current table — find the range and emit.
+                # Collect the table lines we just passed.
+                for start, end in table_ranges:
+                    if start == table_start:
+                        table_text = "".join(lines[start: end + 1])
+                        segments.append((True, table_text))
+                        break
+                in_table = False
+            prose_buf.append(line)
+
+    if in_table:
+        for start, end in table_ranges:
+            if start == table_start:
+                table_text = "".join(lines[start: end + 1])
+                segments.append((True, table_text))
+                break
+    else:
+        _flush_prose()
+
+    # Now emit windows for each segment.
+    result: list[str] = []
+    for is_table, seg_text in segments:
+        if is_table:
+            # KEEP-ATOMIC: always emit table as one chunk, regardless of size.
+            result.append(seg_text)
+        else:
+            seg_stripped = seg_text.strip()
+            if not seg_stripped:
+                continue
+            if _approx_tokens(seg_stripped) > max_tok:
+                result.extend(_window_text(seg_stripped, min_tok, max_tok, overlap))
+            else:
+                result.append(seg_stripped)
+
+    return result if result else [section_body]
+
+
+# ---------------------------------------------------------------------------
 # Windowing (overlap splitting)
 # ---------------------------------------------------------------------------
 
@@ -307,11 +483,10 @@ def chunk_page(path: Path) -> list[Chunk]:
 
         heading_path = f"{page_title} > {heading}" if heading else page_title
 
-        # Window if needed
-        if _approx_tokens(section_body) > cfg_max:
-            windows = _window_text(section_body, cfg_min, cfg_max, cfg_overlap)
-        else:
-            windows = [section_body]
+        # Window if needed, preserving any GFM tables as atomic chunks.
+        windows = _split_section_preserving_tables(
+            section_body, cfg_min, cfg_max, cfg_overlap
+        )
 
         for w_idx, window in enumerate(windows):
             # Suffix heading_path when a section is split across windows
