@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -25,6 +26,7 @@ PHASE_ORDER: list[str] = [
     "search",
     "summarize",
     "synthesize",
+    "verify",
     "index",
     "commit",
 ]
@@ -57,10 +59,26 @@ def _url_sha(url: str) -> str:
 
 
 def _load_seen(seen_path: str) -> dict:
+    """Read seen.json, tolerant of the Windows NTFS delete-pending window.
+
+    A concurrent atomic replace (write_json_atomic -> os.replace) can leave the
+    file briefly openable-as-EACCES, or glimpsed half-written. Retry transient
+    errors for ~100ms rather than crash a reader or lose data (the prior
+    concurrency blocker surfaced here as a PermissionError on read)."""
     p = Path(seen_path)
-    if not p.exists():
-        return {}
-    return json.loads(p.read_text(encoding="utf-8"))
+    last_exc: Exception | None = None
+    for _ in range(20):
+        if not p.exists():
+            return {}
+        try:
+            text = p.read_text(encoding="utf-8")
+            return json.loads(text) if text.strip() else {}
+        except (PermissionError, OSError, json.JSONDecodeError) as exc:
+            last_exc = exc
+            time.sleep(0.005)
+    if last_exc:
+        raise last_exc
+    return {}
 
 
 def is_resumable(
