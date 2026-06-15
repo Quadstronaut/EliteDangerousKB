@@ -19,6 +19,7 @@ import sys
 
 from copilot import assemble, ollama_client, retriever
 from copilot.assemble import REFUSAL
+from copilot.sanitize import sanitize_terminal_text
 from copilot.models import CmdrState, RetrievalResult
 from copilot.ollama_client import OllamaUnavailable
 from copilot.paths import load_config
@@ -101,7 +102,9 @@ def _help_text(state: CmdrState | None) -> str:
     false-positive on a header line that ends in a colon before an escaped
     newline); newlines are added at join time, not inside string literals.
     """
-    name = state.name if state is not None else "Commander"
+    # state.name is UNTRUSTED (cmdr frontmatter, file-supplied). Scrub any
+    # terminal-control payload before it is interpolated into stdout text.
+    name = sanitize_terminal_text(state.name) if state is not None else "Commander"
     lines = [
         f"I'm COVAS, your Elite Dangerous knowledge assistant, CMDR {name}.",
         "I answer ONLY from my verified knowledge base. If I can't ground an "
@@ -157,6 +160,12 @@ def _topics_text() -> str:
         "chunk(s):",
     ]
     for kb_path in visible:
+        # kb_path is UNTRUSTED (manifest entries derive from web-sourced pages).
+        # Scrub ONCE here, then derive pretty from the scrubbed value so both the
+        # raw [kb_path] form and the prettified form are clean and stay mutually
+        # consistent. Counts above (page_count/chunks/hidden) are integers and
+        # are never run through the sanitizer.
+        kb_path = sanitize_terminal_text(kb_path)
         # Prettify for readability but keep the raw kb_path verbatim and
         # discoverable (spec-fixed: the full kb_path string must appear).
         pretty = kb_path
@@ -199,12 +208,21 @@ def meta_command(query: str, state: CmdrState | None) -> str | None:
     norm = _normalize(query)
     if not norm:
         return None
+    # Belt-and-suspenders: the per-field scrub in _help_text/_topics_text is the
+    # primary defense (and is done independently so unit tests of those helpers
+    # hold on their own), but we ALSO wrap the whole recognised-command return in
+    # sanitize_terminal_text. It is idempotent over already-clean text (the
+    # static scaffolding and clean kb_paths/names are unchanged by a second
+    # pass), it costs one linear scan of a short string, and it catches any
+    # future untrusted interpolation a maintainer adds without re-auditing. The
+    # None fall-through is unchanged so exit/quit and real questions still route
+    # to answer().
     if norm in _HELP_TOKENS:
-        return _help_text(state)
+        return sanitize_terminal_text(_help_text(state))
     if norm in _TOPICS_TOKENS:
-        return _topics_text()
+        return sanitize_terminal_text(_topics_text())
     if norm in _SOURCES_TOKENS:
-        return _sources_text()
+        return sanitize_terminal_text(_sources_text())
     return None
 
 
