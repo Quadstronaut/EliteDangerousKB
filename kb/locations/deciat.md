@@ -2,7 +2,7 @@
 source_url: https://www.edsm.net/api-v1/system?systemName=Deciat&showId=1&showCoordinates=1&showInformation=1&showPrimaryStar=1
 source_type: edsm
 source_tier: 0
-captured_at: 2026-06-04T07:54:43Z
+captured_at: 2026-06-15T23:40:00Z
 source_count: 2
 verified: true
 availability: live
@@ -50,5 +50,31 @@ system id64 (`6681123623626`), confirming Farseer Inc's identity.
   sites (Canonn's barnacle map).
 - Highest sell-demand commodities at capture: Cobalt (~12,283), Pyrophyllite (~9,987),
   Haematite (~6,695), Lithium (~6,624). Useful as an opportunistic sell stop, not a supply run.
+
+## Station Services — large-pad & outfit ports
+
+From the EDSM `api-system-v1/stations` endpoint (2026-06-15), same system id64
+(`6681123623626`). Deciat holds 59 permanent ports (transient fleet carriers excluded). Pad size
+follows station type: Coriolis/Orbis/Ocellus **Starports carry Large pads**; **Outposts** top out
+at Medium.
+
+- **Garay Terminal** — **Coriolis Starport (Large pad)**, ~2042 ls from arrival (orbits Deciat 6),
+  `marketId 3229756160`. The system's **only large-pad orbital port** and the de-facto
+  **restock / outfit / shipyard hub** for commanders visiting Felicity Farseer. Carries
+  **Market + Shipyard + Outfitting** plus Universal Cartographics, Tuning, Missions, Bartender,
+  Pioneer Supplies, Vista Genomics, and active System Colonisation contribution. Controlling
+  faction Ryders of the Void (Industrial/Refinery).
+- **Matteucci Dock** — Outpost (Medium pad), ~2042 ls (Deciat 6). Market + Outfitting, **no shipyard**.
+- **Carson Hub** — Outpost (Medium pad), ~2042 ls (Deciat 6). Market + Outfitting, **no shipyard**.
+- **Kirtley Vision** — Planetary Outpost, ~62 ls (Deciat 4). Market + Outfitting — the closest
+  outfitting if you want to skip the 2042-ls cruise out to Garay (requires Planetary Approach Suite).
+- **Hasse Point** — Planetary Outpost, ~62 ls (Deciat 4). Outfitting only, **no market**.
+- **Orbital Construction Site: Penrose Vista** — a Trailblazers colonisation construction site at
+  0 ls, accepting colonisation contributions.
+
+**Outfitting/shipyard takeaway:** [[engineers/felicity-farseer]]'s own Farseer Inc base is a
+medium-pad planetary outpost with a sell-only market and no shipyard. For a **large pad**, a
+**ship purchase**, or a full **outfitting** run, dock at **Garay Terminal** (~2042 ls) — the only
+large orbital starport in-system.
 
 [[trunk]]
