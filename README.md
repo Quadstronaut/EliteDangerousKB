@@ -5,22 +5,28 @@ chat copilot ("COVAS") for **CMDR Duvrazh**, grounded only in the verified KB wi
 citations. Built for capability/progression mastery (engineering, combat & AX/Thargoid,
 exobiology, system colonisation, Odyssey on-foot).
 
-## Status — 2026-06-14
+## Status — 2026-06-15
 
 | Subsystem | Plan | State |
 |---|---|---|
-| Foundation + Copilot Core | A | ✅ **built** — 13 tasks, working end-to-end |
+| Foundation + Copilot Core | A | ✅ **built** — working end-to-end |
 | Data-First Profile | B | ✅ **built** — discovery + journal/game-state/screenshot ingest |
 | MCP Server | C | ✅ **built** — `ed_kb_search` / `ed_kb_answer` / `ed_cmdr_state` |
-| Research Loop | D | ✅ **built + ran live** — 1 genuine loop wrote `kb/locations/deciat.md`; wrapper gates on `loop_number` advance (see below) |
+| Research Loop | D | ✅ **built + ran live** — wrote `kb/locations/deciat.md`; `STATE.toml` resumes per phase |
+| Hybrid retrieval | — | ✅ **built** — BM25 (`sparse.py`) + dense RRF (`fusion.py`); default `fusion="dense"` (see below) |
+| Multi-hop synthesis | — | 🟡 **scaffold (deferred)** — `multihop.py` + `[copilot] multihop=false`; flip when eval justifies |
+| Local verification | — | ✅ **built** — council-v2-style local fact-check (`verify.py`, `[verify]`); cloud escalation is manual |
+| Web acquisition | — | ✅ **built** — SSRF-hardened fetch (`ssrf.py`/`acquire.py`); wired into the loop's PHASE 2 |
 
-- **234 tests passing** (`-m "not integration"`) — incl. portability + keep_alive guards and 17 regression tests from
-  the 2026-06-03 review-council hardening pass (exception paths, index integrity,
-  chunker collisions, `verified_only` enforcement).
-- Real end-to-end verified against live `bge-m3` + `qwen3:8b`: grounded queries return
-  cited answers; off-topic queries refuse.
-- Seed KB = 4 pages / 22 chunks (Farseer, FSD, Python Mk II, trunk). The loop (Plan D)
-  grows this.
+- **461 tests passing** (`-m "not integration"`), plus a live integration eval gate
+  (`pytest -m integration tests/test_hybrid_spec.py`). Four council-v2 reviews
+  (quality, hybridization, acquisition, final review) shaped this slice.
+- Anti-hallucination gate (empty-context refusal, τ=0.55 floor, forced citation,
+  claim-grounding) holds on **every** path — including the multi-hop union and hybrid
+  fusion: grounding is always the dense cosine, never an RRF/BM25 score.
+- Eval harness: `python -m copilot.eval` → Recall@5 **1.00**, MRR **1.00**, 0 false
+  refusals/answers (ceiling at the current **5-page / 27-chunk** KB; the loop grows it).
+- Real end-to-end on live `bge-m3` + `qwen3:8b`: grounded queries cite; off-topic refuses.
 
 ## Launch COVAS (chat)
 
@@ -41,6 +47,34 @@ If the index isn't built yet (or after editing the KB):
 the three tools. This sleeves Claude onto the identical KB when qwen's answer isn't enough.
 The launch path is **clone-anywhere portable** (`${CLAUDE_PROJECT_DIR}`) — the repo works
 from any path you clone it to.
+
+## Retrieval, verification & acquisition (2026-06-15)
+
+- **Hybrid retrieval** — `copilot/sparse.py` (self-rolled BM25+, zero new deps) +
+  `copilot/fusion.py` (Reciprocal Rank Fusion). The sparse index is written *inside*
+  the dense index's lock, so dense + sparse are always one atomic group. The shipped
+  default is **`[retrieval] fusion = "dense"`**: on the current 27-chunk corpus, live
+  eval shows `fusion="rrf"` *regresses* MRR 1.000→0.962 (BM25 promotes a lexical
+  near-miss), so the non-regressing default ships while the full RRF path stays built,
+  tested, and one flip away. Flip to `"rrf"` once the KB grows and eval shows
+  `rrf MRR ≥ dense`. Grounding (refusal) always uses the dense cosine vs τ — a high
+  BM25 score can never launder a false positive past the gate.
+- **Multi-hop synthesis** — deferred behind `[copilot] multihop = false` (default).
+  When off, `repl.answer()` is byte-identical to the single-retrieve path. When on, it
+  decomposes the query, retrieves per sub-query, unions the chunks, and runs the
+  *unchanged* claim-grounding gate over the union. Flip when an eval signal justifies it.
+- **Local verification** — `copilot/verify.py` + `[verify]`: a local Ollama mini-council
+  fact-checks a claim against its sources (sources are sanitized + spotlight-fenced;
+  a "verified" verdict requires ≥ `min_sources_for_consensus`). Low-confidence verdicts
+  escalate to the cloud `council` skill (manual invocation).
+- **Web acquisition** — `copilot/acquire.py` fetches through `copilot/ssrf.py`, the single
+  SSRF chokepoint: it refuses non-http(s) schemes, non-allowlisted hosts, blocked ports,
+  and private/loopback/link-local/reserved IPs (including cloud-metadata `169.254.169.254`),
+  checking the **resolved** IP and re-validating **every redirect hop**. Fetched text is
+  sanitized before any LLM/KB write; ingested chunks are never auto-`verified`. Allowed ED
+  domains live in `[acquire].allowlist` (`copilot/acquire_sources.py` roster). Playwright
+  rendering is optional and OFF by default. Residual risk (logged): DNS-rebind TOCTOU is
+  reduced, not eliminated — full closure needs an IP-pinned transport (follow-up).
 
 ## Pending / next steps
 
