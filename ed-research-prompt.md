@@ -59,11 +59,16 @@ After completing each phase, checkpoint:
 ## PHASE 2 — SEARCH
 
 For each surviving target, Tier-0 structured APIs first:
-- Fetch via WebFetch (prose) or a direct GET (JSON). Many ED APIs (EDSM, INARA) 403 the
-  bare urllib User-Agent, so always send one. For JSON:
-  `PY -c "import urllib.request,sys; r=urllib.request.Request('<url>', headers={'User-Agent':'Mozilla/5.0 (ED-KB-research-loop)'}); sys.stdout.write(urllib.request.urlopen(r,timeout=30).read().decode())"`.
+- Fetch through the HARDENED acquisition layer `copilot.acquire.Fetcher`, NEVER a raw
+  `urllib.request.urlopen` (that call had no SSRF/host/IP guard). The Fetcher runs the
+  `copilot.ssrf` guard on the initial URL and on every redirect hop, throttles politely,
+  sets a proper UA (many ED APIs like EDSM/INARA 403 a bare UA), caps body size, and
+  sanitizes the returned text. Example:
+  `PY -c "from copilot.acquire import Fetcher, load_acquire_config; f=Fetcher(load_acquire_config()); r=f.fetch('<url>'); import sys; sys.stdout.write(r.text); f.close()"`.
+- Dedup/idempotency: use `r.raw_sha256` (the RAW pre-sanitize hash) with
+  `loop_state.is_resumable(url, seen_path, content_sha256=r.raw_sha256)` and
+  `loop_state.record_source(url, r.raw_sha256, seen_path)` for content-hash parity with seen.json.
 - Save raw bytes to `sources/<sha8>-<slug>.raw` (use a short sha of the URL for `<sha8>`).
-- Compute content sha: `PY -c "import hashlib,sys; print(hashlib.sha256(open('<rawfile>','rb').read()).hexdigest())"`.
 - Print `[SEARCH] fetched <url> (tier N) — <bytes> bytes`. Checkpoint phase=search.
 
 INARA (Tier 1) is rate-limited 25 req/15min. Before any INARA fetch:
