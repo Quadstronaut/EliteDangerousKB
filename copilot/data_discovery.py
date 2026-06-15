@@ -58,6 +58,28 @@ def _entry(path: Path, type_: str) -> dict:
     }
 
 
+def _extra_scan_roots() -> list[Path]:
+    """Filesystem roots to shallow-scan for ED/Frontier dirs.
+
+    Portable: NO hardcoded drive letter. ED_KB_SCAN_ROOTS (os.pathsep-separated)
+    overrides; otherwise enumerate existing local drive roots on Windows, or '/'
+    on POSIX, so the scan adapts to whatever machine/clone this runs on.
+    """
+    env = os.environ.get("ED_KB_SCAN_ROOTS", "").strip()
+    if env:
+        return [Path(p) for p in env.split(os.pathsep) if p.strip()]
+    roots: list[Path] = []
+    if os.name == "nt":
+        import string
+        for letter in string.ascii_uppercase:
+            d = Path(f"{letter}:\\")
+            if d.exists():
+                roots.append(d)
+    else:
+        roots.append(Path("/"))
+    return roots
+
+
 def discover_data_sources() -> list[dict]:
     """Scan the machine for ED-related data and write indexes/data-sources.json.
 
@@ -65,7 +87,7 @@ def discover_data_sources() -> list[dict]:
     - %USERPROFILE%/Saved Games/Frontier Developments/Elite Dangerous (game-state-json)
     - %LOCALAPPDATA% and %APPDATA% for Frontier/EDMC/EDDiscovery/EDEngineer dirs
     - %USERPROFILE%/Pictures/Frontier Developments/Elite Dangerous (screenshots)
-    - G:\\ root for any Frontier Developments / ED-related dirs
+    - extra filesystem roots (ED_KB_SCAN_ROOTS env, else auto-detected drive roots)
 
     Returns the manifest list (same data written to disk).
     READ-ONLY: never writes into any discovered game or tool folder.
@@ -95,18 +117,20 @@ def discover_data_sources() -> list[dict]:
         if screenshots.is_dir():
             manifest.append(_entry(screenshots, "screenshots"))
 
-    # 4. G:\ drive root — look for Frontier / ED-named directories.
-    g_root = Path("G:\\")
-    if g_root.is_dir():
+    # 4. Extra filesystem roots — Frontier / ED-named dirs. Portable: no hardcoded
+    #    drive letter (ED_KB_SCAN_ROOTS env override, else auto-detected roots).
+    for root in _extra_scan_roots():
+        if not root.is_dir():
+            continue
         try:
-            for child in g_root.iterdir():
+            for child in root.iterdir():
                 if child.is_dir() and any(
                     kw in child.name.lower()
                     for kw in ("frontier", "elite", "dangerous", "edkb", "elitedangerous")
                 ):
-                    manifest.append(_entry(child, "g-drive-ed"))
-        except PermissionError:
-            pass  # G:\ inaccessible; skip silently.
+                    manifest.append(_entry(child, "ed-data-dir"))
+        except (PermissionError, OSError):
+            continue  # inaccessible root; skip.
 
     # 5. Deduplicate by resolved path string.
     seen_paths: set[str] = set()
