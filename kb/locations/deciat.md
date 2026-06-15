@@ -2,8 +2,8 @@
 source_url: https://www.edsm.net/api-v1/system?systemName=Deciat&showId=1&showCoordinates=1&showInformation=1&showPrimaryStar=1
 source_type: edsm
 source_tier: 0
-captured_at: 2026-06-15T23:40:00Z
-source_count: 2
+captured_at: 2026-06-15T23:48:53Z
+source_count: 3
 verified: true
 availability: live
 changed_note:
@@ -71,6 +71,24 @@ at Medium.
 - **Hasse Point** — Planetary Outpost, ~62 ls (Deciat 4). Outfitting only, **no market**.
 - **Orbital Construction Site: Penrose Vista** — a Trailblazers colonisation construction site at
   0 ls, accepting colonisation contributions.
+
+### Garay Terminal — shipyard stock
+
+Corroborated by the EDSM `api-system-v1/stations/shipyard` endpoint (`marketId 3229756160`,
+2026-06-15), a third independent endpoint confirming Garay Terminal carries a **Shipyard**. It
+stocks **17 hulls** for direct purchase:
+
+Sidewinder, Eagle, Hauler, Adder, Viper Mk III, Cobra Mk III, Type-6 Transporter,
+Type-7 Transporter, Asp Explorer, Type-9 Heavy, Viper Mk IV, Keelback, Krait Mk II,
+Type-8 Transporter, Cobra Mk V, Panther Clipper Mk II, Type-11 Prospector.
+
+- The list includes the recent hulls **Type-8 Transporter**, **Cobra Mk V**,
+  **Panther Clipper Mk II**, and **Type-11 Prospector**, so the stock reflects the current
+  (post-2024) ship roster.
+- Largest hulls available: **Type-9 Heavy** and **Panther Clipper Mk II** — fitting for the
+  system's only large-pad orbital starport.
+- Shipyard inventories rotate with the market; treat this as "ships commonly stocked here,"
+  not a frozen guarantee.
 
 **Outfitting/shipyard takeaway:** [[engineers/felicity-farseer]]'s own Farseer Inc base is a
 medium-pad planetary outpost with a sell-only market and no shipyard. For a **large pad**, a

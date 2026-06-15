@@ -3,7 +3,15 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://www.edsm.net/api-system-v1/stations/shipyard?marketId=3229756160 (tier: 0, type: edsm, note: enumerate Garay Terminal's shipyard — it is Deciat's only large-pad orbital starport with a Shipyard, so document which ships commanders can buy in-system while visiting Felicity Farseer -> kb/locations/deciat.md "Station Services — large-pad & outfit ports")
+- https://www.edsm.net/api-system-v1/stations/outfitting?marketId=3229756160 (tier: 0, type: edsm, note: enumerate Garay Terminal's OUTFITTING module list — corroborate the page's "Outfitting" service claim and document what modules a Farseer visitor can actually buy in-system -> kb/locations/deciat.md "Station Services — large-pad & outfit ports")
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/dist/ships.json (tier: 0, type: coriolis, note: extract the Cobra Mk V hull stats — surfaced as recent stock at Garay Terminal but likely missing a kb/ships/ page; create kb/ships/cobra-mk-v.md from Coriolis fields)
+
+<!-- DONE loop 5: EDSM api-system-v1/stations/shipyard enumerated for Garay Terminal (marketId 3229756160).
+     Findings: 17 hulls stocked, incl. recent Type-8 Transporter, Cobra Mk V, Panther Clipper Mk II,
+     Type-11 Prospector (confirms current post-2024 roster). Largest: Type-9 Heavy & Panther Clipper Mk II.
+     Third independent EDSM endpoint confirming Garay carries a Shipyard -> merged H3 "Garay Terminal —
+     shipyard stock" into kb/locations/deciat.md, source_count 2->3, verified true. -->
+
 
 <!-- DONE loop 4: EDSM api-system-v1/stations enumerated for Deciat (id64 6681123623626).
      Findings: Garay Terminal (Coriolis Starport, marketId 3229756160) is the ONLY large-pad
