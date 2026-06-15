@@ -210,6 +210,26 @@ def upsert_changed(kb_dir: Path) -> dict:
                 file=sys.stderr,
             )
             old_manifest = {}
+        else:
+            # M3: load_manifest() coerces a valid-but-non-dict manifest (literal
+            # `null` -> None, or a JSON list) to {} so no downstream TypeError
+            # occurs. That coercion is silent, but a non-dict manifest is still a
+            # degrade-to-full-rebuild event — make it OBSERVABLE here with a
+            # WARNING symmetric to the corrupt-JSON path above. Re-read the raw
+            # parse (cheap; already under the lock) only to classify; if the file
+            # parses to a dict the happy path is wholly unchanged.
+            _mpath = paths.indexes_dir() / "manifest.json"
+            if _mpath.exists():
+                try:
+                    _raw = json.loads(_mpath.read_text(encoding="utf-8"))
+                except (ValueError, OSError):
+                    _raw = {}  # truly-corrupt would have raised in load_manifest above
+                if not isinstance(_raw, dict):
+                    print(
+                        f"[index] WARNING: manifest.json is not a JSON object "
+                        f"(got {type(_raw).__name__}) — treating as full rebuild",
+                        file=sys.stderr,
+                    )
         _corrupt = False
         if emb_path.exists() and ids_path.exists():
             try:
@@ -366,11 +386,24 @@ def search(query_vec: np.ndarray, top_k: int) -> list[tuple[str, float]]:
 
 
 def load_manifest() -> dict:
-    """Load indexes/manifest.json; returns {} if the file does not exist."""
+    """Load indexes/manifest.json; returns {} if the file does not exist.
+
+    M3 non-dict robustness: a manifest.json containing valid-but-wrong JSON
+    (literal ``null`` -> None, or a JSON array -> list) parses cleanly but is
+    NOT a dict. Every downstream caller (upsert_changed, chunk_by_id) assumes a
+    dict and would raise TypeError/KeyError (e.g. ``cid in None``). Coerce any
+    non-dict parse result to {} — symmetric with the corrupt-JSON path (which
+    raises ValueError and is caught as a full rebuild). Returning {} here means
+    every caller degrades to "treat as empty / full rebuild" instead of
+    crashing. The valid-dict happy path is unchanged (returned verbatim).
+    A JSONDecodeError on truly-corrupt JSON still propagates (ValueError) so
+    upsert_changed's existing except (ValueError, OSError) handles it.
+    """
     path = paths.indexes_dir() / "manifest.json"
     if not path.exists():
         return {}
-    return json.loads(path.read_text(encoding="utf-8"))
+    obj = json.loads(path.read_text(encoding="utf-8"))
+    return obj if isinstance(obj, dict) else {}
 
 
 def chunk_by_id(chunk_id: str) -> Chunk | None:
