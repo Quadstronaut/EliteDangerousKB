@@ -1,0 +1,104 @@
+[
+  {
+    "question": "How do I unlock Felicity Farseer?",
+    "expect_kb_paths": ["kb/engineers/felicity-farseer.md"],
+    "expect_chunk_substrings": ["Meta-Alloys", "Scout"],
+    "off_topic": false
+  },
+  {
+    "question": "What are the unlock requirements for Farseer?",
+    "expect_kb_paths": ["kb/engineers/felicity-farseer.md"],
+    "expect_chunk_substrings": ["Unlock", "Meta-Alloys"],
+    "off_topic": false
+  },
+  {
+    "question": "Where is Felicity Farseer located?",
+    "expect_kb_paths": ["kb/engineers/felicity-farseer.md", "kb/locations/deciat.md"],
+    "expect_chunk_substrings": ["Deciat"],
+    "off_topic": false
+  },
+  {
+    "question": "What blueprints does Felicity Farseer offer?",
+    "expect_kb_paths": ["kb/engineers/felicity-farseer.md"],
+    "expect_chunk_substrings": ["Frame Shift Drive", "blueprint"],
+    "off_topic": false
+  },
+  {
+    "question": "How do I increase my FSD jump range?",
+    "expect_kb_paths": ["kb/mechanics/frame-shift-drive.md"],
+    "expect_chunk_substrings": ["jump range", "engineering"],
+    "off_topic": false
+  },
+  {
+    "question": "What is the Guardian FSD Booster?",
+    "expect_kb_paths": ["kb/mechanics/frame-shift-drive.md"],
+    "expect_chunk_substrings": ["Guardian", "10.5 ly"],
+    "off_topic": false
+  },
+  {
+    "question": "How does neutron boosting work?",
+    "expect_kb_paths": ["kb/mechanics/frame-shift-drive.md"],
+    "expect_chunk_substrings": ["Neutron", "4×"],
+    "off_topic": false
+  },
+  {
+    "question": "What are the Python Mk II hardpoints?",
+    "expect_kb_paths": ["kb/ships/python-mk-ii.md"],
+    "expect_chunk_substrings": ["Medium", "hardpoint"],
+    "off_topic": false
+  },
+  {
+    "question": "What ship class is the Python Mk II?",
+    "expect_kb_paths": ["kb/ships/python-mk-ii.md"],
+    "expect_chunk_substrings": ["Medium", "Faulcon DeLacy"],
+    "off_topic": false
+  },
+  {
+    "question": "What is the Deciat system known for?",
+    "expect_kb_paths": ["kb/locations/deciat.md"],
+    "expect_chunk_substrings": ["Farseer", "FSD"],
+    "off_topic": false
+  },
+  {
+    "question": "What economy type is Deciat?",
+    "expect_kb_paths": ["kb/locations/deciat.md"],
+    "expect_chunk_substrings": ["Industrial"],
+    "off_topic": false
+  },
+  {
+    "question": "What is Powerplay 2.0?",
+    "expect_kb_paths": ["kb/trunk.md"],
+    "expect_chunk_substrings": ["Powerplay"],
+    "off_topic": false
+  },
+  {
+    "question": "What is the Trailblazers colonisation programme?",
+    "expect_kb_paths": ["kb/trunk.md"],
+    "expect_chunk_substrings": ["Trailblazers", "colonisation"],
+    "off_topic": false
+  },
+  {
+    "question": "What is the best pizza topping in Elite Dangerous?",
+    "expect_kb_paths": [],
+    "expect_chunk_substrings": [],
+    "off_topic": true
+  },
+  {
+    "question": "Who won the 2024 FIFA World Cup?",
+    "expect_kb_paths": [],
+    "expect_chunk_substrings": [],
+    "off_topic": true
+  },
+  {
+    "question": "How do I cook a perfect steak?",
+    "expect_kb_paths": [],
+    "expect_chunk_substrings": [],
+    "off_topic": true
+  },
+  {
+    "question": "What is the capital of France?",
+    "expect_kb_paths": [],
+    "expect_chunk_substrings": [],
+    "off_topic": true
+  }
+]
