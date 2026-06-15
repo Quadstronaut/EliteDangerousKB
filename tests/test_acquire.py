@@ -334,3 +334,17 @@ def test_import_acquire_offline():
     assert hasattr(acquire, "Fetcher")
     assert hasattr(acquire, "load_acquire_config")
     assert hasattr(acquire, "PlaywrightUnavailable")
+
+
+def test_injected_client_must_not_follow_redirects():
+    """final-review B2: an injected httpx.Client that auto-follows redirects bypasses
+    the per-hop SSRF guard (httpx would follow a 302 to a private/metadata host inside
+    one send()), so Fetcher must refuse it. A follow_redirects=False client is accepted."""
+    cfg = acquire.load_acquire_config({})
+    with pytest.raises(ValueError):
+        acquire.Fetcher(cfg, client=httpx.Client(follow_redirects=True))
+    # A correctly-configured injected client is fine.
+    ok = acquire.Fetcher(cfg, client=httpx.Client(follow_redirects=False))
+    ok.close()
+    # The default (owned) client is also fine (built follow_redirects=False internally).
+    acquire.Fetcher(cfg).close()

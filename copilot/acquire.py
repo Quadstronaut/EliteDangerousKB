@@ -134,6 +134,17 @@ class Fetcher:
     """Hardened GET + optional render, all behind ssrf.assert_url_safe."""
 
     def __init__(self, cfg: AcquireConfig, *, client: httpx.Client | None = None) -> None:
+        # SECURITY (final-review B2): an INJECTED client must not auto-follow
+        # redirects, or it bypasses the per-hop SSRF guard — httpx would follow a
+        # 302 to a private/metadata host inside one send() before fetch() ever
+        # re-validates the hop. Owned clients are built follow_redirects=False
+        # below; reject any injected client that is not. Plain ValueError (a
+        # client-config error), NOT SSRFError (which is for URL/scheme rejection).
+        if client is not None and getattr(client, "follow_redirects", False) is not False:
+            raise ValueError(
+                "Fetcher: an injected httpx.Client must have follow_redirects=False "
+                "(an auto-redirecting client bypasses the per-hop SSRF guard)"
+            )
         self._cfg = cfg
         self._owns_client = client is None
         # follow_redirects=False is the load-bearing flip vs the upstream helper:
