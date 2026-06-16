@@ -3,8 +3,26 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/index.js (tier: 0, type: coriolis, note: enumerate mining-tool module slugs — mining laser, abrasion blaster, seismic charge launcher, sub-surface displacement missile, pulse wave analyser — to seed kb/outfitting/ mining-tool pages now that kb/ships/type-11-prospector.md exists but kb/outfitting/ has no mining tools. Confirm real module JSON paths from the index before fetching, as ships/index.js keys differed from filenames in loops 6-7.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/index.js (tier: 0, type: coriolis, note: also map standard-module slugs for Frame Shift Drive + FSD(SCO) + fuel scoop to seed kb/outfitting/ core-module pages — supports the new Mandalay explorer and Type-9 Heavy hauler builds. Same path-vs-key caution.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/prospector_limpet_controllers.json (tier: 0, type: coriolis, note: Prospector Limpet Controller stats -> seed kb/outfitting/limpet-controllers.md alongside Collector. Completes the mining loadout linked from kb/outfitting/mining-tools.md. NOTE loop 9: extensionless require() paths in modules/index.js resolve to .json NOT .js on raw.githubusercontent — always append .json.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/collector_limpet_controllers.json (tier: 0, type: coriolis, note: Collector Limpet Controller stats -> merge into kb/outfitting/limpet-controllers.md. Scoops fragments freed by the mining tools.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/refinery.json (tier: 0, type: coriolis, note: Refinery stats (bins by class/rating) -> kb/outfitting/refinery.md. Final stage of the mining loop; links from kb/outfitting/mining-tools.md.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_generator.json (tier: 0, type: coriolis, note: Shield Generator class/rating/optmass/minmass/strength -> kb/outfitting/shield-generator.md. Pair with bi_weave_shield_generator.json and prismatic. Garay Terminal (loop 6) stocks Shield & Bi-Weave to C8.)
+
+<!-- DONE loop 9: seeded kb/outfitting/ (was empty) with 3 Tier-0 Coriolis module pages, all availability: live:
+     (1) kb/outfitting/mining-tools.md — full mining toolkit: Pulse Wave Analyser (utility C0, A-E),
+     Mining Laser (C1/C2 D, 500m; + Powerplay "Mining Lance" Zemina Torval 2000m; + pre-eng V1),
+     Abrasion Blaster (C1 D, 1000m; + LR 4180m), Sub-Surface Displacement Missile (C1/C2 B, 3000m;
+     + "Extraction Missile"), Seismic Charge Launcher (C2 B, deep core). Three extraction methods
+     (surface/sub-surface/core) explained; build-a-miner section links type-11-prospector.
+     (2) kb/outfitting/frame-shift-drive.md — module reference: legacy FSD (C2-7) vs FSD(SCO)
+     Supercruise Overcharge (C2-8, the current default since Update 18 2024). A-rated optmass/maxfuel/
+     cost tables both lines; class-8 only exists as SCO; "FSD Mk II (SCO)" 8A top variant
+     (fuelpower 2.5025). Cross-links mechanics/frame-shift-drive for jump-range theory (no dup).
+     (3) kb/outfitting/fuel-scoop.md — massless optional; KGBFOAM scoopable stars; A-rated scoop-rate
+     table 1A 42 -> 8A 1680. All 3 linked in new trunk.md "Outfitting" section.
+     PATH FIX (carry-forward): modules/index.js require('./x') with NO extension = .json file, not .js.
+     The .js URLs all 404'd; refetched correct .json paths. -->
+
 
 <!-- DONE loop 8: 3 Coriolis Tier-0 ship hulls created (all current, availability: live):
      (1) kb/ships/type-11-prospector.md — Lakon, class 2/MEDIUM pad, dedicated miner. 320t hull,
