@@ -49,3 +49,5 @@ mission running given its medium pad access and cargo capacity.
 Available at most large stations. Check INARA (`inara.cz/elite/ships`) or Spansh
 (`spansh.co.uk/stations`) for nearest stock. Engineers frequently used for this ship:
 Felicity Farseer (FSD), The Dweller (power plant), Tod "The Blaster" McQuinn (weapons).
+
+[[trunk]]
