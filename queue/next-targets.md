@@ -3,9 +3,29 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/prismatic_shield_generator.json (tier: 0, type: coriolis, note: Prismatic Shield Generator -> merge new H2 into kb/outfitting/shield-generator.md "Related shield modules". Powerplay 2.0 / Aisling Duval reward; highest MJ, heavy power, slow regen. Confirm path via modules/index.js; may be modules/internal/ or a powerplay subfolder.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_booster.json (tier: 0, type: coriolis, note: Shield Booster -> kb/outfitting/shield-booster.md. Utility module, % shield bonus; pairs directly with the new shield-generator.md. Watch for utility-mount vs internal classification in index.js.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/hull_reinforcement_package.json (tier: 0, type: coriolis, note: Hull Reinforcement Package -> kb/outfitting/hull-reinforcement.md. Optional internal; flat armour + resist. Completes the defence trio referenced in shield-generator.md "which to fit" advice.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_cell_bank.json (tier: 0, type: coriolis, note: Shield Cell Bank -> kb/outfitting/shield-cell-bank.md. Index.js key scb. Active-recharge module repeatedly referenced by shield-generator.md (esp. Prismatic's slow regen leans on SCBs). Parse cells/per-cell heal/duration/spinup by class+rating.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/module_reinforcement_package.json (tier: 0, type: coriolis, note: Module Reinforcement Package -> kb/outfitting/module-reinforcement.md. Index.js key mrp. Protects modules (not hull); the third leg of the tank stack referenced in hull-reinforcement.md. Optional internal, classes/ratings + protection %.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/meta_alloy_hull_reinforcement_package.json (tier: 0, type: coriolis, note: Meta-Alloy HRP -> merge H2 into kb/outfitting/hull-reinforcement.md OR new page. Index.js key mahr (file has .json in require). The caustic-resistant variant for AX/Thargoid builds; hull-reinforcement.md flags causres 0 on standard HRP and points here.)
+
+<!-- DONE loop 12: completed the defence trio. 1 MERGE + 2 new Tier-0 Coriolis pages (all availability: live):
+     (1) kb/outfitting/shield-generator.md — MERGED Prismatic Shield Generator (grp psg) as a full H2 +
+     3-way "which to fit" section. Powerplay reward (Aisling Duval), A-rating ONLY across C1-8, optmul
+     1.5 (highest of any line; std A 1.2, Bi-Weave 0.9), minmul 1.0 / maxmul 2.0. Heavy power (C5 5.46MW
+     vs std 5A 3.64MW) + slow regen (1.0 MJ/s thru C6) => leans on Shield Cell Banks. source_count 2->3,
+     stays verified true (independent Tier-0 module file; shared multiplier mechanic corroborated).
+     changed_note added: Prismatic now an Aisling Duval PP2.0 reward, module unchanged.
+     (2) kb/outfitting/shield-booster.md — UTILITY mount (class 0, passive), NOT internal. Path is
+     hardpoints/shield_booster.json key sb (queue's internal/ path was wrong; index.js confirmed). Ratings
+     E-A => +4/8/12/16/20% shieldboost. Base resists 0 (engineering only). Diminishing-returns falloff on
+     stacking noted (JSON stores single-module value). source_count 1, verified false.
+     (3) kb/outfitting/hull-reinforcement.md — optional internal grp hr, classes 1-5, E & D ratings ONLY.
+     Flat armour HP (C1 80/110 -> C5 360/390); D = more HP at half E's mass for ~3x cost. Resists scale
+     +0.5%/class (exp/kin/therm). causres 0 => NO caustic protection; points to Meta-Alloy HRP (mahr) for
+     AX. source_count 1, verified false.
+     PATH NOTES: Coriolis filename for Prismatic is the MISSPELLED internal/pristmatic_shield_generator.json
+     (typo upstream). shield_booster is under hardpoints/ not internal/. hull_reinforcement_package path OK.
+     Follow-ons queued: shield_cell_bank (scb), module_reinforcement_package (mrp), meta_alloy_hrp (mahr). -->
+
 
 <!-- DONE loop 11: 2 new Tier-0 Coriolis outfitting pages (all availability: live):
      (1) kb/outfitting/shield-generator.md — MERGED standard (grp sg) + Bi-Weave (grp bsg).

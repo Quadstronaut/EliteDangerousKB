@@ -32,7 +32,9 @@ See [[outfitting/frame-shift-drive]] for the FSD module reference (legacy + SCO 
 See [[outfitting/fuel-scoop]] for the Fuel Scoop (massless; scoop-rate by class/rating).
 See [[outfitting/limpet-controllers]] for Prospector & Collector Limpet Controllers (mining drones).
 See [[outfitting/refinery]] for the Refinery (converts mined fragments; bins by class/rating).
-See [[outfitting/shield-generator]] for Shield & Bi-Weave generators (multiplier mechanic, class/rating).
+See [[outfitting/shield-generator]] for Shield, Bi-Weave & Prismatic generators (multiplier mechanic, class/rating).
+See [[outfitting/shield-booster]] for the Shield Booster (utility-mount % shield boost).
+See [[outfitting/hull-reinforcement]] for the Hull Reinforcement Package (flat armour HP + resists).
 See [[outfitting/cargo-rack]] for Cargo Racks (capacity by class; corrosion-resistant & expanded variants).
 
 ## Engineers
@@ -59,6 +61,8 @@ Exobiology is the newest and least-documented career in the KB — priority rese
 ## Powerplay 2.0
 
 Powerplay was replaced by Powerplay 2.0 in 2024. Old pledge modules are no longer available.
+Pledge-reward modules that survived (e.g. the Prismatic Shield Generator, Aisling Duval) are
+still obtainable — see [[outfitting/shield-generator]].
 <!-- tier:1 src:patch-notes -->
 
 ## Colonisation / Trailblazers
