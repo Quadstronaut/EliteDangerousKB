@@ -17,8 +17,8 @@ crack, and harvest asteroids. Modern asteroid mining uses three extraction metho
 all feeding **Collector Limpets** that scoop the freed fragments. Stats below are from the
 Tier-0 Coriolis module definitions.
 
-A dedicated miner pairs these tools with a [[outfitting/fuel-scoop]] for range, a Prospector and
-Collector Limpet Controller, a Refinery, and ideally the [[ships/type-11-prospector]] hull whose
+A dedicated miner pairs these tools with a [[outfitting/fuel-scoop]] for range, the [[outfitting/limpet-controllers]] (Prospector +
+Collector), a [[outfitting/refinery]], and ideally the [[ships/type-11-prospector]] hull whose
 mining-tool-only hardpoints are sized for exactly this loadout.
 
 ## Pulse Wave Analyser (utility — find the rocks)
@@ -95,11 +95,11 @@ to locate core-bearing rocks.
 
 ## Putting a miner together
 
-- **Find:** Pulse Wave Analyser (utility) + Prospector Limpet Controller.
+- **Find:** Pulse Wave Analyser (utility) + [[outfitting/limpet-controllers]] (Prospector).
 - **Extract:** Mining Laser (surface) + Abrasion Blaster (surface deposits) + Sub-Surface
   Displacement Missile (sub-surface) + Seismic Charge Launcher (deep core) — fit the ones that
   match the mining you intend to do.
-- **Collect & refine:** Collector Limpet Controller + Refinery.
+- **Collect & refine:** [[outfitting/limpet-controllers]] (Collector) + [[outfitting/refinery]].
 - **Hull:** the [[ships/type-11-prospector]] dedicates four hardpoints to mining tools and carries
   a limpet-only bay, making it the natural home for this loadout.
 

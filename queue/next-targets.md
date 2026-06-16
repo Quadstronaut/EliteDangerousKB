@@ -3,10 +3,22 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/prospector_limpet_controllers.json (tier: 0, type: coriolis, note: Prospector Limpet Controller stats -> seed kb/outfitting/limpet-controllers.md alongside Collector. Completes the mining loadout linked from kb/outfitting/mining-tools.md. NOTE loop 9: extensionless require() paths in modules/index.js resolve to .json NOT .js on raw.githubusercontent — always append .json.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/collector_limpet_controllers.json (tier: 0, type: coriolis, note: Collector Limpet Controller stats -> merge into kb/outfitting/limpet-controllers.md. Scoops fragments freed by the mining tools.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/refinery.json (tier: 0, type: coriolis, note: Refinery stats (bins by class/rating) -> kb/outfitting/refinery.md. Final stage of the mining loop; links from kb/outfitting/mining-tools.md.)
 - https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_generator.json (tier: 0, type: coriolis, note: Shield Generator class/rating/optmass/minmass/strength -> kb/outfitting/shield-generator.md. Pair with bi_weave_shield_generator.json and prismatic. Garay Terminal (loop 6) stocks Shield & Bi-Weave to C8.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/bi_weave_shield_generator.json (tier: 0, type: coriolis, note: Bi-Weave Shield Generator -> merge into kb/outfitting/shield-generator.md alongside the standard shield_generator.json above. Faster regen, lower MJ; Garay Terminal stocks Bi-Weave to C8.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/cargo_rack.json (tier: 0, type: coriolis, note: Cargo Rack capacity by class -> kb/outfitting/cargo-rack.md. Closes the miner/hauler build chain referenced by type-9-heavy, type-11-prospector, panther-clipper-mk-ii. Watch for standard vs lightweight/military rack variants.)
+
+<!-- DONE loop 10: completed the mining loop with 2 new Tier-0 Coriolis pages (all availability: live):
+     (1) kb/outfitting/limpet-controllers.md — merged Prospector + Collector controllers.
+     Prospector (group pc): class sets simultaneous limpets C1=1/C3=2/C5=4/C7=8; A-rated range
+     C1 7km -> C7 11.9km; reports composition + yield bonus. Collector (group cc): class max
+     C1=1/C3=2/C5=3/C7=4; `time` field = limpet lifetime sec (A 720 longest, E 300); autonomous
+     fragment/canister scoop. Build advice: 1 small Prospector, large-class Collector.
+     (2) kb/outfitting/refinery.md — group rf, classes 1-4, MASSLESS (no mass field). `bins` =
+     concurrent ore types; A-rated bins C1 4/C2 6/C3 8/C4 10. Sits at end of mining loop.
+     Both linked into trunk.md Outfitting section; mining-tools.md back-linked (plain refs ->
+     [[wikilinks]]). PATH NOTE held: internal/*.json paths all resolved first try (no 404).
+     Follow-ons queued: shield_generator + bi_weave_shield_generator + cargo_rack. -->
+
 
 <!-- DONE loop 9: seeded kb/outfitting/ (was empty) with 3 Tier-0 Coriolis module pages, all availability: live:
      (1) kb/outfitting/mining-tools.md — full mining toolkit: Pulse Wave Analyser (utility C0, A-E),

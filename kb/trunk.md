@@ -30,6 +30,8 @@ See [[outfitting/mining-tools]] for the mining toolkit (lasers, abrasion blaster
 displacement missile, seismic charge launcher, pulse wave analyser).
 See [[outfitting/frame-shift-drive]] for the FSD module reference (legacy + SCO Supercruise Overcharge).
 See [[outfitting/fuel-scoop]] for the Fuel Scoop (massless; scoop-rate by class/rating).
+See [[outfitting/limpet-controllers]] for Prospector & Collector Limpet Controllers (mining drones).
+See [[outfitting/refinery]] for the Refinery (converts mined fragments; bins by class/rating).
 
 ## Engineers
 
