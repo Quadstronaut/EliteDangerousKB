@@ -23,6 +23,7 @@ live tree under a fixture root. dry_run computes the same summary without writin
 """
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 from typing import Optional
@@ -103,33 +104,48 @@ def _orphan_keys() -> dict[str, str]:
     return {_url_sha(t["url"]): t["slug"] for t in ORPHAN_TARGETS}
 
 
+# A markdown unordered-list bullet: one of '-', '*', '+' followed by a space,
+# optionally preceded by leading whitespace (spaces and/or tabs). Used for
+# RECOGNITION of pre-existing bullets only; emitted bullets stay canonical '- '.
+_BULLET_RE = re.compile(r"^[\t ]*[-*+] ")
+
+
+def _is_bullet(line: str) -> bool:
+    """True iff *line* begins a markdown unordered-list item ('- ', '* ', '+ '),
+    allowing leading spaces/tabs. Recognition only — never alters emit style."""
+    return _BULLET_RE.match(line) is not None
+
+
 # ---------------------------------------------------------------------------
 # Individual steps. Each returns its own partial summary; the orchestrator
 # wraps each call in try/except so one failure never skips the others (MC-5).
 # ---------------------------------------------------------------------------
 
-def _step_seen(repo_root: Path, *, dry_run: bool) -> list[str]:
+def _step_seen(repo_root: Path, *, dry_run: bool) -> list[dict]:
     """(a) Remove the 3 orphan keys from seen.json under the seen lock.
 
-    Preserves every other entry byte-for-byte. Returns the slugs actually
-    removed (idempotent: returns [] when none present). A lock timeout is
-    raised to the caller, which records it in errors[] and continues with the
-    other steps.
+    Preserves every other entry byte-for-byte. Returns the seen.json KEYS
+    actually removed, each as a {"slug": <slug>, "key": <full sha256 hexdigest>}
+    pair — the slug names what was removed, the 64-hex key is the actionable
+    seen.json key. Keys are derived at runtime via _orphan_keys() (-> _url_sha),
+    never hardcoded (MC-2). Idempotent: returns [] when none present. A lock
+    timeout is raised to the caller, which records it in errors[] and continues
+    with the other steps.
     """
     seen_path = _contained(repo_root, "indexes", "seen.json")
     key_to_slug = _orphan_keys()
 
     with file_lock(str(seen_path) + ".lock", timeout=30.0):
         data = _load_seen(str(seen_path))
-        removed: list[str] = []
+        removed: list[dict] = []
         for key, slug in key_to_slug.items():
             if key in data:
-                removed.append(slug)
+                removed.append({"slug": slug, "key": key})
                 if not dry_run:
                     del data[key]
         if removed and not dry_run:
             write_json_atomic(seen_path, data)
-        return sorted(removed)
+        return sorted(removed, key=lambda p: p["slug"])
 
 
 def _step_files(repo_root: Path, *, dry_run: bool) -> list[str]:
@@ -187,9 +203,11 @@ def _step_queue(repo_root: Path, *, dry_run: bool) -> list[str]:
 
     A target is "present" if its URL appears anywhere in the file. Missing ones
     are inserted as '- <url> (...)' bullets immediately before the FIRST existing
-    '- ' bullet (so they sit at the top of the live target list even when the
-    first content line is already a bullet — MC-4). If the file has no bullet at
-    all, they are appended after the header prose.
+    bullet — any common markdown marker ('- ', '* ', '+ '), optionally indented
+    with spaces/tabs, recognized via _is_bullet — so they sit at the top of the
+    live target list even when the first content line is already a bullet (MC-4).
+    If the file has no recognized bullet at all, they are appended after the
+    header prose. Emitted bullets are always canonical '- <url> (...)'.
 
     Returns the slugs that were (or would be) re-added.
     """
@@ -210,10 +228,11 @@ def _step_queue(repo_root: Path, *, dry_run: bool) -> list[str]:
         return []
 
     lines = text.split("\n")
-    # Find the first '- ' bullet line (the top of the live target list).
+    # Find the first recognized bullet line (the top of the live target list).
+    # Recognizes '- ', '* ', '+ ' with optional leading whitespace (_is_bullet).
     insert_at = None
     for i, ln in enumerate(lines):
-        if ln.startswith("- "):
+        if _is_bullet(ln):
             insert_at = i
             break
     new_bullets = [
@@ -243,7 +262,10 @@ def reconcile(repo_root: Optional[Path] = None, *, dry_run: bool = False) -> dic
 
     Returns:
         {
-            "keys_removed":  list[str],   # slugs whose seen.json key was removed
+            # seen.json keys removed, each a {"slug": <slug>, "key": <full
+            # 64-char sha256 hexdigest>} pair (the key is derived at runtime via
+            # _url_sha through _orphan_keys(), never hardcoded). [] when none.
+            "keys_removed":  list[dict],  # [{"slug": str, "key": str}, ...]
             "files_deleted": list[str],   # repo-relative scratch paths deleted
             "state_reset":   bool,        # STATE.toml phase reset applied
             "queue_appended": list[str],  # slugs re-seeded into the queue

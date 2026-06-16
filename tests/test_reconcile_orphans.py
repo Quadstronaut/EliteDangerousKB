@@ -42,6 +42,7 @@ recon = _load_module()
 
 def _make_fixture(tmp_path: Path, *, phase: str = "summarize",
                   queue_first_line_bullet: bool = False,
+                  first_bullet_marker: str = "- ",
                   consumed_targets: bool = False) -> Path:
     root = tmp_path / "repo"
     (root / "indexes").mkdir(parents=True)
@@ -78,8 +79,10 @@ def _make_fixture(tmp_path: Path, *, phase: str = "summarize",
 
     # queue/next-targets.md
     if queue_first_line_bullet:
-        # First *content* line is a bullet (MC-4 stress case).
-        lines = ["- https://example.com/existing-top (tier: 0)"]
+        # First *content* line is a bullet (MC-4 stress case). The marker is
+        # configurable so FINDING 2 can exercise '* ', '+ ', and indented forms;
+        # _is_bullet must recognize all of them as the first bullet.
+        lines = [f"{first_bullet_marker}https://example.com/existing-top (tier: 0)"]
         if not consumed_targets:
             for t in recon.ORPHAN_TARGETS:
                 lines.append(f"- {t['url']} (already here)")
@@ -107,7 +110,14 @@ def test_removes_exactly_three_orphan_keys_and_preserves_rest(tmp_path):
 
     summary = recon.reconcile(repo_root=root)
 
-    assert set(summary["keys_removed"]) == {"scb", "mrp", "mahr"}
+    # FINDING 1: keys_removed is a list of {"slug","key"} pairs, where each key
+    # is the full 64-hex sha256 derived at runtime via _orphan_keys() (_url_sha).
+    assert {p["slug"] for p in summary["keys_removed"]} == {"scb", "mrp", "mahr"}
+    assert {p["key"] for p in summary["keys_removed"]} == set(recon._orphan_keys().keys())
+    by_slug = {slug: key for key, slug in recon._orphan_keys().items()}
+    for p in summary["keys_removed"]:
+        assert len(p["key"]) == 64 and all(c in "0123456789abcdef" for c in p["key"])
+        assert p["key"] == by_slug[p["slug"]]  # key matches its slug's derived key
     assert summary["errors"] == []
 
     after = json.loads((root / "indexes" / "seen.json").read_text(encoding="utf-8"))
@@ -184,6 +194,33 @@ def test_queue_prepend_above_first_bullet(tmp_path):
         )
 
 
+@pytest.mark.parametrize("marker", ["* ", "+ ", "  - ", "\t* ", "   + "])
+def test_queue_prepend_above_first_bullet_variants(tmp_path, marker):
+    """FINDING 2: the first content bullet may use '* ', '+ ', or a
+    whitespace-indented '- '/'* '/'+ '. _is_bullet must recognize all of them,
+    so the 3 re-seeded targets prepend ABOVE that first bullet, not appended."""
+    root = _make_fixture(
+        tmp_path, queue_first_line_bullet=True,
+        first_bullet_marker=marker, consumed_targets=True,
+    )
+    summary = recon.reconcile(repo_root=root)
+
+    assert set(summary["queue_appended"]) == {"scb", "mrp", "mahr"}
+    lines = (root / "queue" / "next-targets.md").read_text(encoding="utf-8").splitlines()
+    # Compare over the recognized-bullet list (any marker / indent counts).
+    bullets = [ln for ln in lines if recon._is_bullet(ln)]
+    existing_idx = next(i for i, ln in enumerate(bullets) if "existing-top" in ln)
+    for t in recon.ORPHAN_TARGETS:
+        target_idx = next(i for i, ln in enumerate(bullets) if t["url"] in ln)
+        assert target_idx < existing_idx, (
+            f"{t['slug']} re-seeded AFTER the first '{marker.strip()}' bullet — "
+            "insert misfired (FINDING 2 not fixed)"
+        )
+    # Emitted bullets stay canonical '- ' — the existing marker is NOT changed.
+    for t in recon.ORPHAN_TARGETS:
+        assert any(ln.startswith(f"- {t['url']} ") for ln in lines)
+
+
 def test_queue_noop_when_targets_already_present(tmp_path):
     root = _make_fixture(tmp_path, consumed_targets=False)
     before = (root / "queue" / "next-targets.md").read_text(encoding="utf-8")
@@ -229,8 +266,10 @@ def test_dry_run_writes_nothing(tmp_path):
 
     summary = recon.reconcile(repo_root=root, dry_run=True)
 
-    # Summary still reports what WOULD happen.
-    assert set(summary["keys_removed"]) == {"scb", "mrp", "mahr"}
+    # Summary still reports what WOULD happen (pair shape, full-hash keys).
+    assert {p["slug"] for p in summary["keys_removed"]} == {"scb", "mrp", "mahr"}
+    assert {p["key"] for p in summary["keys_removed"]} == set(recon._orphan_keys().keys())
+    assert all(len(p["key"]) == 64 for p in summary["keys_removed"])
     assert len(summary["files_deleted"]) == 6
     assert summary["state_reset"] is True
 
