@@ -141,7 +141,7 @@ drops straight into the same core internal slot. Resistances are the shared exp 
 
 Compare the class-5 power draw: Prismatic 5.46 MW vs standard 5A 3.64 MW vs Bi-Weave 5C 2.6 MW.
 The Prismatic wins on raw buffer but demands a stronger power plant and distributor, and leans
-hard on **Shield Cell Banks** to recover because its passive regen is so slow.
+hard on [[outfitting/shield-cell-bank|Shield Cell Banks]] to recover because its passive regen is so slow.
 
 ## Standard vs Bi-Weave vs Prismatic — which to fit
 

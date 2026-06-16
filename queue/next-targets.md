@@ -3,9 +3,33 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_cell_bank.json (tier: 0, type: coriolis, note: Shield Cell Bank -> kb/outfitting/shield-cell-bank.md. Index.js key scb. Active-recharge module repeatedly referenced by shield-generator.md (esp. Prismatic's slow regen leans on SCBs). Parse cells/per-cell heal/duration/spinup by class+rating.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/module_reinforcement_package.json (tier: 0, type: coriolis, note: Module Reinforcement Package -> kb/outfitting/module-reinforcement.md. Index.js key mrp. Protects modules (not hull); the third leg of the tank stack referenced in hull-reinforcement.md. Optional internal, classes/ratings + protection %.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/meta_alloy_hull_reinforcement_package.json (tier: 0, type: coriolis, note: Meta-Alloy HRP -> merge H2 into kb/outfitting/hull-reinforcement.md OR new page. Index.js key mahr (file has .json in require). The caustic-resistant variant for AX/Thargoid builds; hull-reinforcement.md flags causres 0 on standard HRP and points here.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_hull_reinforcement.json (tier: 0, type: coriolis, note: Guardian Hull Reinforcement Package -> kb/outfitting/ (new) or merge into hull-reinforcement.md. The Guardian-tech AX upgrade beyond Meta-Alloy HRP: more caustic res + a thermal-res profile, Guardian-unlock. Parse hullreinforcement/causres/thermres by class+rating. Confirm exact path/key via modules/index.js if 404.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_module_reinforcement.json (tier: 0, type: coriolis, note: Guardian Module Reinforcement Package -> merge into module-reinforcement.md (new this loop) or new page. AX module protection w/ thermal res; sibling to standard MRP. Parse protection/integrity/thermres + Guardian-unlock note.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/heat_sink_launcher.json (tier: 0, type: coriolis, note: Heat Sink Launcher -> kb/outfitting/heat-sink-launcher.md. Utility module DIRECTLY referenced by the new shield-cell-bank.md (SCB heat management) and by explorers/silent-running. Parse ammo/clip/heat-dump/reload by class+rating.)
+
+<!-- DONE loop 13: completed the module-protection / shield-recovery layer. 2 new Tier-0 Coriolis pages
+     + 1 MERGE (all availability: live):
+     (1) kb/outfitting/shield-cell-bank.md NEW (grp scb). Active-recharge: restores ACTIVE shields only
+     ("no effect on collapsed shields"). Cells = clip(1) + ammo(reserve); E & B ratings carry the most
+     cells, A & C fewer, D fewest (often 1). shieldreinforcement (MJ/cell) rises w/ class+rating: A =
+     highest heal/cell (burst), B = largest total pool (cells x heal). spinup 5s + boot 25s (all);
+     thermload 170->800 by class (heat is the cost; pair w/ heat sinks). Full C1-8 E/D/C/B/A table
+     (cells/heal/pool/duration/mass/power/thermload/cost). Quirk: C8 E rechargerating=C. source_count 1,
+     verified false. Forward-linked from shield-generator.md (Prismatic SCB ref now a wikilink).
+     (2) kb/outfitting/module-reinforcement.md NEW (grp mrp). Optional internal, NO power draw, classes
+     1-5, ratings E & D ONLY. protection = fraction of penetrating module dmg absorbed (E 0.30 / D 0.60);
+     integrity = pool size. E = high capacity/low absorb (heavier, cheaper); D = low capacity/high absorb
+     (half mass, ~3x cost). Stacking -> diminishing returns toward a cap. The 3rd tank leg: shields ->
+     hull(HRP) -> modules(MRP). source_count 1, verified false.
+     (3) kb/outfitting/hull-reinforcement.md MERGED Meta-Alloy HRP (grp mahr) as a full H2 + table.
+     causres = 3% FLAT all class/rating (only HRP w/ caustic res); explres/kinres/thermres = 0 (gives up
+     conventional resists); slightly LESS raw HP than standard (C5 324/351 vs 360/390). Classes 1-5 E/D,
+     no power. Confirms the existing causres-0 cross-ref -> source_count 1->2, verified false->TRUE
+     (independent Tier-0 file corroborates). Also wikilinked "Module Reinforcement Packages" -> new page.
+     PATH NOTES: all 3 internal/*.json (shield_cell_bank, module_reinforcement_package,
+     meta_alloy_hull_reinforcement_package) resolved first try, no 404. Follow-ons queued: Guardian HRP,
+     Guardian MRP, Heat Sink Launcher (the latter directly referenced by the new SCB page). -->
+
 
 <!-- DONE loop 12: completed the defence trio. 1 MERGE + 2 new Tier-0 Coriolis pages (all availability: live):
      (1) kb/outfitting/shield-generator.md — MERGED Prismatic Shield Generator (grp psg) as a full H2 +
