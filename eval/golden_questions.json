@@ -1,80 +1,319 @@
 [
   {
     "question": "How do I unlock Felicity Farseer?",
-    "expect_kb_paths": ["kb/engineers/felicity-farseer.md"],
-    "expect_chunk_substrings": ["Meta-Alloys", "Scout"],
+    "expect_kb_paths": [
+      "kb/engineers/felicity-farseer.md"
+    ],
+    "expect_chunk_substrings": [
+      "Meta-Alloys",
+      "Scout"
+    ],
     "off_topic": false
   },
   {
     "question": "What are the unlock requirements for Farseer?",
-    "expect_kb_paths": ["kb/engineers/felicity-farseer.md"],
-    "expect_chunk_substrings": ["Unlock", "Meta-Alloys"],
+    "expect_kb_paths": [
+      "kb/engineers/felicity-farseer.md"
+    ],
+    "expect_chunk_substrings": [
+      "Unlock",
+      "Meta-Alloys"
+    ],
     "off_topic": false
   },
   {
     "question": "Where is Felicity Farseer located?",
-    "expect_kb_paths": ["kb/engineers/felicity-farseer.md", "kb/locations/deciat.md"],
-    "expect_chunk_substrings": ["Deciat"],
+    "expect_kb_paths": [
+      "kb/engineers/felicity-farseer.md",
+      "kb/locations/deciat.md"
+    ],
+    "expect_chunk_substrings": [
+      "Deciat"
+    ],
     "off_topic": false
   },
   {
     "question": "What blueprints does Felicity Farseer offer?",
-    "expect_kb_paths": ["kb/engineers/felicity-farseer.md"],
-    "expect_chunk_substrings": ["Frame Shift Drive", "blueprint"],
+    "expect_kb_paths": [
+      "kb/engineers/felicity-farseer.md"
+    ],
+    "expect_chunk_substrings": [
+      "Frame Shift Drive",
+      "blueprint"
+    ],
     "off_topic": false
   },
   {
     "question": "How do I increase my FSD jump range?",
-    "expect_kb_paths": ["kb/mechanics/frame-shift-drive.md"],
-    "expect_chunk_substrings": ["jump range", "engineering"],
+    "expect_kb_paths": [
+      "kb/mechanics/frame-shift-drive.md"
+    ],
+    "expect_chunk_substrings": [
+      "jump range",
+      "engineering"
+    ],
     "off_topic": false
   },
   {
     "question": "What is the Guardian FSD Booster?",
-    "expect_kb_paths": ["kb/mechanics/frame-shift-drive.md"],
-    "expect_chunk_substrings": ["Guardian", "10.5 ly"],
+    "expect_kb_paths": [
+      "kb/mechanics/frame-shift-drive.md"
+    ],
+    "expect_chunk_substrings": [
+      "Guardian",
+      "10.5 ly"
+    ],
     "off_topic": false
   },
   {
     "question": "How does neutron boosting work?",
-    "expect_kb_paths": ["kb/mechanics/frame-shift-drive.md"],
-    "expect_chunk_substrings": ["Neutron", "4×"],
+    "expect_kb_paths": [
+      "kb/mechanics/frame-shift-drive.md"
+    ],
+    "expect_chunk_substrings": [
+      "Neutron",
+      "4×"
+    ],
     "off_topic": false
   },
   {
     "question": "What are the Python Mk II hardpoints?",
-    "expect_kb_paths": ["kb/ships/python-mk-ii.md"],
-    "expect_chunk_substrings": ["Medium", "hardpoint"],
+    "expect_kb_paths": [
+      "kb/ships/python-mk-ii.md"
+    ],
+    "expect_chunk_substrings": [
+      "Medium",
+      "hardpoint"
+    ],
     "off_topic": false
   },
   {
     "question": "What ship class is the Python Mk II?",
-    "expect_kb_paths": ["kb/ships/python-mk-ii.md"],
-    "expect_chunk_substrings": ["Medium", "Faulcon DeLacy"],
+    "expect_kb_paths": [
+      "kb/ships/python-mk-ii.md"
+    ],
+    "expect_chunk_substrings": [
+      "Medium",
+      "Faulcon DeLacy"
+    ],
     "off_topic": false
   },
   {
     "question": "What is the Deciat system known for?",
-    "expect_kb_paths": ["kb/locations/deciat.md"],
-    "expect_chunk_substrings": ["Farseer", "FSD"],
+    "expect_kb_paths": [
+      "kb/locations/deciat.md"
+    ],
+    "expect_chunk_substrings": [
+      "Farseer",
+      "FSD"
+    ],
     "off_topic": false
   },
   {
     "question": "What economy type is Deciat?",
-    "expect_kb_paths": ["kb/locations/deciat.md"],
-    "expect_chunk_substrings": ["Industrial"],
+    "expect_kb_paths": [
+      "kb/locations/deciat.md"
+    ],
+    "expect_chunk_substrings": [
+      "Industrial"
+    ],
     "off_topic": false
   },
   {
     "question": "What is Powerplay 2.0?",
-    "expect_kb_paths": ["kb/trunk.md"],
-    "expect_chunk_substrings": ["Powerplay"],
+    "expect_kb_paths": [
+      "kb/trunk.md"
+    ],
+    "expect_chunk_substrings": [
+      "Powerplay"
+    ],
     "off_topic": false
   },
   {
     "question": "What is the Trailblazers colonisation programme?",
-    "expect_kb_paths": ["kb/trunk.md"],
-    "expect_chunk_substrings": ["Trailblazers", "colonisation"],
+    "expect_kb_paths": [
+      "kb/trunk.md"
+    ],
+    "expect_chunk_substrings": [
+      "Trailblazers",
+      "colonisation"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "How much cargo does a Class 8 cargo rack hold?",
+    "expect_kb_paths": [
+      "kb/outfitting/cargo-rack.md"
+    ],
+    "expect_chunk_substrings": [
+      "massless",
+      "256"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What is the difference between the legacy FSD and the FSD SCO module?",
+    "expect_kb_paths": [
+      "kb/outfitting/frame-shift-drive.md"
+    ],
+    "expect_chunk_substrings": [
+      "Supercruise Overcharge",
+      "Update 18"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What is the scoop rate of an 8A fuel scoop?",
+    "expect_kb_paths": [
+      "kb/outfitting/fuel-scoop.md"
+    ],
+    "expect_chunk_substrings": [
+      "1,680",
+      "KGBFOAM"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "Does a standard Hull Reinforcement Package give caustic resistance?",
+    "expect_kb_paths": [
+      "kb/outfitting/hull-reinforcement.md"
+    ],
+    "expect_chunk_substrings": [
+      "caustic",
+      "causres"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What is the difference between Prospector and Collector limpet controllers?",
+    "expect_kb_paths": [
+      "kb/outfitting/limpet-controllers.md"
+    ],
+    "expect_chunk_substrings": [
+      "Prospector",
+      "Collector"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What mining tools do I need for deep core asteroid mining?",
+    "expect_kb_paths": [
+      "kb/outfitting/mining-tools.md"
+    ],
+    "expect_chunk_substrings": [
+      "Seismic Charge Launcher",
+      "Pulse Wave Analyser"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What do refinery bins do when mining?",
+    "expect_kb_paths": [
+      "kb/outfitting/refinery.md"
+    ],
+    "expect_chunk_substrings": [
+      "bins",
+      "fragments"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "How much shield boost does an A-rated shield booster give?",
+    "expect_kb_paths": [
+      "kb/outfitting/shield-booster.md"
+    ],
+    "expect_chunk_substrings": [
+      "utility-mount",
+      "shield"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "How does shield generator strength scale with hull mass?",
+    "expect_kb_paths": [
+      "kb/outfitting/shield-generator.md"
+    ],
+    "expect_chunk_substrings": [
+      "Bi-Weave",
+      "multiplier"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What landing pad size does the Cobra Mk V need?",
+    "expect_kb_paths": [
+      "kb/ships/cobra-mk-v.md"
+    ],
+    "expect_chunk_substrings": [
+      "Faulcon DeLacy",
+      "Small landing pad"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "Why is the Mandalay good for long-range exploration?",
+    "expect_kb_paths": [
+      "kb/ships/mandalay.md"
+    ],
+    "expect_chunk_substrings": [
+      "Zorgon Peterson",
+      "230 t"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What makes the Panther Clipper Mk II the largest cargo ship?",
+    "expect_kb_paths": [
+      "kb/ships/panther-clipper-mk-ii.md"
+    ],
+    "expect_chunk_substrings": [
+      "largest-cargo ship",
+      "class-8"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What is the Type-11 Prospector built for?",
+    "expect_kb_paths": [
+      "kb/ships/type-11-prospector.md"
+    ],
+    "expect_chunk_substrings": [
+      "mining-tool-only",
+      "Lakon Spaceways"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "Is the Type-8 Transporter a good medium-pad hauler?",
+    "expect_kb_paths": [
+      "kb/ships/type-8-transporter.md"
+    ],
+    "expect_chunk_substrings": [
+      "medium-pad cargo ship",
+      "Lakon Spaceways"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "What is the maximum cargo of a Type-9 Heavy?",
+    "expect_kb_paths": [
+      "kb/ships/type-9-heavy.md"
+    ],
+    "expect_chunk_substrings": [
+      "1,580 t",
+      "class-8"
+    ],
+    "off_topic": false
+  },
+  {
+    "question": "Where can I buy Meta-Alloys in HIP 23759 for the Farseer unlock?",
+    "expect_kb_paths": [
+      "kb/locations/hip-23759.md"
+    ],
+    "expect_chunk_substrings": [
+      "Witch Head Science Centre",
+      "Meta-Alloys"
+    ],
     "off_topic": false
   },
   {
