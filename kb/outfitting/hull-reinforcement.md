@@ -1,10 +1,11 @@
 ---
 source_url: https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/hull_reinforcement_package.json
+source_urls: ["https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/hull_reinforcement_package.json", "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/meta_alloy_hull_reinforcement_package.json"]
 source_type: coriolis
 source_tier: 0
 captured_at: 2026-06-16T01:04:59+00:00
-source_count: 1
-verified: false
+source_count: 2
+verified: true
 availability: live
 changed_note:
 ---
@@ -50,20 +51,49 @@ Higher classes take a bigger optional-internal slot and weigh more, but give mor
 multiple HRPs is additive on HP (no diminishing-returns falloff like shield boosters have), so
 heavy-armour builds simply fill several optional slots with the largest HRPs the slots allow.
 
-## No caustic resistance — that's a different module
+## Meta-Alloy Hull Reinforcement — the caustic-resistant variant
 
-The standard HRP's `causres` (caustic resistance) is **0**. It gives **no protection against
-Thargoid caustic damage**. For AX/Thargoid builds that need caustic resistance, the separate
-**Meta-Alloy Hull Reinforcement Package** (Coriolis `mahr`) is the module to fit instead — it
-trades some of the flat stats for caustic protection. AX content (Spire sites, Titan wrecks,
-AX combat zones) remains fully `availability: live`.
+The standard HRP's `causres` (caustic resistance) is **0**: it gives **no protection against
+Thargoid caustic damage**. The separate **Meta-Alloy Hull Reinforcement Package** (Coriolis group
+`mahr`, file `internal/meta_alloy_hull_reinforcement_package.json`) is the variant to fit for AX work
+— it is the **only HRP that grants caustic resistance**.
+
+What it trades, confirmed by its own Tier-0 module file:
+
+- **Caustic resistance `causres` = 3%, flat** across every class and rating — the whole reason to fit
+  it. (Standard HRP = 0.)
+- **No conventional resistances**: its `explres` / `kinres` / `thermres` are all **0**, where a
+  standard HRP gives +0.5%/class. You give up exp/kin/therm hardening to get caustic.
+- **Slightly less raw armour HP** than the standard HRP at the same class/rating (e.g. C5 gives
+  324/351 HP vs the standard 360/390).
+- Same shape otherwise: **classes 1–5, ratings E and D only, no power draw**. From class 2 up the D
+  variant is half the mass of E (at class 1 both weigh 2 t).
+
+| Class | Rating | Hull HP | Caustic res | exp/kin/therm res | Mass (t) | Cost (CR) |
+|---|---|---|---|---|---|---|
+| 1 | E | 72 | +3% | 0 | 2 | 7,501 |
+| 1 | D | 99 | +3% | 0 | 2 | 22,501 |
+| 2 | E | 135 | +3% | 0 | 4 | 18,000 |
+| 2 | D | 171 | +3% | 0 | 2 | 54,000 |
+| 3 | E | 207 | +3% | 0 | 8 | 42,000 |
+| 3 | D | 234 | +3% | 0 | 4 | 126,000 |
+| 4 | E | 270 | +3% | 0 | 16 | 97,501 |
+| 4 | D | 297 | +3% | 0 | 8 | 292,501 |
+| 5 | E | 324 | +3% | 0 | 32 | 225,001 |
+| 5 | D | 351 | +3% | 0 | 16 | 675,001 |
+
+AX/Thargoid content — Spire sites, Titan wrecks, AX combat zones, interceptor encounters — remains
+fully `availability: live`, so caustic resistance is current, relevant outfitting. AX builds
+typically **mix** Meta-Alloy HRPs (for caustic res) with standard HRPs and Guardian hull
+reinforcement, since stacking pushes resistances toward a cap.
 
 ## How to fit
 
 - HRPs go in **optional internal** slots, competing with cargo racks, shield cell banks, fuel
   tanks, and the like — so a heavy-armour build sacrifices cargo/utility capacity for survivability.
 - They pair with high-grade **military-grade bulkheads** (the ship's base armour) and
-  **Module Reinforcement Packages** (which protect modules rather than hull) on a full tank build.
+  [[outfitting/module-reinforcement|Module Reinforcement Packages]] (which protect modules rather
+  than hull) on a full tank build.
 - On a layered defensive build: [[outfitting/shield-generator]] + [[outfitting/shield-booster]]
   carry the shield layer, HRPs carry the armour layer beneath.
 - Engineer them (Heavy Duty for more HP, or the resist-focused blueprints) for serious combat

@@ -34,7 +34,9 @@ See [[outfitting/limpet-controllers]] for Prospector & Collector Limpet Controll
 See [[outfitting/refinery]] for the Refinery (converts mined fragments; bins by class/rating).
 See [[outfitting/shield-generator]] for Shield, Bi-Weave & Prismatic generators (multiplier mechanic, class/rating).
 See [[outfitting/shield-booster]] for the Shield Booster (utility-mount % shield boost).
-See [[outfitting/hull-reinforcement]] for the Hull Reinforcement Package (flat armour HP + resists).
+See [[outfitting/shield-cell-bank]] for the Shield Cell Bank (active shield recharge; cells/heal by class/rating).
+See [[outfitting/hull-reinforcement]] for the Hull Reinforcement Package (flat armour HP + resists; incl. Meta-Alloy caustic variant).
+See [[outfitting/module-reinforcement]] for the Module Reinforcement Package (protects modules; E/D capacity-vs-absorption trade).
 See [[outfitting/cargo-rack]] for Cargo Racks (capacity by class; corrosion-resistant & expanded variants).
 
 ## Engineers
