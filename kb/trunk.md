@@ -32,6 +32,8 @@ See [[outfitting/frame-shift-drive]] for the FSD module reference (legacy + SCO 
 See [[outfitting/fuel-scoop]] for the Fuel Scoop (massless; scoop-rate by class/rating).
 See [[outfitting/limpet-controllers]] for Prospector & Collector Limpet Controllers (mining drones).
 See [[outfitting/refinery]] for the Refinery (converts mined fragments; bins by class/rating).
+See [[outfitting/shield-generator]] for Shield & Bi-Weave generators (multiplier mechanic, class/rating).
+See [[outfitting/cargo-rack]] for Cargo Racks (capacity by class; corrosion-resistant & expanded variants).
 
 ## Engineers
 
