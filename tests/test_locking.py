@@ -629,6 +629,15 @@ class TestT8NoLitter:
         real_emb = repo_root() / "embeddings"
         # Snapshot a pre-existing CLI-created lock so it is not blamed on this test.
         lock_existed_before = (real_indexes / "index.lock").exists()
+        # Same snapshot-hardening for seen.json.lock. The byte-range lock is
+        # persistent-by-design: created on the FIRST record_source() call by any
+        # real loop/CLI run and never deleted (gitignored). A repo that has ever
+        # run the research loop already carries indexes/seen.json.lock — that is
+        # NOT this test's doing. Snapshot it BEFORE we call record_source() (so the
+        # guard is not vacuous), then below assert only that THIS test did not
+        # CREATE it. The old OR-of-NOTs assertion was always False once both
+        # seen.json and seen.json.lock exist in the real repo.
+        seen_lock_existed_before = (real_indexes / "seen.json.lock").exists()
 
         emb_dir = tmp_path / "embeddings"
         idx_dir = tmp_path / "indexes"
@@ -652,10 +661,14 @@ class TestT8NoLitter:
         if real_emb.exists():
             assert not (real_emb / "vectors.lock").exists()
 
-        # seen.json in the real repo must not exist (we wrote to tmp_path).
-        assert not (real_indexes / "seen.json").exists() or \
-               not (real_indexes / "seen.json.lock").exists(), \
-               "seen.json.lock appeared in real repo indexes/"
+        # THIS test must not have CREATED seen.json.lock in the real repo. We
+        # wrote to tmp_path, so record_source() above locked tmp_path/seen.json.lock,
+        # never real_indexes/seen.json.lock. A lock that pre-existed from a real
+        # loop run is exempt (snapshotted above, not this test's doing).
+        if real_indexes.exists() and not seen_lock_existed_before:
+            assert not (real_indexes / "seen.json.lock").exists(), (
+                "seen.json.lock was written to the real repo indexes/ dir by this test"
+            )
 
 
 # ---------------------------------------------------------------------------
