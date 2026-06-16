@@ -3,9 +3,27 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_generator.json (tier: 0, type: coriolis, note: Shield Generator class/rating/optmass/minmass/strength -> kb/outfitting/shield-generator.md. Pair with bi_weave_shield_generator.json and prismatic. Garay Terminal (loop 6) stocks Shield & Bi-Weave to C8.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/bi_weave_shield_generator.json (tier: 0, type: coriolis, note: Bi-Weave Shield Generator -> merge into kb/outfitting/shield-generator.md alongside the standard shield_generator.json above. Faster regen, lower MJ; Garay Terminal stocks Bi-Weave to C8.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/cargo_rack.json (tier: 0, type: coriolis, note: Cargo Rack capacity by class -> kb/outfitting/cargo-rack.md. Closes the miner/hauler build chain referenced by type-9-heavy, type-11-prospector, panther-clipper-mk-ii. Watch for standard vs lightweight/military rack variants.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/prismatic_shield_generator.json (tier: 0, type: coriolis, note: Prismatic Shield Generator -> merge new H2 into kb/outfitting/shield-generator.md "Related shield modules". Powerplay 2.0 / Aisling Duval reward; highest MJ, heavy power, slow regen. Confirm path via modules/index.js; may be modules/internal/ or a powerplay subfolder.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_booster.json (tier: 0, type: coriolis, note: Shield Booster -> kb/outfitting/shield-booster.md. Utility module, % shield bonus; pairs directly with the new shield-generator.md. Watch for utility-mount vs internal classification in index.js.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/hull_reinforcement_package.json (tier: 0, type: coriolis, note: Hull Reinforcement Package -> kb/outfitting/hull-reinforcement.md. Optional internal; flat armour + resist. Completes the defence trio referenced in shield-generator.md "which to fit" advice.)
+
+<!-- DONE loop 11: 2 new Tier-0 Coriolis outfitting pages (all availability: live):
+     (1) kb/outfitting/shield-generator.md — MERGED standard (grp sg) + Bi-Weave (grp bsg).
+     Core concept documented: shield strength is a MULTIPLIER on ship base shield, interpolated
+     by hull mass across minmass/optmass/maxmass; MJ is ship-specific, never a module constant.
+     Standard ratings E-A set optmul (A 1.2 / E 0.8); CLASS 1 HAS NO B RATING (only E/D/C/A).
+     Full class/rating table C1-C8. Bi-Weave is C-rating-only, optmul 0.9, regen 1.8-5.8 (1.8-2.4x
+     standard) — trades MJ for recharge. Uniform resists exp +0.5/kin +0.4/therm -0.2. Both
+     stocked to C8 at Garay Terminal (loop 6). source_count 2, verified false.
+     (2) kb/outfitting/cargo-rack.md — grp cr, all E-rated, capacity DOUBLES per class (C1 2t ->
+     C8 256t). MASSLESS rack (mass 0); cargo itself 1t/unit drives loaded jump range. Variants:
+     Corrosion Resistant (C1/C4/C5/C6, for Thargoid/corrosive cargo; C4-C6 match standard cap) +
+     Expanded Capacity (C5/C6, pre-eng G5 CargoRack_IncreasedCapacity, CG reward, not re-eng).
+     Both linked in trunk.md Outfitting. Follow-ons queued: prismatic_shield_generator (merge into
+     shield-generator.md), shield_booster, hull_reinforcement_package (complete the defence trio).
+     PATH NOTE: internal/shield_generator.json, bi_weave_shield_generator.json, cargo_rack.json all
+     resolved first try (no 404). -->
+
 
 <!-- DONE loop 10: completed the mining loop with 2 new Tier-0 Coriolis pages (all availability: live):
      (1) kb/outfitting/limpet-controllers.md — merged Prospector + Collector controllers.
