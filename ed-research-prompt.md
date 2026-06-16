@@ -85,11 +85,13 @@ If False, SKIP INARA this loop (do not sleep) and log the skip.
   per-claim availability (live|seasonal|changed). If that MCP tool is unavailable, summarize
   inline yourself (note the fallback in the log).
 - Apply the DISCARD RULE. If obsolete-and-pointless -> do NOT write a page; log the discard to
-  `journal/loop-<n>.md`; still record the source in seen.json; continue.
+  `journal/loop-<n>.md`; record the source as DISCARDED in seen.json (Goal B — structured marker,
+  not just a journal log); continue.
+  `PY -c "from copilot.loop_state import record_discard; record_discard('<url>','<contentsha>','indexes/seen.json')"`
 - Write kept summaries to `summaries/<sha8>-<slug>.md` with YAML frontmatter (source_url,
   source_type, source_tier, captured_at, source_count:1, verified:false, availability, changed_note).
-- Record each processed source:
-  `PY -c "from copilot.loop_state import record_source; record_source('<url>','<contentsha>','indexes/seen.json')"`
+- **DO NOT record kept sources in seen.json here.** Kept-source record_source calls have been
+  moved to PHASE 6 COMMIT (after the KB page is written) to close the F6 strand window.
 - Print `[SUMMARIZE] <slug> — <n> claims, availability=<...>, obsolete=NO|DISCARDED`. Checkpoint phase=summarize.
 
 ## PHASE 4 — SYNTHESIZE
@@ -102,7 +104,12 @@ For each kept summary:
 2. If the page exists: read it, merge new claims into the right H2/H3 section (no duplication);
    bump `source_count` if independent; set `verified:true` when source_count>=2 and claims agree;
    on contradiction add `<!-- CONFLICT: ... -->` and set `verified:false` (never silently resolve).
-3. If new: create with proper frontmatter; chunk-ready H2/H3 sections; `[[trunk]]` backlink at the
+   **APPEND the new contributing `source_url` to the page's `source_urls:` inline flow list** —
+   if `source_urls:` does not yet exist, CREATE it: `source_urls: [<new_url>]`; if it exists,
+   append: `source_urls: [existing1, existing2, <new_url>]`. This keeps the merge-page
+   source ledger complete so the F6 guard never false-flags contributing summary URLs (Goal C).
+3. If new: create with proper frontmatter including `source_url: <url>` (no `source_urls` line
+   needed for single-source pages); chunk-ready H2/H3 sections; `[[trunk]]` backlink at the
    bottom; `[[wikilinks]]` to referenced engineers/ships/systems/mechanics.
 4. **Write atomically** — never write the kb file directly. Stage then atomic-replace:
    - Write the full page content to `live/_staging.md` (your Write tool is fine for the staging file).
@@ -144,21 +151,33 @@ the index is a derived artifact; a committed KB page is not. Checkpoint phase=in
 
 ## PHASE 6 — COMMIT
 
-1. `git add kb/ summaries/ sources/ indexes/ embeddings/ queue/ journal/ STATE.toml`
-2. Count staged files: `git diff --cached --name-only` -> N.
-3. Load the deep-analysis threshold:
+1. **Record kept sources** (Goal A1 — strand window closed): for each URL processed this loop
+   that was KEPT (not discarded), call record_source NOW — after PHASE 4 has atomically written
+   the KB page. This ensures seen.json is updated only after the page exists, so a kill between
+   SUMMARIZE and SYNTHESIZE leaves the URL unrecorded (is_resumable->True) and re-fetchable.
+   `PY -c "from copilot.loop_state import record_source; record_source('<url>','<contentsha>','indexes/seen.json')"`
+   (one call per kept source URL; skip discarded URLs — they were already recorded in PHASE 3)
+2. **Auto-recover stranded URLs** (Goal A2 — belt-and-suspenders): run the live recovery helper
+   on all URLs processed this loop. It silently re-queues and purges seen entries for any that
+   are still stranded (e.g. edge cases the reorder missed), logs to `journal/loop-<n>.md`, and
+   NEVER raises. This MUST complete before the STATE.toml write (step 7) to keep forward progress.
+   `PY -c "from copilot.commit_guard import recover_stranded_urls; r=recover_stranded_urls([<url_list>], seen_path='indexes/seen.json', queue_path='queue/next-targets.md', journal_path='journal/loop-<n>.md'); print('[GUARD] recovered:', r)"`
+3. `git add kb/ summaries/ sources/ indexes/ embeddings/ queue/ journal/ STATE.toml`
+4. Count staged files: `git diff --cached --name-only` -> N.
+5. Load the deep-analysis threshold:
    `PY -c "from copilot.paths import load_config; print(load_config()['loop']['deep_analysis_after_empty_loops'])"`
-4. **EMPTY LOOP (N == 0):** do NOT run `git commit` — it exits non-zero with nothing staged and
+6. **EMPTY LOOP (N == 0):** do NOT run `git commit` — it exits non-zero with nothing staged and
    would abort the loop before state advances. Instead increment `consecutive_empty_loops`; if it
    reaches the threshold set `mode="deep-analysis"`, else keep `mode="search"`. Print
-   `[COMMIT] empty loop <n> — no new content.` Then go to step 6.
-5. **NON-EMPTY (N > 0):** `git commit -m "Loop <n>: <pages> pages, <sources> sources, <mode> mode"`.
+   `[COMMIT] empty loop <n> — no new content.` Then go to step 8.
+7. **NON-EMPTY (N > 0):** `git commit -m "Loop <n>: <pages> pages, <sources> sources, <mode> mode"`.
    Set `consecutive_empty_loops=0`. Print `[COMMIT] loop <n> committed (<N> files).`
-6. **ALWAYS advance state** (this MUST run on every loop — empty or not — so the wrapper sees
-   loop_number progress and does not livelock-retry). Persist loop_number+1, phase, and the
+8. **ALWAYS advance state** (this MUST run on every loop — empty or not — so the wrapper sees
+   loop_number progress and does not livelock-retry). This write MUST be reachable regardless
+   of any strand or recovery outcome above. Persist loop_number+1, phase, and the
    mode / consecutive_empty_loops values from above in ONE write:
    `PY -c "from copilot.atomic import read_state, write_state; s=read_state(); s['loop_number']=s.get('loop_number',0)+1; s['last_completed_phase']='commit'; s['consecutive_empty_loops']=<value>; s['mode']='<mode>'; write_state(s)"`
-7. Print `[COMMIT] loop <n> complete.` Then STOP — exit. Do not begin another loop.
+9. Print `[COMMIT] loop <n> complete.` Then STOP — exit. Do not begin another loop.
 
 ---
 
@@ -177,7 +196,14 @@ No new external sources. Expand inward, never idle:
 ## DISCARD RULE — current-truth-only
 
 KEEP what is TRUE and RELEVANT NOW. Discard (no page) when a source is obsolete AND has no
-present value AND knowing it changed prevents no bad decision. HARD rules:
+present value AND knowing it changed prevents no bad decision.
+
+**Discard signal (Goal B):** Use `record_discard()` (PHASE 3), NOT just a journal log entry,
+to mark a discarded URL. The structured `discarded: true` marker in seen.json is the
+authoritative parity signal; journal text is for human readability only and is NOT used by
+the F6 guard. A discarded URL will NOT be flagged as stranded even without a page.
+
+HARD rules:
 - AX combat, Spire sites, Titan-wreck diving, Thargoid content: ALWAYS `availability: live`.
   The war narrative ended but this content is currently accessible — NEVER present it as gone.
 - Colonisation is "**Trailblazers**" (Feb 2025) — never "Colonisation v1" or older terms.
