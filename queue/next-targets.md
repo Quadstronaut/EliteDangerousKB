@@ -3,8 +3,17 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://www.edsm.net/api-system-v1/stations/outfitting?marketId=3229756160 (tier: 0, type: edsm, note: enumerate Garay Terminal's OUTFITTING module list — corroborate the page's "Outfitting" service claim and document what modules a Farseer visitor can actually buy in-system -> kb/locations/deciat.md "Station Services — large-pad & outfit ports")
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/dist/ships.json (tier: 0, type: coriolis, note: extract the Cobra Mk V hull stats — surfaced as recent stock at Garay Terminal but likely missing a kb/ships/ page; create kb/ships/cobra-mk-v.md from Coriolis fields)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/panther_clipper_mk_ii.json (tier: 0, type: coriolis, note: extract Panther Clipper Mk II hull stats — largest hull stocked at Garay Terminal, likely missing a kb/ships/ page. NOTE Coriolis path is ships/<slug>.json — verify the exact slug in ships/index.js if 404)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_8.json (tier: 0, type: coriolis, note: extract Type-8 Transporter hull stats — recent hauler stocked at Garay Terminal; create kb/ships/type-8-transporter.md. Confirm slug via ships/index.js)
+
+<!-- DONE loop 6: (1) EDSM api-system-v1/stations/outfitting for Garay Terminal (marketId 3229756160).
+     653 module SKUs / 107 families. Full core internals to C8; FSD + FSD(SCO) to C7; Shield & Bi-Weave
+     to C8; limpets/refinery/AFMU; weapons capped ~C4; NO Guardian modules (expected). Merged H3
+     "Garay Terminal — outfitting stock" into kb/locations/deciat.md, source_count 3->4, verified true.
+     (2) Coriolis Cobra Mk V hull -> created kb/ships/cobra-mk-v.md. CORRECTION: queue's stale
+     dist/ships.json 404s (dist/index.json is build-generated, not committed); correct Tier-0 path is
+     ships/<slug>.json (Cobra Mk V = ships/cobra_mk_v.json, export key "cobramkv"). -->
+
 
 <!-- DONE loop 5: EDSM api-system-v1/stations/shipyard enumerated for Garay Terminal (marketId 3229756160).
      Findings: 17 hulls stocked, incl. recent Type-8 Transporter, Cobra Mk V, Panther Clipper Mk II,
