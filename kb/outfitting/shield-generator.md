@@ -2,8 +2,8 @@
 source_url: https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_generator.json
 source_type: coriolis
 source_tier: 0
-captured_at: 2026-06-16T00:54:21+00:00
-source_count: 2
+captured_at: 2026-06-16T01:04:59+00:00
+source_count: 3
 verified: true
 availability: live
 changed_note:
@@ -14,9 +14,10 @@ changed_note:
 The **Shield Generator** is a **core internal** module that projects a regenerating energy
 shield around the hull — your first line of defence, absorbing damage before it reaches armour
 and modules. Every combat, trading, and most exploration builds carry one. This page covers the
-two non-Powerplay generator lines from the Tier-0 Coriolis module data: the **standard** Shield
-Generator (group `sg`) and the **Bi-Weave** Shield Generator (group `bsg`). Prismatic and
-Reinforced generators are separate modules (see *Related shield modules* below).
+three generator lines from the Tier-0 Coriolis module data: the **standard** Shield Generator
+(group `sg`), the **Bi-Weave** Shield Generator (group `bsg`), and the Powerplay **Prismatic**
+Shield Generator (group `psg`). Reinforced generators are a separate module (see *Related shield
+modules* below).
 
 ## How shield strength works — it's a multiplier, not a fixed MJ
 
@@ -36,7 +37,7 @@ So **MJ = ship base shield × interpolated multiplier**: a light ship near `minm
 is why the same generator gives wildly different MJ on different hulls, and why the headline
 "660 MJ" kind of number is always ship-specific, never a property of the module alone.
 
-Resistances are uniform across both lines: **explosive +0.5, kinetic +0.4, thermal −0.2**
+Resistances are uniform across all three lines: **explosive +0.5, kinetic +0.4, thermal −0.2**
 (shields naturally resist explosive/kinetic, are weak to thermal). Distributor draw 0.6.
 
 ## Standard Shield Generator (group `sg`)
@@ -114,14 +115,44 @@ more total damage than a higher-MJ standard shield that recharges slowly.
 Opt-mass bands and resistances are identical to the standard generator of the same class, so a
 Bi-Weave slots into the same core internal a standard shield would use.
 
-## Standard vs Bi-Weave — which to fit
+## Prismatic Shield Generator (group `psg`)
 
-- **Standard A-rated** — highest MJ for the slot. Best for builds that boost shields with
-  Shield Boosters and engineering and want a big buffer to soak burst damage (PvE bounty
-  hunting, anything relying on shield cell banks to top a large pool).
+The **Prismatic** is a **Powerplay reward** generator, pledged to **Aisling Duval** (still
+obtainable under Powerplay 2.0 — the pledge system was overhauled in 2024, the module is
+unchanged). It delivers the **highest shield multiplier of any generator**: `optmul` **1.5**
+(vs standard A 1.2, Bi-Weave 0.9), with `minmul` 1.0 and `maxmul` 2.0. The trade-offs are a
+**much heavier power draw** and a **slow recharge** — `regen` stays at 1.0 MJ/s through class 6
+(1.1 at C7, 1.4 at C8), the lowest of the three lines. Every class ships **A-rated only**
+(no E/D/C/B). Mass and the opt-mass bands match the standard generator of the same class, so it
+drops straight into the same core internal slot. Resistances are the shared exp +0.5 / kin +0.4
+/ therm −0.2.
+
+| Class | Opt Mass (t) | Optmul | Min→Max Mul | Regen | Broken Regen | Power (MW) | Integrity | Cost (CR) |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 25 | 1.5 | 1.0→2.0 | 1.0 | 1.2 | 2.52 | 48 | 132,200 |
+| 2 | 55 | 1.5 | 1.0→2.0 | 1.0 | 1.2 | 3.15 | 61 | 240,340 |
+| 3 | 165 | 1.5 | 1.0→2.0 | 1.0 | 1.3 | 3.78 | 77 | 761,870 |
+| 4 | 285 | 1.5 | 1.0→2.0 | 1.0 | 1.7 | 4.62 | 96 | 2,415,120 |
+| 5 | 405 | 1.5 | 1.0→2.0 | 1.0 | 2.3 | 5.46 | 115 | 7,655,930 |
+| 6 | 540 | 1.5 | 1.0→2.0 | 1.0 | 3.2 | 6.51 | 136 | 24,269,300 |
+| 7 | 1,060 | 1.5 | 1.0→2.0 | 1.1 | 4.2 | 7.35 | 157 | 76,933,670 |
+| 8 | 1,800 | 1.5 | 1.0→2.0 | 1.4 | 5.4 | 8.4 | 180 | 243,879,730 |
+
+Compare the class-5 power draw: Prismatic 5.46 MW vs standard 5A 3.64 MW vs Bi-Weave 5C 2.6 MW.
+The Prismatic wins on raw buffer but demands a stronger power plant and distributor, and leans
+hard on **Shield Cell Banks** to recover because its passive regen is so slow.
+
+## Standard vs Bi-Weave vs Prismatic — which to fit
+
+- **Standard A-rated** — highest non-Powerplay MJ for the slot. Best for builds that boost
+  shields with [[outfitting/shield-booster]] and engineering and want a big buffer to soak burst
+  damage (PvE bounty hunting, anything relying on shield cell banks to top a large pool).
 - **Bi-Weave (C)** — lower MJ but recharges fast and rebuilds quickly after dropping. Favoured
   for sustained fights, ganker-resistant trade/explore hulls, and any build that would rather
   shrug damage off continuously than ride one big pool. Cheaper, too.
+- **Prismatic (A, Powerplay)** — the biggest buffer of all (1.5 optmul) but slow to recharge and
+  power-hungry. Shines on heavily shield-stacked builds that top up with Shield Cell Banks rather
+  than relying on passive regen; requires an Aisling Duval pledge to obtain.
 - **Mass matters more than rating gut-feel:** confirm the class `maxmass` exceeds your loaded
   hull mass, then pick the line. A heavy hull may be forced down to a class where it sits near
   `minmul` — engineering (e.g. Reinforced / Thermal Resistant blueprints) is how shield builds
@@ -129,18 +160,23 @@ Bi-Weave slots into the same core internal a standard shield would use.
 
 ## Related shield modules
 
-- **Prismatic Shield Generator** — a Powerplay 2.0 reward module (Aisling Duval), highest MJ of
-  all but heavy power draw and slow recharge. Still current; tracked as a follow-on target.
+- **Prismatic Shield Generator** — now documented above (group `psg`).
+- **[[outfitting/shield-booster]]** — utility-mount module that adds a flat % to total shield
+  strength; standard companion to any generator on a combat build.
 - **Reinforced (Enhanced Low Power) Shield Generator** — lower power draw at the cost of regen.
-- These are separate module files and are not detailed here yet.
+  A separate module file, not detailed here yet.
+- On defensive builds the shield sits alongside flat-armour [[outfitting/hull-reinforcement]].
 
 ## Where to buy
 
-Both standard and Bi-Weave generators are stocked to **Class 8** at **Garay Terminal** in
+Standard and Bi-Weave generators are stocked to **Class 8** at **Garay Terminal** in
 [[locations/deciat]] (the large-pad Coriolis starport that serves Felicity Farseer visitors).
+The Prismatic is a Powerplay module — obtained by pledging to **Aisling Duval**, not bought from
+a station outfitting list.
 
 Shielding pairs with [[outfitting/frame-shift-drive]] and the rest of the core internals; on
-defensive builds it sits alongside hull/module reinforcement. See [[ships/python-mk-ii]],
-[[ships/panther-clipper-mk-ii]] and other hulls for class-by-hull slot sizes.
+defensive builds it sits alongside [[outfitting/hull-reinforcement]] and module reinforcement.
+See [[ships/python-mk-ii]], [[ships/panther-clipper-mk-ii]] and other hulls for class-by-hull
+slot sizes.
 
 [[trunk]]
