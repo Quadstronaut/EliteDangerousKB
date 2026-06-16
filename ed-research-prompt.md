@@ -66,8 +66,10 @@ For each surviving target, Tier-0 structured APIs first:
   sanitizes the returned text. Example:
   `PY -c "from copilot.acquire import Fetcher, load_acquire_config; f=Fetcher(load_acquire_config()); r=f.fetch('<url>'); import sys; sys.stdout.write(r.text); f.close()"`.
 - Dedup/idempotency: use `r.raw_sha256` (the RAW pre-sanitize hash) with
-  `loop_state.is_resumable(url, seen_path, content_sha256=r.raw_sha256)` and
-  `loop_state.record_source(url, r.raw_sha256, seen_path)` for content-hash parity with seen.json.
+  `loop_state.is_resumable(url, seen_path, content_sha256=r.raw_sha256)` to SKIP already-seen
+  content. DO NOT `record_source` here — a KEPT source is recorded in PHASE 6 COMMIT step 0a,
+  AFTER its kb page exists. Recording before the page is written is exactly the F6 strand
+  window we closed; the only thing recorded pre-page is a DISCARD (PHASE 3, via `record_discard`).
 - Save raw bytes to `sources/<sha8>-<slug>.raw` (use a short sha of the URL for `<sha8>`).
 - Print `[SEARCH] fetched <url> (tier N) — <bytes> bytes`. Checkpoint phase=search.
 
