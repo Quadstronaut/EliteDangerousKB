@@ -1,5 +1,6 @@
 ---
 source_url: https://inara.cz/elite/engineer/1/
+source_urls: ["https://inara.cz/elite/engineer/1/", "https://www.edsm.net/api-v1/system?systemName=Deciat&showId=1&showCoordinates=1&showInformation=1&showPrimaryStar=1", "https://www.edsm.net/api-system-v1/stations/market?systemName=Deciat&stationName=Farseer%20Inc", "https://www.edsm.net/api-system-v1/stations/market?systemName=HIP%2023759&stationName=Witch%20Head%20Science%20Centre"]
 source_type: inara
 source_tier: 1
 captured_at: 2026-06-01
