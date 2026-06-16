@@ -1,5 +1,6 @@
 ---
 source_url: https://www.edsm.net/api-v1/system?systemName=Deciat&showId=1&showCoordinates=1&showInformation=1&showPrimaryStar=1
+source_urls: ["https://www.edsm.net/api-v1/system?systemName=Deciat&showId=1&showCoordinates=1&showInformation=1&showPrimaryStar=1", "https://www.edsm.net/api-system-v1/stations?systemName=Deciat", "https://www.edsm.net/api-system-v1/stations/market?systemName=Deciat&stationName=Farseer%20Inc", "https://www.edsm.net/api-system-v1/stations/shipyard?marketId=3229756160", "https://www.edsm.net/api-system-v1/stations/outfitting?marketId=3229756160"]
 source_type: edsm
 source_tier: 0
 captured_at: 2026-06-15T23:48:53Z

@@ -1,5 +1,6 @@
 ---
 source_url: https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_generator.json
+source_urls: ["https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/shield_generator.json", "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/bi_weave_shield_generator.json", "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/pristmatic_shield_generator.json"]
 source_type: coriolis
 source_tier: 0
 captured_at: 2026-06-16T01:04:59+00:00

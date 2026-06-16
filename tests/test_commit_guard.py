@@ -1,20 +1,24 @@
 """
 F6 tests for copilot/commit_guard.py — the recurrence guard.
 
-Proves the two properties MC-6 demands:
+Proves the two properties the spec demands:
   1. URL-AWARE: parity is decided per-URL by scanning each page's source_url
      frontmatter, NOT by comparing seen-count vs page-count. A loop that wrote
      the SAME number of pages as URLs processed, but the WRONG ones, is still
      caught (a count check would pass it).
-  2. DISCARD-SAFE: a URL intentionally recorded-without-page by the PHASE 3
-     DISCARD RULE (logged to journal/loop-<n>.md) is NOT flagged.
-Plus containment (MC-7) and first-commit safety (empty kb).
+  2. DISCARD-SAFE: a URL intentionally recorded-without-page is flagged
+     "discarded": true in seen.json (the AUTHORITATIVE marker, HC-6) and is NOT
+     reported stranded. The marker — not journal text — is the parity signal.
+Plus containment, first-commit safety (empty kb), the multi-feeder union (K1),
+and the transactional recovery contract (FIX-1).
 """
+import hashlib
 from pathlib import Path
 
 import pytest
 
 from copilot import commit_guard
+from copilot import loop_state
 
 
 def _seed(tmp_path: Path, pages: dict[str, str] | None = None,
@@ -35,6 +39,11 @@ def _seed(tmp_path: Path, pages: dict[str, str] | None = None,
     for name, text in (journals or {}).items():
         (journal / name).write_text(text, encoding="utf-8")
     return root
+
+
+def _mark_discarded(seen_path: Path, url: str) -> None:
+    """Record *url* as discarded in seen.json (the marker the guard reads)."""
+    loop_state.record_discard(url, "deadbeef", str(seen_path))
 
 
 # ===========================================================================
@@ -74,32 +83,31 @@ def test_url_aware_not_count_based(tmp_path):
 # ===========================================================================
 
 def test_discarded_url_not_flagged(tmp_path):
-    discard_log = (
-        "# Loop 13 journal\n\n## Discards\n\n"
-        "- Discarded obsolete source https://ex.com/obsolete.json "
-        "(superseded by patch notes; recorded in seen.json, no page written).\n"
-    )
-    root = _seed(
-        tmp_path,
-        pages={"outfitting/scb.md": "https://ex.com/scb.json"},
-        journals={"loop-13.md": discard_log},
-    )
+    """A URL flagged "discarded" in seen.json is page-less on purpose -> not
+    stranded. Migrated from journal-text to the authoritative marker (HC-6)."""
+    root = _seed(tmp_path, pages={"outfitting/scb.md": "https://ex.com/scb.json"})
+    seen = root / "indexes" / "seen.json"
+    seen.parent.mkdir(parents=True, exist_ok=True)
+    _mark_discarded(seen, "https://ex.com/obsolete.json")
     processed = ["https://ex.com/scb.json", "https://ex.com/obsolete.json"]
-    stranded = commit_guard.find_stranded_urls(processed, repo_root=root)
-    # scb has a page; obsolete was discarded+logged -> neither stranded.
+    stranded = commit_guard.find_stranded_urls(
+        processed, seen_path=str(seen), repo_root=root
+    )
+    # scb has a page; obsolete carries the discard marker -> neither stranded.
     assert stranded == []
 
 
 def test_stranded_distinguished_from_discard(tmp_path):
-    """One discarded url (logged) and one truly stranded url (no page, no log):
+    """One discarded url (marker) and one truly stranded url (no page, no marker):
     only the stranded one is flagged."""
-    root = _seed(
-        tmp_path,
-        pages={},
-        journals={"loop-13.md": "## Discards\n- https://ex.com/discarded.json obsolete\n"},
-    )
+    root = _seed(tmp_path, pages={})
+    seen = root / "indexes" / "seen.json"
+    seen.parent.mkdir(parents=True, exist_ok=True)
+    _mark_discarded(seen, "https://ex.com/discarded.json")
     processed = ["https://ex.com/discarded.json", "https://ex.com/killed-midway.json"]
-    stranded = commit_guard.find_stranded_urls(processed, repo_root=root)
+    stranded = commit_guard.find_stranded_urls(
+        processed, seen_path=str(seen), repo_root=root
+    )
     assert stranded == ["https://ex.com/killed-midway.json"]
 
 

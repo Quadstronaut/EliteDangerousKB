@@ -120,6 +120,37 @@ def record_source(url: str, content_sha256: str, seen_path: str) -> None:
     The ENTIRE load -> mutate -> write cycle runs under a cross-process file
     lock (Bug 1 fix).  Lock path is derived from seen_path so each seen.json
     has its own lock, and monkeypatched tmp_path tests stay isolated.
+
+    NOTE: this is the KEPT-source path; it MUST NOT regress (no "discarded"
+    flag is touched here). The discard path is record_discard().
+    """
+    _write_seen_entry(url, content_sha256, seen_path, discarded=False)
+
+
+def record_discard(url: str, content_sha256: str, seen_path: str) -> None:
+    """
+    Record a DISCARDED URL in seen.json atomically (B1).
+
+    Identical to record_source plus a structured ``"discarded": true`` flag on
+    the entry. Keeping content_sha256 means is_resumable() returns False (the
+    URL stays deduped — we will not re-fetch a deliberately-discarded source),
+    while the flag lets discarded_source_keys() identify it as page-less ON
+    PURPOSE (the AUTHORITATIVE parity signal — HC-6/B2). No journal scraping.
+
+    Preserves ``first_seen`` on an existing key; creates seen.json if missing.
+    """
+    _write_seen_entry(url, content_sha256, seen_path, discarded=True)
+
+
+def _write_seen_entry(
+    url: str, content_sha256: str, seen_path: str, *, discarded: bool
+) -> None:
+    """Shared writer for record_source / record_discard.
+
+    Whole load -> mutate -> write cycle under the cross-process file lock so a
+    concurrent writer cannot lose this update. ``discarded=False`` produces a
+    byte-for-byte equivalent of the legacy record_source entry shape (no extra
+    key) — non-discard behaviour does NOT regress.
     """
     with file_lock(_seen_lock_path(seen_path), timeout=30.0):
         data = _load_seen(seen_path)
@@ -133,7 +164,51 @@ def record_source(url: str, content_sha256: str, seen_path: str) -> None:
                 "first_seen": now_iso,
                 "content_sha256": content_sha256,
             }
+        if discarded:
+            data[key]["discarded"] = True
         write_json_atomic(Path(seen_path), data)
+
+
+def forget_source(url: str, seen_path: str) -> bool:
+    """
+    Remove the sha256(url) key from seen.json so the URL becomes resumable again.
+
+    Returns True iff a key was present and removed (after the write,
+    is_resumable(url, ...) -> True); False if the key was absent (idempotent —
+    a second call returns False and never raises). A missing seen.json creates
+    nothing and returns False.
+
+    Used by commit_guard.recover_stranded_urls AFTER a stranded URL has been
+    re-queued, to purge the stale "done" marker so the loop revisits it.
+    Whole cycle under the cross-process lock (FIX-1 / HC-2 transaction safety).
+    """
+    with file_lock(_seen_lock_path(seen_path), timeout=30.0):
+        if not Path(seen_path).exists():
+            return False
+        data = _load_seen(seen_path)
+        key = _url_sha(url)
+        if key not in data:
+            return False
+        del data[key]
+        write_json_atomic(Path(seen_path), data)
+        return True
+
+
+def discarded_source_keys(seen_path: str) -> set[str]:
+    """
+    Return the set of sha256(url) KEYS whose seen.json entry is flagged discarded.
+
+    This is the AUTHORITATIVE discard signal (HC-6/B2): membership is decided in
+    the seen.json KEY SPACE, not by scraping journal text. Reads via the tolerant
+    _load_seen path (survives the NTFS replace window). Empty / missing seen.json
+    -> empty set. An entry must have a truthy ``"discarded"`` value to count.
+    """
+    data = _load_seen(seen_path)
+    keys: set[str] = set()
+    for key, entry in data.items():
+        if isinstance(entry, dict) and entry.get("discarded"):
+            keys.add(key)
+    return keys
 
 
 # ---------------------------------------------------------------------------

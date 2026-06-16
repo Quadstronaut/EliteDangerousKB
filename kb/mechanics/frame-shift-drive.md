@@ -1,5 +1,6 @@
 ---
 source_url: https://elite-dangerous.fandom.com/wiki/Frame_Shift_Drive
+source_urls: ["https://elite-dangerous.fandom.com/wiki/Frame_Shift_Drive", "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/standard/frame_shift_drive.json"]
 source_type: fandom
 source_tier: 2
 captured_at: 2026-06-01
