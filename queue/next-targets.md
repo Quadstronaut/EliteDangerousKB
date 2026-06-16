@@ -3,8 +3,20 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/panther_clipper_mk_ii.json (tier: 0, type: coriolis, note: extract Panther Clipper Mk II hull stats — largest hull stocked at Garay Terminal, likely missing a kb/ships/ page. NOTE Coriolis path is ships/<slug>.json — verify the exact slug in ships/index.js if 404)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_8.json (tier: 0, type: coriolis, note: extract Type-8 Transporter hull stats — recent hauler stocked at Garay Terminal; create kb/ships/type-8-transporter.md. Confirm slug via ships/index.js)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_11_prospector.json (tier: 0, type: coriolis, note: extract Type-11 Prospector hull stats — recent mining ship stocked at Garay Terminal; create kb/ships/type-11-prospector.md. Confirmed slug from ships/index.js export key type_11_prospector)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/mandalay.json (tier: 0, type: coriolis, note: extract Mandalay hull stats — recent long-range explorer; create kb/ships/mandalay.md. Confirmed slug from ships/index.js export key mandalay)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_9_heavy.json (tier: 0, type: coriolis, note: extract Type-9 Heavy hull stats — large-pad bulk hauler stocked at Garay Terminal; create kb/ships/type-9-heavy.md. Confirmed slug from ships/index.js export key type_9_heavy)
+
+<!-- DONE loop 7: (1) Coriolis Panther Clipper Mk II hull -> kb/ships/panther-clipper-mk-ii.md
+     (Zorgon Peterson, class 3/Large pad, 1200t hull, 350 MJ shield, 620 armour, hardness 70,
+     PP/Thr C8, FSD C7, twin C8 + twin C7 optionals incl. 2 cargo-restricted = largest cargo ship,
+     2L+4M+4S hardpoints, 6 utility, crew 4, fighter hangar). CORRECTION: queue's stale slugs
+     panther_clipper_mk_ii.json AND type_8.json both 404; correct Tier-0 paths per ships/index.js
+     are ships/panther_clipper.json (key panthermkii) and ships/type_8_transport.json (key
+     type_8_transport). (2) Coriolis Type-8 Transporter hull -> kb/ships/type-8-transporter.md
+     (Lakon, class 2/Medium pad, 400t hull, 228 MJ shield, 440 armour, FSD C5, C7+3xC6 optionals =
+     best medium-pad hauler, 1M+5S hardpoints, 4 utility, crew 1). Both linked in trunk.md. -->
+
 
 <!-- DONE loop 6: (1) EDSM api-system-v1/stations/outfitting for Garay Terminal (marketId 3229756160).
      653 module SKUs / 107 families. Full core internals to C8; FSD + FSD(SCO) to C7; Shield & Bi-Weave

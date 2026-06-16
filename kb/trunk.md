@@ -17,6 +17,8 @@ Central index of the KB. Each section links to the main topic pages.
 Core vessel knowledge: stats, outfitting slots, rebuy costs, role recommendations.
 See [[ships/python-mk-ii]] for the Python Mk II.
 See [[ships/cobra-mk-v]] for the Cobra Mk V (small multirole, stocked at Deciat).
+See [[ships/type-8-transporter]] for the Type-8 Transporter (best medium-pad hauler).
+See [[ships/panther-clipper-mk-ii]] for the Panther Clipper Mk II (largest-cargo ship).
 
 ## Engineers
 
