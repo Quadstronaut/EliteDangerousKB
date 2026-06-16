@@ -28,8 +28,11 @@ indexes/manifest.json
 indexes/data-sources.json
 
 # Research-loop scratch: write_atomic stages KB pages here before the atomic
-# replace, so it is transient working state, not a tracked artifact.
-live/_staging.md
+# replace (live/_staging.md), plus any other live/_* scratch the loop drops
+# (e.g. live/_loop-13-*). All transient working state, not tracked artifacts.
+# The underscore prefix deliberately does NOT match live/.gitkeep (the sole
+# tracked file under live/), so the directory still ships in a fresh clone.
+live/_*
 
 # Logs
 journal/daemon.log
