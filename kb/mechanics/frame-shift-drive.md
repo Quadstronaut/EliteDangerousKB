@@ -48,3 +48,5 @@ Requires completing the Guardian tech-broker unlock: collect Guardian blueprint 
 materials at a Guardian Structure site. See Canonn's Guardian site map for locations.
 
 Slots: Internal (optional). Does not replace the FSD — it stacks additively.
+
+[[trunk]]
