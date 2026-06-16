@@ -84,12 +84,16 @@ If False, SKIP INARA this loop (do not sleep) and log the skip.
   prompt asking for: key claims, named entities, currency signals, an OBSOLETE yes/no, and
   per-claim availability (live|seasonal|changed). If that MCP tool is unavailable, summarize
   inline yourself (note the fallback in the log).
-- Apply the DISCARD RULE. If obsolete-and-pointless -> do NOT write a page; log the discard to
-  `journal/loop-<n>.md`; still record the source in seen.json; continue.
+- Apply the DISCARD RULE. If obsolete-and-pointless -> do NOT write a page. Record the DISCARD in
+  seen.json with the discard MARKER so it stays deduped AND is recognised as page-less on purpose
+  (this marker — not the journal — is the F6 parity signal; see PHASE 6 recovery):
+  `PY -c "from copilot.loop_state import record_discard; record_discard('<url>','<contentsha>','indexes/seen.json')"`
+  You MAY also log the discard to `journal/loop-<n>.md` for a human reader, but that log is no
+  longer the parity signal. Continue.
 - Write kept summaries to `summaries/<sha8>-<slug>.md` with YAML frontmatter (source_url,
   source_type, source_tier, captured_at, source_count:1, verified:false, availability, changed_note).
-- Record each processed source:
-  `PY -c "from copilot.loop_state import record_source; record_source('<url>','<contentsha>','indexes/seen.json')"`
+- DO NOT record KEPT sources here. A KEPT source is recorded in PHASE 6 COMMIT, AFTER its kb page
+  has been written (this closes the F6 strand: seen.json is only marked "done" once the page exists).
 - Print `[SUMMARIZE] <slug> — <n> claims, availability=<...>, obsolete=NO|DISCARDED`. Checkpoint phase=summarize.
 
 ## PHASE 4 — SYNTHESIZE
@@ -144,6 +148,16 @@ the index is a derived artifact; a committed KB page is not. Checkpoint phase=in
 
 ## PHASE 6 — COMMIT
 
+0a. **Record every KEPT source NOW — AFTER its page exists (A1, closes the F6 strand).** For each
+   KEPT source processed this loop whose kb page was written in PHASE 4:
+   `PY -c "from copilot.loop_state import record_source; record_source('<url>','<contentsha>','indexes/seen.json')"`
+   (Discards were already recorded in PHASE 3 via `record_discard`; do NOT record them again here.)
+0b. **F6 RECOVERY — re-queue any stranded source (A2). MUST NOT raise.** After recording, sweep the
+   sources processed this loop; any that are recorded-but-page-less and not discarded are re-queued
+   and their stale seen markers purged so the next loop revisits them:
+   `PY -c "from copilot.commit_guard import recover_stranded_urls; from copilot.paths import repo_root; r=recover_stranded_urls([<processed_urls>], seen_path='indexes/seen.json', queue_path='queue/next-targets.md', journal_path='journal/loop-<n>.md', repo_root=repo_root()); print('[COMMIT] F6 recovered:', r)"`
+   This NEVER raises (a strand re-queues; it does not abort the loop). `assert_commit_parity` is the
+   raising form kept for tests/operators and is NOT called here.
 1. `git add kb/ summaries/ sources/ indexes/ embeddings/ queue/ journal/ STATE.toml`
 2. Count staged files: `git diff --cached --name-only` -> N.
 3. Load the deep-analysis threshold:
@@ -154,9 +168,10 @@ the index is a derived artifact; a committed KB page is not. Checkpoint phase=in
    `[COMMIT] empty loop <n> — no new content.` Then go to step 6.
 5. **NON-EMPTY (N > 0):** `git commit -m "Loop <n>: <pages> pages, <sources> sources, <mode> mode"`.
    Set `consecutive_empty_loops=0`. Print `[COMMIT] loop <n> committed (<N> files).`
-6. **ALWAYS advance state** (this MUST run on every loop — empty or not — so the wrapper sees
-   loop_number progress and does not livelock-retry). Persist loop_number+1, phase, and the
-   mode / consecutive_empty_loops values from above in ONE write:
+6. **ALWAYS advance state** (this MUST run on every loop — empty or not, and AFTER the F6 recovery
+   above regardless of whether anything was stranded — so the wrapper sees loop_number progress and
+   does not livelock-retry). Persist loop_number+1, phase, and the mode / consecutive_empty_loops
+   values from above in ONE write:
    `PY -c "from copilot.atomic import read_state, write_state; s=read_state(); s['loop_number']=s.get('loop_number',0)+1; s['last_completed_phase']='commit'; s['consecutive_empty_loops']=<value>; s['mode']='<mode>'; write_state(s)"`
 7. Print `[COMMIT] loop <n> complete.` Then STOP — exit. Do not begin another loop.
 
@@ -177,7 +192,12 @@ No new external sources. Expand inward, never idle:
 ## DISCARD RULE — current-truth-only
 
 KEEP what is TRUE and RELEVANT NOW. Discard (no page) when a source is obsolete AND has no
-present value AND knowing it changed prevents no bad decision. HARD rules:
+present value AND knowing it changed prevents no bad decision.
+
+A discard MUST be recorded with `record_discard(...)` (PHASE 3) — the structured `"discarded": true`
+marker in seen.json is the AUTHORITATIVE parity signal that a source is intentionally page-less, so
+the PHASE 6 F6 recovery does NOT re-queue it. Journal logging of a discard is optional and for
+humans only; it is no longer consulted for parity. HARD rules:
 - AX combat, Spire sites, Titan-wreck diving, Thargoid content: ALWAYS `availability: live`.
   The war narrative ended but this content is currently accessible — NEVER present it as gone.
 - Colonisation is "**Trailblazers**" (Feb 2025) — never "Colonisation v1" or older terms.
