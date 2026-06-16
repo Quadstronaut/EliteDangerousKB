@@ -23,6 +23,14 @@ See [[ships/type-11-prospector]] for the Type-11 Prospector (medium-pad dedicate
 See [[ships/type-9-heavy]] for the Type-9 Heavy (large-pad bulk hauler).
 See [[ships/panther-clipper-mk-ii]] for the Panther Clipper Mk II (largest-cargo ship).
 
+## Outfitting
+
+Module reference pages: stats, classes/ratings, costs from the Tier-0 Coriolis data.
+See [[outfitting/mining-tools]] for the mining toolkit (lasers, abrasion blaster, sub-surface
+displacement missile, seismic charge launcher, pulse wave analyser).
+See [[outfitting/frame-shift-drive]] for the FSD module reference (legacy + SCO Supercruise Overcharge).
+See [[outfitting/fuel-scoop]] for the Fuel Scoop (massless; scoop-rate by class/rating).
+
 ## Engineers
 
 Engineer unlock sequences and offered blueprints.
