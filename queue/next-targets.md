@@ -3,9 +3,23 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_11_prospector.json (tier: 0, type: coriolis, note: extract Type-11 Prospector hull stats — recent mining ship stocked at Garay Terminal; create kb/ships/type-11-prospector.md. Confirmed slug from ships/index.js export key type_11_prospector)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/mandalay.json (tier: 0, type: coriolis, note: extract Mandalay hull stats — recent long-range explorer; create kb/ships/mandalay.md. Confirmed slug from ships/index.js export key mandalay)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_9_heavy.json (tier: 0, type: coriolis, note: extract Type-9 Heavy hull stats — large-pad bulk hauler stocked at Garay Terminal; create kb/ships/type-9-heavy.md. Confirmed slug from ships/index.js export key type_9_heavy)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/index.js (tier: 0, type: coriolis, note: enumerate mining-tool module slugs — mining laser, abrasion blaster, seismic charge launcher, sub-surface displacement missile, pulse wave analyser — to seed kb/outfitting/ mining-tool pages now that kb/ships/type-11-prospector.md exists but kb/outfitting/ has no mining tools. Confirm real module JSON paths from the index before fetching, as ships/index.js keys differed from filenames in loops 6-7.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/index.js (tier: 0, type: coriolis, note: also map standard-module slugs for Frame Shift Drive + FSD(SCO) + fuel scoop to seed kb/outfitting/ core-module pages — supports the new Mandalay explorer and Type-9 Heavy hauler builds. Same path-vs-key caution.)
+
+<!-- DONE loop 8: 3 Coriolis Tier-0 ship hulls created (all current, availability: live):
+     (1) kb/ships/type-11-prospector.md — Lakon, class 2/MEDIUM pad, dedicated miner. 320t hull,
+     275 MJ shield, 350 armour, hardness 58, PD class 7 (sustains mining tools). 8 hardpoints =
+     4 mining-tool-only (3,2,2,1) + 4 general (2,1,1,1); class-5 limpet-only bay + class-5 fighter
+     bay; optionals 6,6,6,5,5,4,3,2,1,1. Hull 66.3M CR. Stocked at Garay Terminal (loop 5).
+     (2) kb/ships/mandalay.md — Zorgon Peterson, class 2/MEDIUM pad, long-range explorer. Light
+     230t hull + class-5 FSD; roll 96 (very nimble); 4M+2S hardpoints; optionals 6,5,4,4,3,3,2,1,1,1.
+     Hull 16.5M CR.
+     (3) kb/ships/type-9-heavy.md — Lakon, class 3/LARGE pad, bulk hauler. 850t, slow (yaw 8),
+     twin class-8 optionals = ~1,580 t theoretical max cargo; 480 armour; 3M+2S hardpoints. Hull
+     72.1M CR. Stocked at Garay Terminal (loop 5). All 3 linked in trunk.md Ships section.
+     CONFIRMED via ships/index.js: filenames type_11_prospector / mandalay / type_9_heavy all match
+     queue paths (no stale-slug 404 this loop). -->
+
 
 <!-- DONE loop 7: (1) Coriolis Panther Clipper Mk II hull -> kb/ships/panther-clipper-mk-ii.md
      (Zorgon Peterson, class 3/Large pad, 1200t hull, 350 MJ shield, 620 armour, hardness 70,
