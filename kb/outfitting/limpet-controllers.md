@@ -1,5 +1,6 @@
 ---
 source_url: https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/prospector_limpet_controllers.json
+source_urls: [https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/collector_limpet_controllers.json]
 source_type: coriolis
 source_tier: 0
 captured_at: 2026-06-16T00:44:44+00:00

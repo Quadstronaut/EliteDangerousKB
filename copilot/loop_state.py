@@ -110,16 +110,27 @@ def _seen_lock_path(seen_path: str) -> str:
     return seen_path + ".lock"
 
 
-def record_source(url: str, content_sha256: str, seen_path: str) -> None:
+def record_source(
+    url: str,
+    content_sha256: str,
+    seen_path: str,
+    *,
+    discarded: bool = False,
+) -> None:
     """
     Record a URL + content hash in seen.json atomically.
 
     Preserves `first_seen` on subsequent updates; updates `content_sha256`.
     Creates seen.json if it does not exist.
 
+    When `discarded=True`, writes a `"discarded": true` marker into the entry
+    so commit_guard can distinguish an intentional no-page decision (PHASE 3
+    DISCARD RULE) from an F6 strand.  A discarded URL is still treated as
+    seen by is_resumable (returns False) — it will not be re-fetched.
+
     The ENTIRE load -> mutate -> write cycle runs under a cross-process file
-    lock (Bug 1 fix).  Lock path is derived from seen_path so each seen.json
-    has its own lock, and monkeypatched tmp_path tests stay isolated.
+    lock.  Lock path is derived from seen_path so each seen.json has its own
+    lock, and monkeypatched tmp_path tests stay isolated.
     """
     with file_lock(_seen_lock_path(seen_path), timeout=30.0):
         data = _load_seen(seen_path)
@@ -133,7 +144,45 @@ def record_source(url: str, content_sha256: str, seen_path: str) -> None:
                 "first_seen": now_iso,
                 "content_sha256": content_sha256,
             }
+        if discarded:
+            data[key]["discarded"] = True
         write_json_atomic(Path(seen_path), data)
+
+
+def record_discard(url: str, content_sha256: str, seen_path: str) -> None:
+    """Record a URL as intentionally discarded (PHASE 3 DISCARD RULE).
+
+    Equivalent to record_source(..., discarded=True).  Kept as a named alias
+    so prompt wording can call it by a descriptive name.
+    """
+    record_source(url, content_sha256, seen_path, discarded=True)
+
+
+def forget_source(url: str, seen_path: str) -> None:
+    """Purge a URL's entry from seen.json so is_resumable returns True next loop.
+
+    Used by the F6 strand-recovery helper: if a URL was stranded (recorded but
+    no page committed), re-queuing it is not enough — we must also clear the
+    seen entry so the daemon re-fetches it on the next loop.
+
+    Atomic write under file_lock.  No-op if the URL is not in seen.json.
+    """
+    with file_lock(_seen_lock_path(seen_path), timeout=30.0):
+        data = _load_seen(seen_path)
+        key = _url_sha(url)
+        if key in data:
+            del data[key]
+            write_json_atomic(Path(seen_path), data)
+
+
+def discarded_source_keys(seen_path: str) -> set[str]:
+    """Return the set of sha256(url) keys marked discarded in seen.json.
+
+    Used by commit_guard to check discard status without knowing the raw URL
+    (seen.json only stores hashed keys, not raw URLs).
+    """
+    data = _load_seen(seen_path)
+    return {key for key, entry in data.items() if entry.get("discarded")}
 
 
 # ---------------------------------------------------------------------------

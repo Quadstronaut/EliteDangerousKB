@@ -11,6 +11,9 @@ from copilot.loop_state import (
     advance_phase,
     is_resumable,
     record_source,
+    record_discard,
+    forget_source,
+    discarded_source_keys,
     check_inara_rate,
     PHASE_ORDER,
 )
@@ -140,6 +143,124 @@ class TestRecordSource:
         assert seen.exists()
         data = json.loads(seen.read_text(encoding="utf-8"))
         assert len(data) == 1
+
+
+# ---------------------------------------------------------------------------
+# Goal B: record_discard, forget_source, discarded_source_keys
+# ---------------------------------------------------------------------------
+
+class TestRecordDiscard:
+    def test_record_discard_sets_marker(self, tmp_path):
+        """AC-B1: record_discard writes discarded:true into the seen.json entry."""
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        url = "https://example.com/obsolete"
+        record_discard(url, "content_hash_obsolete", str(seen))
+        data = json.loads(seen.read_text(encoding="utf-8"))
+        url_sha = hashlib.sha256(url.encode()).hexdigest()
+        assert url_sha in data
+        assert data[url_sha].get("discarded") is True
+        assert data[url_sha]["content_sha256"] == "content_hash_obsolete"
+        assert "first_seen" in data[url_sha]
+
+    def test_record_discard_preserves_first_seen(self, tmp_path):
+        """AC-B1: record_discard preserves first_seen on repeated calls."""
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        url = "https://example.com/repeat"
+        record_discard(url, "hash_v1", str(seen))
+        data1 = json.loads(seen.read_text())
+        url_sha = hashlib.sha256(url.encode()).hexdigest()
+        first = data1[url_sha]["first_seen"]
+        record_discard(url, "hash_v2", str(seen))
+        data2 = json.loads(seen.read_text())
+        assert data2[url_sha]["first_seen"] == first  # preserved
+        assert data2[url_sha]["content_sha256"] == "hash_v2"  # updated
+
+    def test_record_discard_uses_atomic_write(self, tmp_path, monkeypatch):
+        """AC-B1: record_discard must call write_json_atomic (not raw open)."""
+        from copilot import loop_state
+        calls = []
+        monkeypatch.setattr(loop_state, "write_json_atomic",
+                            lambda path, obj: calls.append((path, obj)))
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        record_discard("https://x.com/d", "h", str(seen))
+        assert len(calls) == 1
+
+    def test_discarded_url_is_resumable_false(self, tmp_path):
+        """AC-B2: is_resumable returns False for a discarded URL (dedup preserved)."""
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        url = "https://example.com/discarded"
+        record_discard(url, "hash_disc", str(seen))
+        assert is_resumable(url, str(seen)) is False
+
+    def test_record_source_with_discarded_kwarg(self, tmp_path):
+        """record_source(discarded=True) is equivalent to record_discard."""
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        url = "https://example.com/kwarg-discard"
+        record_source(url, "hash_kd", str(seen), discarded=True)
+        data = json.loads(seen.read_text())
+        url_sha = hashlib.sha256(url.encode()).hexdigest()
+        assert data[url_sha].get("discarded") is True
+
+
+class TestForgetSource:
+    def test_forget_purges_key(self, tmp_path):
+        """forget_source removes the URL's sha256 key from seen.json."""
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        url = "https://example.com/forget-me"
+        record_source(url, "hash_fm", str(seen))
+        assert not is_resumable(url, str(seen))  # recorded
+
+        forget_source(url, str(seen))
+        assert is_resumable(url, str(seen))  # purged -> resumable
+
+    def test_forget_noop_if_not_present(self, tmp_path):
+        """forget_source on an unrecorded URL is a no-op (no error)."""
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        forget_source("https://example.com/not-there", str(seen))  # no raise
+
+    def test_forget_uses_atomic_write(self, tmp_path, monkeypatch):
+        """AC-HARD1: forget_source must call write_json_atomic."""
+        from copilot import loop_state
+        calls = []
+        real_wja = loop_state.write_json_atomic
+        url = "https://example.com/atomic-forget"
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        record_source(url, "h", str(seen))
+
+        monkeypatch.setattr(loop_state, "write_json_atomic",
+                            lambda path, obj: (calls.append((path, obj)), real_wja(path, obj))[1])
+        forget_source(url, str(seen))
+        assert len(calls) >= 1  # write_json_atomic was called
+
+
+class TestDiscardedSourceKeys:
+    def test_returns_discarded_keys(self, tmp_path):
+        """discarded_source_keys returns sha256 keys for discarded entries only."""
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        kept_url = "https://example.com/kept"
+        disc_url = "https://example.com/discarded"
+        record_source(kept_url, "h_kept", str(seen))
+        record_discard(disc_url, "h_disc", str(seen))
+
+        keys = discarded_source_keys(str(seen))
+        disc_sha = hashlib.sha256(disc_url.encode()).hexdigest()
+        kept_sha = hashlib.sha256(kept_url.encode()).hexdigest()
+        assert disc_sha in keys
+        assert kept_sha not in keys
+
+    def test_empty_seen_returns_empty_set(self, tmp_path):
+        seen = tmp_path / "seen.json"
+        seen.write_text("{}", encoding="utf-8")
+        assert discarded_source_keys(str(seen)) == set()
 
 
 # ---------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 ---
 source_url: https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/mining_laser.json
+source_urls: [https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/abrasion_blaster.json, https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/seismic_charge_launcher.json, https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/pulse_wave_analyser.json, https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/sub_surface_displacement_missile.json]
 source_type: coriolis
 source_tier: 0
 captured_at: 2026-06-16T00:32:57+00:00
