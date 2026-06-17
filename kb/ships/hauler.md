@@ -76,9 +76,12 @@ Bulkheads carry `causres 0` on every grade.
   is the **purer freighter/jumper**: lighter (14 vs 35 t) and cheaper, but with only one Small mount,
   six optionals and a smaller class-2 core. Pick the Adder for flexibility, the Hauler for the absolute
   cheapest cargo run or the lightest possible jump platform.
-- **vs [[ships/type-8-transporter]]:** the Type-8 is the proper medium-pad dedicated hauler — vastly
-  more cargo capacity for serious trade. The Hauler is the tiny small-pad entry rung beneath it, for
-  early-game cargo missions and outpost-only routes a medium pad cannot reach.
+- **vs [[ships/type-6-transporter]]:** the Type-6 is the **immediate next rung up the freight ladder** —
+  Lakon's cheap medium-pad dedicated freighter (still under 1 M CR), with far deeper class-5 optionals for
+  real cargo capacity once you can use medium pads. The Hauler is the tiny small-pad rung beneath it.
+- **vs [[ships/type-8-transporter]]:** the Type-8 is the top-end medium-pad dedicated hauler — vastly
+  more cargo capacity for serious trade. The Hauler is the tiny small-pad entry rung beneath the whole
+  Lakon freight line, for early-game cargo missions and outpost-only routes a medium pad cannot reach.
 
 ## Build notes
 

@@ -1,8 +1,52 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/imperial_courier.json (tier: 0, type: coriolis-ship, note: PAIRS WITH the just-paged [[ships/imperial-eagle]] — the other Gutamaya small-pad ship, completing the Imperial small-pad line. The Imperial Courier is the fast, low-profile Gutamaya light-combat/courier ship, famous for THREE Medium hardpoints on a size-1 hull plus a low heat signature. Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Gutamaya)/class (expect 1 = SMALL pad)/hullMass/speed-boost (expect FAST, may rival the Imperial Eagle's 300/400)/baseShield/baseArmour (expect thin)/hardness/heatCapacity (CHECK — Courier runs cool; may challenge the Hauler's NEW low 123 or sit mid-pack)/masslock/roll-pitch-yaw/core-standard array/hardpoints array (expect 3 Medium = the signature)/internal array (CHECK Military slot)/costs + RANK GATE (the Imperial Courier DOES require an Empire rank — empireRank in the data — UNLIKE the no-gate Imperial Eagle; CONFIRM the requirements block). Write -> kb/ships/imperial-courier.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/imperial-eagle]] (Gutamaya small-pad siblings, bidirectional) + [[ships/viper-mk-iii]] + [[trunk]] Ships; CONFIRM key 'imperial_courier' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/keelback.json (tier: 0, type: coriolis-ship, note: COMPLETES THE TYPE-6 PAIR -- the [[ships/type-6-transporter]]'s armed combat sibling. The Keelback is Lakon's combat-trader variant of the Type-6 airframe: same medium-pad freighter base, but with a Ship-Launched Fighter bay and better hardpoints -- the budget 'trader that can fight back / fly an SLF'. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Lakon)/class (expect 2 = MEDIUM pad, same as Type-6)/hullMass (expect near the Type-6's 155, maybe a touch heavier)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK -- expect more/bigger mounts than the Type-6's 2 Small, the combat upgrade)/internal array (CHECK for a fighter-bay-capable slot + Military slot; the Keelback is famous as the cheapest SLF-capable ship)/costs + rank gate (expect NONE). Write -> kb/ships/keelback.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/type-6-transporter]] (same airframe, combat variant, bidirectional) + [[ships/hauler]] freight ladder + [[trunk]] Ships; CONFIRM key 'keelback' via ships/index.js if it 404s.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_6_transporter.json (tier: 0, type: coriolis-ship, note: THE NEXT RUNG in the dedicated-hauler ladder opened by the just-paged [[ships/hauler]] (Hauler -> Type-6 -> Type-7/8 -> [[ships/type-9-heavy]]). Lakon's cheap medium-pad dedicated freighter — the classic "first real trader" step up from the small-pad Hauler. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Lakon)/class (expect 2 = MEDIUM pad — the jump from the Hauler's small pad)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array (CHECK FSD class — the Type-6 has a good range reputation for a trader)/hardpoints array (expect just 2 Small — barely armed, a pure freighter)/internal array (cargo-focused, deep optionals; CHECK Military slot — expect NONE)/costs (cheap). Write -> kb/ships/type-6-transporter.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/hauler]] (the small-pad rung below, bidirectional) + [[ships/type-8-transporter]] (the step up) + [[trunk]] Ships; CONFIRM key 'type_6_transporter' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/imperial_clipper.json (tier: 0, type: coriolis-ship, note: EXTENDS THE GUTAMAYA / IMPERIAL LINE beyond the small-pad pair ([[ships/imperial-eagle]] + [[ships/imperial-courier]]). The Imperial Clipper is Gutamaya's fast, elegant large-pad multirole -- famously one of the fastest big ships, with only Large/Medium hardpoints (no Small) and a large-pad-only quirk despite a mid-size feel. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Gutamaya)/class (expect 3 = LARGE pad -- CONFIRM)/hullMass/speed-boost (expect FAST for its size -- may set a KB big-ship speed mark)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK the Large/Medium mix)/internal array (CHECK Military slot)/costs + RANK GATE (empireRank -- the Clipper requires an Empire rank; CONFIRM which, expect higher than the Courier's Master/3). Write -> kb/ships/imperial-clipper.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/imperial-courier]] + [[ships/imperial-cutter]] (the Gutamaya large-pad flagship) + [[trunk]] Ships; CONFIRM key 'imperial_clipper' via ships/index.js if it 404s.)
+
+<!-- DONE loop 34: PAGED THE TWO QUEUED TIER-0 SMALL/MEDIUM-PAD GAPS (Imperial Courier + Type-6
+     Transporter), completing the Gutamaya small-pad pair and opening the medium-pad budget-freight rung.
+     2 new Tier-0 Coriolis ship pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/imperial-courier.md NEW (key imperial_courier, file imperial_courier.json resolved
+     FIRST TRY 3187 bytes, no 404). edID 128671223, eddbID 14. Gutamaya, class 1 (SMALL pad).
+     RANK GATE CONFIRMED: requirements.empireRank 3 = Empire rank MASTER -- the Imperial Courier DOES
+     require an Empire rank, UNLIKE the no-gate [[ships/imperial-eagle]] (QUEUE-GUESS 'DOES require a
+     rank' -> CONFIRMED; gate is Master/rank 3, contrast the Cutter's Duke/rank 12). hullMass 35 =
+     TIES the [[ships/adder]] for JOINT 3rd-LIGHTEST hull in KB (behind Hauler 14 + Sidewinder 25;
+     adder.md hull-mass line updated to note the tie). speed 280/boost 380 (fast, but SHORT of the
+     Imperial Eagle's 300/400 -- QUEUE-GUESS 'may rival 300/400' -> FELL SHORT). baseShield 200 = very
+     high for a size-1 hull, 2nd-HIGHEST small-pad shield behind only the [[ships/vulture]]'s 240 (the
+     Courier's signature shield-brawler trait; well above Viper Mk IV 150). baseArmour 80 (thin). hardness
+     30. heatCapacity 230 = MID-PACK (QUEUE-GUESS 'runs cool, may challenge the Hauler's low 123' ->
+     WRONG: 230 is well above 123, does NOT challenge it; the queue conflated low-heatcap with
+     cool-running -- they're inverse). masslock 7, crew 1, pitch 38/roll 90/yaw 16, reservefuel 0.41.
+     hull 2,484,137 / retail 2,542,931. Core standard [4,3,3,1,3,2,3]: PP4 Thr3 FSD3 LS1 PD3 Sen2 FT3 =
+     bigger core than the Imperial Eagle (class-4 PP + class-3 PD vs the Eagle's PP3/PD2 -- feeds the
+     three Mediums + heavy shield). Hardpoints [2,2,2,0,0,0,0] = 3 MEDIUM = the signature (most Medium
+     mounts of any KB small-pad hull) + 4 utility (QUEUE-GUESS '3 Medium' CONFIRMED). Internals
+     [3,3,2,2,2,1,1,1,PAS-c1] = EIGHT regular (top two class-3) + class-1 PAS, NO Military slot
+     (CONTRAST: the Imperial Eagle HAS a class-2 Military; the Courier does NOT). causres 0 all grades.
+     (2) kb/ships/type-6-transporter.md NEW (key type_6_transporter, file type_6_transporter.json resolved
+     FIRST TRY 3092 bytes, no 404). edID 128049285, eddbID 19. Lakon, class 2 (MEDIUM pad -- the jump up
+     from the Hauler's small pad, CONFIRMED), NO requirements block = NO rank gate. hull 866,622 / retail
+     1,045,945 = CHEAPEST MEDIUM-PAD (class-2) HULL IN KB by a wide margin (verified by scanning all
+     class-2 ship pages: next cheapest is the [[ships/asp-explorer]] at 6,145,793 ~7x more). hullMass
+     155, speed 220/boost 350. baseShield 90 (weak) / baseArmour 180, hardness 35, heatCapacity 179,
+     masslock 8, crew 1, pitch 30/roll 100/yaw 17, reservefuel 0.39. Core standard [3,4,4,2,3,2,4]:
+     PP3 Thr4 FSD4 LS2 PD3 Sen2 FT4 = class-4 FSD + class-4 fuel tank on a light hull = the trader range
+     reputation (QUEUE-GUESS 'good range for a trader' -> CONFIRMED). Hardpoints [1,1,0,0,0] = 2 SMALL +
+     3 utility = barely armed, pure freighter (QUEUE-GUESS 'just 2 Small' CONFIRMED). Internals
+     [5,5,4,4,3,2,2,1,PAS-c1] = EIGHT regular (top two class-5 = deep cargo) + class-1 PAS, NO Military
+     (QUEUE-GUESS 'expect NONE' CONFIRMED). causres 0 all grades. hauler.md 'vs Type-8' section updated
+     to insert the Type-6 as the immediate next freight-ladder rung (bidirectional). trunk.md: +2 Ships
+     bullets (imperial-courier + type-6-transporter after hauler).
+     PATH NOTE: both bare keys (imperial_courier / type_6_transporter) resolved first try, no index.js
+     probe. NEXT: queued two reachable Tier-0 sibling-completing gaps at the TOP -- Keelback (Lakon, the
+     Type-6's armed/fighter-bay COMBAT sibling, completes the Type-6 pair) + Imperial Clipper (Gutamaya,
+     the fast large-pad multirole that extends the Imperial line beyond the small-pad pair; CHECK its
+     Empire rank gate). The Spire Site stays queued (BLOCKED) below for retry. -->
+
+
 
 
 
