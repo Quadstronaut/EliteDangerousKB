@@ -1,8 +1,54 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_7_transport.json (tier: 0, type: coriolis-ship, note: GLARING LAKON FREIGHTER GAP -- the KB has the whole Lakon "Type" trader line EXCEPT the Type-7: [[ships/type-6-transporter]] (small/medium budget trader), [[ships/type-8-transporter]], [[ships/type-9-heavy]], [[ships/type-10-defender]] and [[ships/type-11-prospector]] are all paged, but the Type-7 Transporter -- the medium-pad dedicated bulk hauler that sits between the Type-6 and the large-pad Type-9 -- is MISSING. Expect a class-2 (MEDIUM pad) Lakon freighter, NO rank gate, deep cargo-biased optionals, token armament (a few Small), good cargo-per-credit. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Lakon)/class (expect 2)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/pitch-roll-yaw/core-standard array (CHECK FSD+fuel tank for range)/hardpoints array (expect FEW Small)/internal array (expect DEEP cargo, NO Military)/costs + rank gate (expect NONE). Write -> kb/ships/type-7-transporter.md NEW (source_type: coriolis, tier 0, verified false, availability: live). KEY UNCERTAIN: try type_7_transport.json first; if 404, CONFIRM the key via ships/index.js (the Type-6 key was 'type_6_transporter', so 'type_7_transporter' is the fallback). Cross-link the Lakon Type line [[ships/type-6-transporter]] + [[ships/type-9-heavy]] + [[trunk]] Ships.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/asp_scout.json (tier: 0, type: coriolis-ship, note: COMPLETES THE ASP PAIR -- the KB has [[ships/asp-explorer]] (the classic affordable medium-pad long-range explorer) but NOT its budget sibling the Asp Scout, the cheaper/lighter combat-recon variant on the same Asp airframe. Expect a class-2 (MEDIUM pad) hull, NO rank gate, LIGHTER than the Explorer with a smaller core / shallower optionals and a weaker FSD (the Scout is the cut-down cheap version). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer/class (expect 2)/hullMass (expect LIGHTER than the Explorer)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/pitch-roll-yaw/core-standard array (CHECK FSD class vs the Explorer's class-5)/hardpoints array/internal array (expect SHALLOWER than the Explorer; CHECK Military)/costs + rank gate (expect NONE). Write -> kb/ships/asp-scout.md NEW (source_type: coriolis, tier 0, verified false, availability: live). KEY: try asp_scout.json first (the Asp Explorer key is 'asp' / file asp.json; the Scout should be 'asp_scout'); CONFIRM via ships/index.js if it 404s. Cross-link [[ships/asp-explorer]] + [[trunk]] Ships -- note which is cheaper/lighter and the FSD/optional differences.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/cobra_mk_iv.json (tier: 0, type: coriolis-ship, note: COMPLETES THE COBRA LINE -- the KB has [[ships/cobra-mk-iii]] (the iconic cheap multirole) and [[ships/cobra-mk-v]] (the newer variant) but NOT the Cobra Mk IV, the heavier/roomier Faulcon DeLacy sibling of the Mk III. Expect a class-1 (SMALL pad) hull, NO rank gate, heavier than the Mk III with more internals but slower/less agile (the classic Mk III-vs-Mk IV trade). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Faulcon DeLacy)/class (expect 1)/hullMass (expect HEAVIER than Mk III)/speed-boost (expect SLOWER)/baseShield/baseArmour/hardness/heatCapacity/masslock/pitch-roll-yaw/core-standard array/hardpoints array (CHECK vs Mk III's 2M+2S)/internal array (expect DEEPER than Mk III; CHECK Military)/costs + rank gate (expect NONE). Write -> kb/ships/cobra-mk-iv.md NEW (source_type: coriolis, tier 0, verified false, availability: live). KEY: try cobra_mk_iv.json first (the Mk III key was 'cobra_mk_iii'); CONFIRM via ships/index.js if it 404s. Cross-link [[ships/cobra-mk-iii]] + [[ships/cobra-mk-v]] + [[trunk]] Ships -- note the Cobra Mk IV was a pre-order/limited ship historically, so flag availability carefully.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/pulse_laser.json (tier: 0, type: coriolis-module, note: GLARING STANDARD-WEAPON GAP -- the KB has extensive AX/Guardian weapons ([[outfitting/ax-multi-cannon]], the Guardian trio, missiles) but NOT a single BASELINE primary weapon. The Pulse Laser is the most fundamental: the cheap, low-power, efficient thermal staple nearly every combat ship mounts. This OPENS the standard-weapons family (beam_laser, burst_laser, multi_cannon, cannon, etc. as follow-ons). Tier-0 Coriolis MODULE JSON at modules/hardpoints/pulse_laser.json (path CONFIRMED -- same dir as ax_multi_cannon.json). Parse directly: it is an ARRAY of variants by mount (fixed/gimballed/turret) x class (1-4) x rating. Extract per-variant: mount, class, rating, mass, power draw, thermalload, distdraw, damage, dps, range, rof, falloff. Build a kb/outfitting/pulse-laser.md table grouped by mount + class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[trunk]] Outfitting + the AX weapons for contrast (AX weapons need Thargoid targets; the Pulse Laser is the all-purpose human-combat baseline). Damage type = thermal, strong vs shields / weak vs hull.)
+
+<!-- DONE loop 40: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Type-7 Transporter + Cobra Mk IV) --
+     COMPLETING BOTH THE LAKON TYPE FREIGHTER LINE AND THE COBRA LINE. 2 new Tier-0 Coriolis
+     ship pages (both source_count 1, verified false):
+     (1) kb/ships/type-7-transporter.md NEW (key type_7_transport, file type_7_transport.json
+     resolved FIRST TRY 3209 bytes, no 404). edID 128049297, eddbID 20. Lakon. **KEY
+     QUEUE-GUESS CORRECTION: class 3 = LARGE PAD, NOT medium.** The queue guessed 'class-2
+     MEDIUM pad' -- WRONG. The Type-7 is the well-known GOTCHA: a cheap dedicated freighter that
+     nonetheless REQUIRES A LARGE PAD (cannot dock at outposts). NO requirements block = NO rank
+     gate. hull 16,783,094 / retail 17,472,252 = **NEW CHEAPEST LARGE-PAD (class-3) HULL IN KB**
+     (verified vs all 9 class-3 pages: undercuts the Imperial Clipper 21,116,895; then Orca
+     47.8M, Type-9 72.1M, Beluga 79.7M, Type-10 121M, Anaconda 142M, Corvette 183M, Cutter
+     200M, Panther 287M; no prior 'cheapest large-pad' claim existed to correct). hullMass 350,
+     speed 180/boost 300 (slow). baseShield 155, baseArmour 340, hardness 54 (tougher than the
+     medium-pad Type-6's 180/35). heatCapacity 226, masslock 10, crew 1, pitch 22/roll 60/yaw
+     22 (ponderous), reservefuel 0.52. Core standard [5,5,5,4,4,3,5]: PP5 Thr5 FSD5 LS4 PD4
+     Sen3 FT5. Hardpoints [1,1,1,1,0,0,0,0] = 4 SMALL = 4 weapon mounts + 4 utility. Internals
+     [6,6,6,5,5,5,3,3,2,1] + PAS-c1 = TEN regular (top THREE class-6) + PAS, NO Military
+     (QUEUE-GUESS 'deep cargo, no Military' CONFIRMED). causres 0 all.
+     (2) kb/ships/cobra-mk-iv.md NEW (key cobra_mk_iv, file cobra_mk_iv.json resolved FIRST TRY
+     3225 bytes, no 404). edID 128672262, eddbID 29. Faulcon DeLacy, class 1 (SMALL pad).
+     **requirements: { horizonsEarlyAdoption: true }** = the famous LIMITED-AVAILABILITY flag
+     (NOT a rank gate): the Cobra Mk IV was a Horizons pre-order / early-adoption exclusive, NOT
+     generally purchasable; existing owners fly it normally. availability: live (flyable,
+     current ship def) + a changed_note carrying the purchase caveat (DISCARD-RULE 'one-line
+     note prevents bad advice' case -- stops commanders shopping for one). hull 623,374 / retail
+     764,720. hullMass 210 (HEAVIER than Mk III's 180 -- CONFIRMED). speed 200/boost 300
+     (SLOWER than Mk III's 280/400 -- CONFIRMED). baseShield 120 (vs Mk III 80), baseArmour 120
+     (same), hardness 35 (same), heatCapacity 228, masslock 8, crew 2, pitch 30/roll 90/yaw 10
+     (less agile than Mk III's 40/100/10), reservefuel 0.51. Core standard [4,4,4,3,3,3,4] =
+     IDENTICAL CORE to the Cobra Mk III. Hardpoints [2,2,1,1,1,0,0] = 2 MEDIUM + 3 SMALL = 5
+     mounts + 2 utility (ONE MORE Small than Mk III's 2M+2S/4 mounts). Internals
+     [4,4,4,4,3,3,2,2,1,1] + PAS-c1 = TEN regular (top FOUR class-4) + PAS, NO Military (TWO
+     more slots than Mk III's eight; 'CHECK Military' -> NO). causres 0 all.
+     CROSS-LINKS: cobra-mk-iii.md intro +Mk IV sibling link + a new 'Cobra Mk III vs Cobra Mk
+     IV' section (the COBRA LINE is now COMPLETE: III + IV + V); type-6-transporter.md
+     freight-ladder +a 'vs Type-7' bullet (flagging the large-pad jump); type-9-heavy.md +a note
+     that the Type-7 is the cheaper large-pad freighter beneath it. trunk.md: +2 Ships bullets
+     (cobra-mk-iv after cobra-mk-iii; type-7-transporter after keelback). The LAKON TYPE LINE
+     (6/7/8/9/10/11) and the COBRA LINE (III/IV/V) are both now COMPLETE in the KB.
+     PATH NOTE: both bare keys (type_7_transport / cobra_mk_iv) resolved first try, no index.js
+     probe. NEXT: ship pairs/lines are nearly exhausted. Queued the last clear classic-ship gap
+     -- Asp Scout (the budget sibling of the [[ships/asp-explorer]], completes the Asp pair) --
+     PLUS a pivot to the glaring STANDARD-WEAPON gap: the Pulse Laser (the KB has many
+     AX/Guardian weapons but no baseline primary weapon; opens the standard-weapons family). The
+     Spire Site stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 39: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Orca + Beluga Liner) -- COMPLETING THE SAUD
      KRUGER LUXURY-LINER TRIO opened by the Dolphin in loop 38 (Dolphin -> Orca -> Beluga Liner). 2 new
