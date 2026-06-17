@@ -44,6 +44,17 @@ There is **no Small or Large** Flak Launcher and **no pre-engineered variant** i
 Medium fixed and turret. The turret tracks for you (and costs ~5× the fixed); the fixed is cheaper and
 lets you aim the detonation point precisely.
 
+## Flak vs Flechette — the two remote-detonation anti-swarm weapons
+
+The Flak Launcher's kinetic sibling is the
+[[outfitting/remote-release-flechette-launcher|Remote Release Flechette Launcher]] (`tbrfl`). Both are
+single-shot, remote-detonation, Medium-only (same mass 4, power 1.20, shotspeed 550, fireint 2.0,
+reload 2, clip 1, thermload 3.6) — they differ in damage type and profile:
+
+- **Flak** — **explosive** (`E:1`), dmg 34, ammo 32, piercing 60. Fewer, harder bursts.
+- **Flechette** — **kinetic** (`K:1`), dmg 13, ammo **72**, piercing 80/70, **breachdmg 6.5**. More
+  detonations, higher penetration, module-breach pressure.
+
 ## How to fit
 
 - Takes a **Medium hardpoint** (it is a hardpoint weapon, not a utility slot — don't confuse it with
@@ -52,20 +63,22 @@ lets you aim the detonation point precisely.
   chips your hull and drops heat sinks/shields. One Flak Launcher dramatically eases those phases.
 - Pair with your main AX guns — kinetic [[outfitting/ax-multi-cannon|AX Multi-Cannon]] /
   [[outfitting/ax-multi-cannon-enhanced|Enhanced AX MC]], the explosive
-  [[outfitting/ax-missile-rack|AX Missile Rack]], or the Guardian trio
+  [[outfitting/ax-missile-rack|AX Missile Rack]] / [[outfitting/ax-missile-rack-enhanced|Enhanced]],
+  the caustic [[outfitting/enzyme-missile-rack|Enzyme Missile Rack]], or the Guardian trio
   ([[outfitting/guardian-gauss-cannon|Gauss]], [[outfitting/guardian-plasma-charger|Plasma Charger]],
   [[outfitting/guardian-shard-cannon|Shard Cannon]]) — and a [[outfitting/heat-sink-launcher]].
 
 ## Where to get it
 
 Sold through the **anti-Xeno war-effort supply chain** (rescue megaships and stations in/near former
-Thargoid space). No Guardian unlock required. The sibling **Remote Release Flechette Launcher**
-(`tbrfl`) is a follow-on research target.
+Thargoid space). No Guardian unlock required.
 
 ## Related AX weapons
 
+- [[outfitting/remote-release-flechette-launcher]] — the kinetic anti-swarm sibling.
 - [[outfitting/ax-multi-cannon]] / [[outfitting/ax-multi-cannon-enhanced]] — kinetic AX.
-- [[outfitting/ax-missile-rack]] — explosive AX missiles.
+- [[outfitting/ax-missile-rack]] / [[outfitting/ax-missile-rack-enhanced]] — explosive AX missiles.
+- [[outfitting/enzyme-missile-rack]] — caustic/enzyme AX missile.
 - [[outfitting/guardian-gauss-cannon]], [[outfitting/guardian-plasma-charger]],
   [[outfitting/guardian-shard-cannon]] — the Guardian AX trio.
 
