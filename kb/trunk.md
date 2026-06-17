@@ -42,6 +42,9 @@ See [[outfitting/module-reinforcement]] for the Module Reinforcement Package (pr
 See [[outfitting/cargo-rack]] for Cargo Racks (capacity by class; corrosion-resistant & expanded variants).
 See [[outfitting/heat-sink-launcher]] for the Heat Sink Launcher (utility-mount heat venting; pairs with SCBs, AX & silent running).
 See [[outfitting/guardian-gauss-cannon]] for the Guardian Gauss Cannon (fixed AX anti-Interceptor weapon; thermal, charge-fired).
+See [[outfitting/guardian-plasma-charger]] for the Guardian Plasma Charger (charge-up AX weapon; absolute damage, fixed/turret).
+See [[outfitting/guardian-shard-cannon]] for the Guardian Shard Cannon (close-range AX shotgun; thermal, 12-shard burst).
+See [[outfitting/ax-multi-cannon]] for the AX Multi-Cannon (standard non-Guardian AX kinetic workhorse; no Guardian unlock).
 
 ## Engineers
 
@@ -81,7 +84,10 @@ and develop unclaimed systems using fleet carriers and construction commodities.
 The Thargoid war narrative concluded, but the content remains fully live: Spire sites,
 Titan wrecks, AX combat zones, and Thargoid interceptor encounters all remain accessible.
 These are tagged `availability: live` throughout the KB.
-AX outfitting seed: [[outfitting/guardian-gauss-cannon]] (anti-Interceptor weapon), plus the Guardian
-defensive trio — [[outfitting/guardian-shield-reinforcement]], [[outfitting/hull-reinforcement|Guardian HRP]],
+AX weapons — the Guardian AX-weapon trio [[outfitting/guardian-gauss-cannon]] (long-range thermal),
+[[outfitting/guardian-plasma-charger]] (absolute-damage charge burst) and
+[[outfitting/guardian-shard-cannon]] (close-range thermal shotgun), plus the non-Guardian
+[[outfitting/ax-multi-cannon]] (standard kinetic workhorse, no unlock). AX defence — the Guardian
+defensive trio [[outfitting/guardian-shield-reinforcement]], [[outfitting/hull-reinforcement|Guardian HRP]]
 and [[outfitting/module-reinforcement|Guardian MRP]].
 <!-- tier:0 src:canonn -->
