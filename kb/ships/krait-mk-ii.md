@@ -15,7 +15,9 @@ The Krait Mk II is a **medium-class multirole ship** by **Faulcon DeLacy** — o
 popular all-rounders in the game and the heavier medium-pad alternative to the
 [[ships/alliance-chieftain|Alliance Chieftain]] for anti-Xeno (AX) combat. **Three large
 hardpoints**, a full set of generous optional internals, a Ship-Launched Fighter bay and a
-three-seat crew make it equally at home in AX combat, bounty hunting, exploration and trade.
+three-seat crew make it equally at home in AX combat, bounty hunting, exploration and trade. Its
+lighter, explorer-leaning sibling — no fighter bay, longer jump range — is the
+[[ships/krait-phantom|Krait Phantom]].
 
 ## Overview
 
