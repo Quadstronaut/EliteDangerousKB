@@ -24,7 +24,7 @@ credible budget trader, miner or first explorer.
 - **Size class:** 1 (Small landing pad — docks anywhere, including outposts and planetary ports)
 - **Role:** Budget multipurpose (early-game exploration, light hauling, courier, mining)
 - **Rank requirement:** none — credits only (no `requirements` block in the Coriolis data)
-- **Hull cost:** 40,833 CR (hull only — the third-cheapest hull in the KB, above the Sidewinder and Eagle)
+- **Hull cost:** 40,833 CR (hull only — the fourth-cheapest hull in the KB, above the Sidewinder, Eagle and Hauler)
 - **Retail cost:** 87,808 CR (with stock modules)
 - **Crew seats:** 2
 
@@ -32,8 +32,8 @@ credible budget trader, miner or first explorer.
 
 Source: Coriolis-data ship definition `adder` (edID 128049267, eddbID 1).
 
-- **Hull mass:** 35 t — the **second-lightest hull in the KB**, between the [[ships/sidewinder]]
-  (25 t) and the [[ships/eagle]] / [[ships/viper-mk-iii]] (50 t). The low mass underpins its range.
+- **Hull mass:** 35 t — the **third-lightest hull in the KB**, behind the [[ships/hauler]] (14 t)
+  and [[ships/sidewinder]] (25 t), and ahead of the [[ships/eagle]] / [[ships/viper-mk-iii]] (50 t). The low mass underpins its range.
 - **Top speed:** 220 m/s · **Boost:** 320 m/s
 - **Base shield strength:** 60 MJ
 - **Base armour:** 90 (more than the Eagle's 40 or the Sidewinder's 60 — tougher than the small fighters)

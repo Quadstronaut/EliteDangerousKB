@@ -1,10 +1,60 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/empire_eagle.json (tier: 0, type: coriolis-ship, note: COMPLETES THE EAGLE PAIR seeded by the just-paged [[ships/eagle]] — the Imperial Eagle is the faster, better-shielded Imperial refinement of the Eagle Mk II (mirrors the Viper Mk III/IV and Diamondback Scout/Explorer sibling-pair pattern). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer/class (expect 1 = SMALL pad)/hullMass/speed-boost (expect FASTER than the base Eagle's 240/350)/baseShield (expect HIGHER)/baseArmour/hardness/heatCapacity/masslock/roll-pitch (CHECK vs the base Eagle's NEW class-leading roll 120 — may tie or fall short)/core-standard array/hardpoints array (expect 2-3 mounts)/internal array (CHECK Military slot like the base Eagle's class-2)/costs (CHECK rank gate — Imperial ships often need an Empire rank, unlike the no-gate base Eagle). Write -> kb/ships/imperial-eagle.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/eagle]] (bidirectional sibling note) + [[ships/viper-mk-iii]] + [[trunk]] Ships; RECHECK the Eagle's roll-120 nimblest claim if the Imperial Eagle differs. CONFIRM filename via ships/index.js if empire_eagle.json 404s — key likely 'empire_eagle' (NOT 'imperial_eagle').)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/imperial_courier.json (tier: 0, type: coriolis-ship, note: PAIRS WITH the just-paged [[ships/imperial-eagle]] — the other Gutamaya small-pad ship, completing the Imperial small-pad line. The Imperial Courier is the fast, low-profile Gutamaya light-combat/courier ship, famous for THREE Medium hardpoints on a size-1 hull plus a low heat signature. Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Gutamaya)/class (expect 1 = SMALL pad)/hullMass/speed-boost (expect FAST, may rival the Imperial Eagle's 300/400)/baseShield/baseArmour (expect thin)/hardness/heatCapacity (CHECK — Courier runs cool; may challenge the Hauler's NEW low 123 or sit mid-pack)/masslock/roll-pitch-yaw/core-standard array/hardpoints array (expect 3 Medium = the signature)/internal array (CHECK Military slot)/costs + RANK GATE (the Imperial Courier DOES require an Empire rank — empireRank in the data — UNLIKE the no-gate Imperial Eagle; CONFIRM the requirements block). Write -> kb/ships/imperial-courier.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/imperial-eagle]] (Gutamaya small-pad siblings, bidirectional) + [[ships/viper-mk-iii]] + [[trunk]] Ships; CONFIRM key 'imperial_courier' via ships/index.js if it 404s.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/hauler.json (tier: 0, type: coriolis-ship, note: THE BUDGET CARGO COUNTERPART forward-referenced by the just-paged [[ships/adder]] — the Hauler is Zorgon Peterson's tiny, ultra-cheap small-pad dedicated freighter, famous as the cheapest way into cargo running and (engineered) one of the longest-jumping small ships. Completes the early small-pad UTILITY tier (Adder = multipurpose; Hauler = pure cargo/jump). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Zorgon Peterson)/class (expect 1 = SMALL pad)/hullMass (expect VERY LOW — may challenge the Sidewinder's 25 t lightest or the Adder's 35 t)/speed-boost/baseShield/baseArmour (expect thin)/hardness/heatCapacity/masslock/core-standard array (CHECK FSD class — the Hauler's reputation is excellent range)/hardpoints array (expect just 1 Small)/internal array (cargo-focused optionals + PAS, CHECK Military slot)/costs (expect very cheap). Write -> kb/ships/hauler.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/adder]] + [[ships/sidewinder]] + [[ships/type-8-transporter]] (the large hauler step up) + [[trunk]] Ships; RECHECK the Sidewinder's 'lightest hull (25 t)' claim if the Hauler is lighter. CONFIRM filename via ships/index.js if hauler.json 404s — key likely 'hauler'.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_6_transporter.json (tier: 0, type: coriolis-ship, note: THE NEXT RUNG in the dedicated-hauler ladder opened by the just-paged [[ships/hauler]] (Hauler -> Type-6 -> Type-7/8 -> [[ships/type-9-heavy]]). Lakon's cheap medium-pad dedicated freighter — the classic "first real trader" step up from the small-pad Hauler. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Lakon)/class (expect 2 = MEDIUM pad — the jump from the Hauler's small pad)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array (CHECK FSD class — the Type-6 has a good range reputation for a trader)/hardpoints array (expect just 2 Small — barely armed, a pure freighter)/internal array (cargo-focused, deep optionals; CHECK Military slot — expect NONE)/costs (cheap). Write -> kb/ships/type-6-transporter.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/hauler]] (the small-pad rung below, bidirectional) + [[ships/type-8-transporter]] (the step up) + [[trunk]] Ships; CONFIRM key 'type_6_transporter' via ships/index.js if it 404s.)
 
 
+
+<!-- DONE loop 33: PAGED THE TWO QUEUED TIER-0 SMALL-PAD GAPS (Imperial Eagle + Hauler), completing
+     the Eagle pair and opening the dedicated-freight tier. 2 new Tier-0 Coriolis ship pages (both
+     availability: live, source_count 1, verified false):
+     (1) kb/ships/imperial-eagle.md NEW. KEY GOTCHA: the queued file empire_eagle.json 404'd (14 bytes);
+     ships/index.js confirmed the key is 'imperial_eagle' (file imperial_eagle.json, resolved 3267 bytes).
+     edID 128672138, eddbID 15. **Gutamaya** (NOT Core Dynamics — the base [[ships/eagle]] is Core
+     Dynamics; this is Gutamaya's Imperial refinement of the same airframe). class 1 (SMALL pad), **NO
+     requirements block = NO rank gate** (unusual for Gutamaya — the Imperial Eagle is buyable without
+     an Empire rank; QUEUE-GUESS "Imperial ships often need rank" -> WRONG here). hullMass 50 (ties base
+     Eagle / Viper III). speed 300/boost 400 (FASTER than base Eagle's 240/350 — CONFIRMED). baseShield
+     80 (HIGHER than base Eagle's 60 — CONFIRMED). baseArmour 60 (vs base Eagle 40). hardness 28 (same),
+     heatCapacity 163, masslock 6, crew 1, pitch 40/**roll 100**/yaw 15, reservefuel 0.37. hull 73,023 /
+     retail 110,830 (~7x the base Eagle's 10,947). Core standard [3,3,3,1,2,2,2]: PP3 Thr3 FSD3 LS1 PD2
+     Sen2 FT2 = **one bigger Power Plant** (class-3 vs base Eagle's class-2); rest identical. Hardpoints
+     [2,1,1,0] = **1 Medium + 2 Small = 3 mounts + 1 utility** (same 3-mount count as base Eagle's
+     triple-Small, but one upgraded to MEDIUM). Internals [3,2,Mil-c2,1,1,1,1,PAS-c1] = SIX regular
+     (top class-3) + ONE class-2 Military + class-1 PAS = IDENTICAL internal layout to the base Eagle.
+     causres 0 all grades. **ROLL RECORD CHECK: roll 100 < the base Eagle's class-leading 120 — the base
+     Eagle KEEPS the nimblest-roll record; NO cross-page fix needed** (QUEUE-GUESS "may tie/beat 120" ->
+     FELL SHORT). LOWEST-ARMOUR CHECK: armour 60 > base Eagle's 40, so base Eagle keeps lowest-armour.
+     CHEAPEST CHECK: Eagle 10,947 stays 2nd-cheapest (Imperial Eagle 73,023 is far more).
+     (2) kb/ships/hauler.md NEW (key hauler, file hauler.json resolved FIRST TRY 2956 bytes, no 404).
+     edID 128049261, eddbID 12. Zorgon Peterson, class 1 (SMALL pad), NO rank gate. **hullMass 14 = NEW
+     LIGHTEST HULL IN KB** (undercuts the Sidewinder's 25 by a wide margin; QUEUE-GUESS "may challenge
+     Sidewinder's 25" -> CONFIRMED, new record). speed 200/boost 300 (slow). baseShield 50 / baseArmour
+     100 (tough for the tiny mass). hardness 20 (ties Sidewinder). **heatCapacity 123 = NEW LOWEST HEAT
+     CAPACITY IN KB** (below the prior min, Sidewinder 140). masslock 6, crew 1, pitch 36/roll 100/yaw 14,
+     reservefuel 0.25. hull 30,308 / retail 52,720 (3rd-cheapest hull: Sidewinder 4,588 < Eagle 10,947 <
+     **Hauler 30,308**; QUEUE-GUESS "very cheap" yes but NOT cheapest). Core standard [2,2,2,1,1,1,2]:
+     PP2 Thr2 FSD2 LS1 PD1 Sen1 **FT2** = same shallow class-2 core as the Sidewinder but a bigger
+     class-2 Fuel Tank (vs Sidewinder FT1). FSD only class-2 — the Hauler's range comes from the 14 t
+     MASS, not a big drive (QUEUE-GUESS "excellent range from big FSD" -> range yes, big FSD no).
+     Hardpoints [1,0,0] = **1 Small = 1 mount + 2 utility** (smallest armament in KB; QUEUE-GUESS "just 1
+     Small" CONFIRMED). Internals [3,3,2,1,1,1,PAS-c1] = SIX regular (**top TWO class-3** — the cargo
+     bias, vs Sidewinder's top class-2) + class-1 PAS, **NO Military**. causres 0 all grades.
+     CROSS-PAGE LIGHTEST-RECORD FIXES (Hauler 14 t displaces the Sidewinder 25 t as KB-lightest; same
+     discipline as the loop-31/32 cheapest/lightest/roll corrections): (a) sidewinder.md intro + hull-mass
+     line re-scoped from "lightest hull in KB" to "second-lightest, behind the Hauler's 14 t" (CHEAPEST
+     claim 4,588 UNCHANGED — Sidewinder is still cheapest); (b) adder.md re-scoped from "2nd-lightest" to
+     "3rd-lightest" (now behind Hauler 14 + Sidewinder 25) AND from "3rd-cheapest" to "4th-cheapest" (now
+     above Sidewinder/Eagle/Hauler); (c) viper-mk-iii.md "lightest COMBAT hull" note updated to list both
+     lighter non-combat hulls (Sidewinder 25 + Hauler 14). trunk.md: Sidewinder bullet lightest re-scoped,
+     Adder bullet -> 3rd-lightest, +2 new Ships bullets (imperial-eagle + hauler).
+     PATH NOTE: imperial_eagle (NOT empire_eagle) is the loop's one surprise — file name = inner key =
+     imperial_eagle; record for future Gutamaya probes. NEXT: queued two reachable Tier-0 small-pad gaps
+     at the TOP — Imperial Courier (the other Gutamaya small-pad, completes the Imperial pair; CHECK its
+     Empire rank gate, which the Imperial Eagle lacks) + Type-6 Transporter (Lakon's medium-pad budget
+     trader, the next rung up the hauler ladder from the Hauler). The Spire Site stays queued (BLOCKED)
+     below for retry. -->
 
 <!-- DONE loop 32: PAGED THE TWO QUEUED TIER-0 SMALL-PAD GAPS (Eagle Mk II + Adder), seeding the
      rookie fighter line and the budget-utility tier off the Sidewinder. 2 new Tier-0 Coriolis ship

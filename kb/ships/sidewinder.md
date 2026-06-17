@@ -13,8 +13,8 @@ changed_note:
 
 The Sidewinder Mk I is **Faulcon DeLacy's tiny size-1 multirole** — the universal free starter ship.
 Every new commander begins in one, and it is the ship insurance defaults you to if you cannot afford
-the rebuy on anything else. It is the **cheapest and lightest hull paged in this KB**: a 25 t,
-4,588 CR baseline against which every other ship is measured. Fragile, shallow-cored and lightly
+the rebuy on anything else. It is the **cheapest hull paged in this KB** and its **second-lightest** — behind only the
+14 t [[ships/hauler]]: a 25 t, 4,588 CR baseline against which every other ship is measured. Fragile, shallow-cored and lightly
 armed, it is nonetheless nimble and cheap enough to never truly lose — the floor of the entire
 ship roster.
 
@@ -32,7 +32,8 @@ ship roster.
 
 Source: Coriolis-data ship definition `sidewinder` (edID 128049249, eddbID 18).
 
-- **Hull mass:** 25 t — the **lightest hull in the KB** (undercutting the Viper Mk III's 50 t).
+- **Hull mass:** 25 t — the **second-lightest hull in the KB**, behind only the
+  [[ships/hauler]]'s 14 t (and still well under the Viper Mk III's 50 t).
 - **Top speed:** 220 m/s · **Boost:** 320 m/s
 - **Base shield strength:** 40 MJ
 - **Base armour:** 60 · **Hull hardness:** 20 (low — the Sidewinder survives by being cheap and
