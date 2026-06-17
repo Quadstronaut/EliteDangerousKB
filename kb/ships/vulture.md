@@ -40,8 +40,9 @@ Source: Coriolis-data ship definition `vulture` (edID 128049309, eddbID 23).
 - **Heat capacity:** 237
 - **Mass lock factor:** 10
 - **Manoeuvrability (deg/s):** pitch 42 · **roll 110** · yaw 17. The roll rate of 110 is the
-  **highest (nimblest) of any ship paged in this KB** — the Vulture out-rolls everything to keep
-  its fixed Large mounts on target.
+  **highest (nimblest) of any ship paged in this KB**, tied with the featherweight starter
+  [[ships/sidewinder]] — but the Vulture pairs that roll with real firepower, out-rolling everything
+  to keep its fixed Large mounts on target.
 - **Reserve fuel:** 0.57 t
 
 ## Slot Layout

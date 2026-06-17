@@ -13,8 +13,9 @@ changed_note:
 
 The Viper Mk III is **Faulcon DeLacy's fast-attack small-pad interceptor** — the iconic cheap, fast
 budget bounty-hunter. Its signature is raw speed on a featherweight 50 t hull: 320 m/s base / 400
-boost, the fastest base speed of any ship paged in this KB. It is also the **cheapest hull in the
-KB** (96,733 CR), making it the classic first dedicated combat ship. The trade-offs are thin armour,
+boost, the fastest base speed of any ship paged in this KB. It is also the **cheapest dedicated
+combat hull in the KB** (96,733 CR — only the free starter [[ships/sidewinder]] is cheaper), making
+it the classic first dedicated combat ship. The trade-offs are thin armour,
 a hot-running heat capacity, and short legs — but it carries a class-3 Military slot uncommon on so
 small a hull.
 
@@ -24,7 +25,8 @@ small a hull.
 - **Size class:** 1 (Small landing pad — docks anywhere, including outposts and planetary ports)
 - **Role:** Fast-attack combat (bounty hunting, interception, Conflict Zones)
 - **Rank requirement:** none — credits only (no `requirements` block in the Coriolis data)
-- **Hull cost:** 96,733 CR (hull only — the cheapest ship in the KB)
+- **Hull cost:** 96,733 CR (hull only — the cheapest dedicated combat ship in the KB; only the free
+  starter [[ships/sidewinder]] hull is cheaper)
 - **Retail cost:** 142,931 CR (with stock modules)
 - **Crew seats:** 1
 
@@ -33,8 +35,9 @@ small a hull.
 Source: Coriolis-data ship definition `viper` (= the Mk III; the Mk IV is a separate hull). edID
 128049273, eddbID 22.
 
-- **Hull mass:** 50 t — by far the lightest hull in the KB (next-lightest are the Cobra Mk III at
-  180 t and the Diamondback Scout at 170 t). The low mass is the basis of its speed.
+- **Hull mass:** 50 t — the lightest dedicated combat hull in the KB; only the 25 t starter
+  [[ships/sidewinder]] is lighter (next-lightest combat hulls are the Cobra Mk III at 180 t and the
+  Diamondback Scout at 170 t). The low mass is the basis of its speed.
 - **Top speed:** 320 m/s · **Boost:** 400 m/s — the **highest base speed of any ship paged here**
   (the Cobra Mk III matches the 400 boost but only 280 base).
 - **Base shield strength:** 105 MJ
@@ -65,6 +68,12 @@ Bulkheads carry `causres 0` on every grade.
 
 ## Small-pad combat siblings
 
+- **vs [[ships/viper-mk-iv]]:** the two Vipers are the same chassis pulled in opposite directions.
+  The Mk III is the **fast, cheap interceptor** (50 t, 320/400, thin 70 armour, short legs, six
+  optionals, 96,733 CR); the Mk IV is the **tankier multirole** — nearly 4× the mass (190 t),
+  double the shield/armour (150/150), a bigger core with a class-4 fuel tank and eight optionals,
+  but slower (270/340) and pricier (312,797 CR). Both share the 2 Medium + 2 Small mounts, 2 utility
+  slots and a single class-3 Military slot. Pick speed (Mk III) or staying power and range (Mk IV).
 - **vs [[ships/vulture]]:** the Vulture is the step-up brawler — two Large hardpoints, a high base
   shield (240) and best-in-KB roll, but it is far heavier, pricier (~4.9 M CR) and power-constrained.
   The Viper is the fast, cheap interceptor: lighter, quicker, and a fraction of the cost, but with
