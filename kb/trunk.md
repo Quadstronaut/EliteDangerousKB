@@ -23,7 +23,9 @@ See [[ships/type-11-prospector]] for the Type-11 Prospector (medium-pad dedicate
 See [[ships/type-9-heavy]] for the Type-9 Heavy (large-pad bulk hauler).
 See [[ships/panther-clipper-mk-ii]] for the Panther Clipper Mk II (largest-cargo ship).
 See [[ships/alliance-chieftain]] for the Alliance Chieftain (medium-pad AX combat brawler; 3 Military slots).
+See [[ships/alliance-challenger]] for the Alliance Challenger (medium-pad AX heavy tank; Chieftain's tankier sibling, 3 Military slots).
 See [[ships/krait-mk-ii]] for the Krait Mk II (medium-pad multirole; 3 large hardpoints, fighter bay).
+See [[ships/krait-phantom]] for the Krait Phantom (medium-pad long-range explorer; lighter Krait Mk II, no fighter bay).
 
 ## Outfitting
 
@@ -111,8 +113,11 @@ plus **anti-swarm support** [[outfitting/remote-release-flak-launcher]] (explosi
 AX defence — the Guardian defensive trio [[outfitting/guardian-shield-reinforcement]],
 [[outfitting/hull-reinforcement|Guardian HRP]] and [[outfitting/module-reinforcement|Guardian MRP]].
 AX hulls — the medium-pad platforms this kit goes on: the [[ships/alliance-chieftain]]
-(agile, high-hardness brawler with three dedicated Military reinforcement slots) and the heavier,
-higher-firepower [[ships/krait-mk-ii]] (3 large hardpoints + a Ship-Launched Fighter bay).
+(agile, high-hardness brawler with three dedicated Military reinforcement slots) and its tankier
+sibling the [[ships/alliance-challenger]] (more hull/shield + a deeper optional bank, also 3
+Military slots, but slower); plus the higher-firepower [[ships/krait-mk-ii]] (3 large hardpoints +
+a Ship-Launched Fighter bay) and its lighter long-range explorer sibling the
+[[ships/krait-phantom]] (no fighter bay, no Military slots).
 AX utilities — the survival/targeting trio every Thargoid-capable ship fits:
 [[outfitting/xeno-scanner]] (IDs the Thargoid and reveals its weak points),
 [[outfitting/shutdown-field-neutraliser]] (negates the EMP shutdown pulse) and

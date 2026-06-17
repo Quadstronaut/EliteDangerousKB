@@ -3,8 +3,47 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/alliance_challenger.json (tier: 0, type: coriolis, note: Alliance Challenger -> kb/ships/alliance-challenger.md NEW. The TANKIEST of the three Alliance AX hulls — the Chieftain's heavier sibling: more hardpoints/Military slots, higher armour/hardness, slower. Completes the Alliance AX line started loop 22. Parse manufacturer (Lakon/Alliance), hullMass, hardpoints[], utilities, internal[] (watch for the Military slot count — likely MORE than the Chieftain's 3), baseShieldStrength, baseArmour, hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "challenger" -> ships/alliance_challenger.json. Cross-link [[ships/alliance-chieftain]] + the AX weapon/utility line as the hull this kit goes on.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/krait_phantom.json (tier: 0, type: coriolis, note: Krait Phantom -> kb/ships/krait-phantom.md NEW. The Krait Mk II's EXPLORER-leaning sibling: lighter, NO fighter bay, fewer/leaner hardpoints but an extra/larger optional internal and longer jump range — the long-range counterpart to the combat Krait Mk II. Parse same fields; note fighterHangars likely ABSENT and crew likely 2 (vs Mk II's 3). availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "kraitphantom" -> ships/krait_phantom.json. Cross-link [[ships/krait-mk-ii]] as the combat sibling + [[engineers/felicity-farseer]] for FSD range.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/alliance_crusader.json (tier: 0, type: coriolis, note: Alliance Crusader -> kb/ships/alliance-crusader.md NEW. The THIRD and final Alliance AX sibling — completes the Lakon/Alliance trio (Chieftain agile / Challenger tank / Crusader multicrew). The Crusader's defining trait is a built-in Ship-Launched Fighter bay + 3-seat crew (the only Alliance medium with a fighter hangar) — expect fighterHangars TRUE and crew 3, vs Chieftain/Challenger crew 2 no-SLF. Parse manufacturer (Lakon/Alliance), hullMass, speed/boost, baseShield/baseArmour/hardness, hardpoints[] + utilities, internal[] (CHECK the Military slot count — Alliance hulls carry class-4 Military slots; Crusader may have 2 vs the others' 3), price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "alliance_crusader" -> ships/alliance_crusader.json. Cross-link [[ships/alliance-chieftain]] + [[ships/alliance-challenger]] (sibling trio) + the AX weapon/utility line. I already referenced the Crusader as "not yet paged" in alliance-challenger.md — turn that into a wikilink when written.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_corvette.json (tier: 0, type: coriolis, note: Federal Corvette -> kb/ships/federal-corvette.md NEW. PIVOT TO LARGE-PAD AX: the iconic Core Dynamics large-pad combat flagship and a premier heavy AX gunship — the big-hull counterpart to the medium Chieftain/Krait line. Expect class 3 (LARGE pad), very high armour/shield, lots of hardpoints (inchuge Huge-class? — Corvette has a class-4 Huge mount), Military slots, requires a Federal Rear Admiral rank to purchase (note rank-gate). Parse manufacturer (Core Dynamics), hullMass, hardpoints[] (watch for the HUGE class-4 mount — first ship in KB with one), utilities, internal[] incl Military slots, baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "federal_corvette" -> ships/federal_corvette.json. Cross-link the AX weapon/utility/defence line as the large-pad platform; contrast vs the medium [[ships/alliance-challenger]]/[[ships/krait-mk-ii]] as the step up to large-pad AX.)
+
+<!-- DONE loop 23: COMPLETED THE QUEUED AX-HULL PAIR — the tankier Alliance sibling + the explorer
+     Krait sibling. 2 new Tier-0 Coriolis ship pages (both availability: live, source_count 1,
+     verified false):
+     (1) kb/ships/alliance-challenger.md NEW (alliance_challenger, edID 128816588). Lakon/Alliance,
+     class 2 (medium pad), requires Horizons. hullMass 450, speed 204/boost 310, baseShield 220,
+     baseArmour 300, HARDNESS 65, heatcap 316, masslock 13, crew 2, NO fighter bay, pitch 32 / roll
+     90 / yaw 16, reservefuel 0.77, hull cost 29,569,804 / retail 30,472,252. Core: PP6 Thr6 FSD5 LS5
+     PD6 Sen4 FT4 (SAME core layout as the Chieftain). Hardpoints 1L+3M+3S (SEVEN mounts) + 4 utility.
+     Optionals 6,6,3,3,2,2,1 (seven regular, incl TWO class-6) + THREE class-4 MILITARY slots (eligible
+     mahr/hr/scb/mrp/gsrp/gmrp/ghrp) + class-1 PAS. Bulkheads causres 0 all grades.
+     QUEUE-GUESS CORRECTIONS: Military slots = 3 (SAME as Chieftain, NOT "more"); hardness = 65 (SAME,
+     NOT higher). It IS the tank: heavier/more armour/more shield/deeper optionals than the Chieftain,
+     but SLOWER (204 vs 230) and less agile (roll 90/pitch 32 vs 92/39). More total mounts (7 vs 6) but
+     FEWER Large (1L vs 2L). Cross-linked [[ships/alliance-chieftain]] (bidirectional sibling note added
+     to chieftain intro) + full AX weapon/utility/defence line. Noted the Alliance Crusader as the
+     un-paged third sibling (now queued).
+     (2) kb/ships/krait-phantom.md NEW (krait_phantom, edID 128839281). Faulcon DeLacy, class 2 (medium
+     pad), NO requirements block in data (no Horizons gate recorded). hullMass 270 (50t under Mk II's
+     320), speed 250/boost 350, baseShield 200, baseArmour 180, hardness 55, heatcap 300, masslock 14,
+     crew 2, NO fighter bay (fighterHangars absent), pitch 26 / roll 90 / yaw 10, reservefuel 0.63, hull
+     cost 35,741,519 / retail 37,472,252. Core: PP7 Thr6 FSD5 LS4 PD7 Sen6 FT5 (IDENTICAL core to Mk II).
+     Hardpoints 2L+2M (FOUR mounts, one Large fewer than Mk II's 5) + 4 utility. Optionals 6,5,5,5,3,3,
+     3,2,1 (NINE) + class-1 PAS. NO Military slots. Bulkheads causres 0 all grades.
+     QUEUE-GUESS CORRECTION: the Phantom does NOT have "an extra/larger optional internal" — both Krait
+     hulls have NINE optionals and the Mk II's top end is actually BIGGER (two class-6 vs Phantom's one).
+     The Phantom's longer range comes from LOWER HULL MASS (270 vs 320) + dropped fighter bay, not bigger
+     internals. crew 2 (vs Mk II's 3) CONFIRMED; fighter bay ABSENT CONFIRMED. Cross-linked
+     [[ships/krait-mk-ii]] (bidirectional sibling note added to mk-ii intro) + [[engineers/felicity-farseer]]
+     + [[outfitting/guardian-fsd-booster]] + [[outfitting/fuel-scoop]] for the explorer fit.
+     PATH NOTES: BOTH filenames resolved FIRST TRY, no 404 — ships/alliance_challenger.json (key
+     alliance_challenger) and ships/krait_phantom.json (key krait_phantom). trunk.md: +2 Ships bullets +
+     extended the "AX hulls" line in the AX/Thargoid section (now Chieftain/Challenger pair + Krait Mk II/
+     Phantom pair).
+     NEXT: complete the Alliance AX trio with the Alliance Crusader (multicrew/fighter-bay sibling), then
+     PIVOT TO LARGE-PAD AX with the Federal Corvette (Core Dynamics flagship; first KB ship with a Huge
+     class-4 hardpoint, rank-gated). Both queued as concrete Tier-0 URLs. After those, large-pad AX could
+     extend to the Anaconda, or AX coverage could move to Spire/Titan site mechanics. -->
+
 
 <!-- DONE loop 22: PIVOTED FROM AX MODULES TO AX HULLS — added the two iconic medium-pad AX
      platforms that carry the now-complete AX weapon/utility/defence line. 2 new Tier-0 Coriolis
