@@ -3,8 +3,44 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/anaconda.json (tier: 0, type: coriolis, note: Anaconda -> kb/ships/anaconda.md NEW. CONTINUE LARGE-PAD: the classic Lakon large-pad multirole flagship — the do-everything ship (combat / exploration / hauling) and a long-standing AX platform. Expect class 3 (LARGE pad), ONE Huge (class-4) hardpoint (vs the Corvette's two), big core internals (class-8 PP/PD?), 8 utility mounts (matches the Corvette's count — Anaconda is the reference 8-utility hull), deep optional bank incl. multiple class-7/8. NO rank gate (unlike Corvette/Cutter) — just CR. Parse manufacturer (Lakon), hullMass, hardpoints[] (count the Huge mounts — expect 1), utilities (expect 8), internal[] incl Military slots (CHECK — Anaconda may have 0 Military slots, unlike the Corvette's 2), baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "anaconda" -> ships/anaconda.json. Cross-link [[ships/federal-corvette]] (large-pad sibling) + the AX weapon/utility/defence line; contrast: Anaconda = no rank gate + best jump range, Corvette = more firepower/agility.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/imperial_cutter.json (tier: 0, type: coriolis, note: Imperial Cutter -> kb/ships/imperial-cutter.md NEW. COMPLETE THE LARGE-PAD COMBAT TRINITY (Corvette/Anaconda/Cutter): the Gutamaya large-pad flagship — the Imperial counterpart to the Federal Corvette. The trade vs the Corvette: the Cutter is the better TRADER/shield-tank (huge shield, massive cargo) and the worse pure combat ship (less agile, fewer/smaller forward huge mounts). Expect class 3 (LARGE pad), very high baseShield (highest in game?), 1 Huge + Large/Medium/Small hardpoints, class-8 internals, rank gate = Imperial Navy rank DUKE (the Imperial counterpart to the Corvette's Rear Admiral — note the gate). Parse manufacturer (Gutamaya), hullMass, hardpoints[] (count Huge), utilities, internal[] incl Military slots, baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "imperial_cutter" -> ships/imperial_cutter.json. Cross-link [[ships/federal-corvette]] (rival flagship) + [[ships/anaconda]] + the AX line; contrast Corvette (combat) vs Cutter (shield-tank/trade) vs Anaconda (jack-of-all, no rank gate).)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_10_defender.json (tier: 0, type: coriolis, note: Type-10 Defender -> kb/ships/type-10-defender.md NEW. EXTEND LARGE-PAD AX from the combat trinity (Corvette/Anaconda/Cutter, all done) to the dedicated AX BRICK: the Lakon Type-10 Defender — a slow, heavily-armoured flying fortress built as an AX gunship/platform, prized for its big utility-mount count and many hardpoints rather than agility. Expect class 3 (LARGE pad), NO rank gate (Lakon — just CR + likely Horizons), very high armour + lots of utility mounts (count the zeros in hardpoints[]), big hardpoint count, deep optionals, possible Military slots. Parse manufacturer (Lakon), hullMass (heavy), speed/boost (slow), hardpoints[] (count Large/Medium/Small + Huge?), utilities, internal[] incl Military slots, baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "type_10_defender" -> ships/type_10_defender.json (NOTE the Type-9 file was type_9_heavy.json, Type-8 was type_8_transport.json — the Defender may follow a similar suffix pattern; check index.js first if 404). Cross-link the AX weapon/utility/defence line + the large-pad trinity [[ships/federal-corvette]]/[[ships/anaconda]]/[[ships/imperial-cutter]] + the bulk hauler sibling [[ships/type-9-heavy]] (same Lakon Type-9 airframe). After this, AX coverage could finally pivot to Spire/Titan SITE mechanics or AX combat-zone tactics (Tier-2 Canonn/wiki prose).)
+
+<!-- DONE loop 25: COMPLETED THE LARGE-PAD COMBAT TRINITY (Corvette/Anaconda/Cutter). 2 new Tier-0
+     Coriolis ship pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/anaconda.md NEW (anaconda, edID 128049363, eddbID 2). MANUFACTURER CORRECTION:
+     **Faulcon DeLacy, NOT Lakon** (queue guess was wrong). class 3 (LARGE pad), **NO requirements
+     block = NO rank gate** (credits only — the trinity's only no-gate hull). hullMass 400 (LIGHT —
+     basis of best-in-trinity jump range), speed 180/boost 240 (slow), baseShield 350, baseArmour
+     **525 (HIGHEST armour in KB)**, hardness 65, heatcap 334, masslock 23, crew 4, fighterHangars
+     TRUE, pitch 25/roll 60/yaw 10 (sluggish), reservefuel 1.07, hull 142,456,440 / retail
+     146,969,451. Core standard [8,7,6,5,8,8,5]: PP8 Thr7 FSD6 LS5 PD8 Sen8 FT5 (class-8 PP + PD;
+     Sensors 8 recorded verbatim, flag for corroboration). Hardpoints [4,3,3,3,2,2,1,1 + 8 zeros] =
+     **1 Huge + 3 Large + 2 Medium + 2 Small = EIGHT weapon mounts (most of trinity)** + **8 utility**.
+     Optionals 7,6,6,6,5,5,5,4,4,4,2,1 = TWELVE regular + **ONE class-5 Military** + class-1 PAS.
+     QUEUE-GUESS CORRECTIONS: manufacturer Faulcon DeLacy (NOT Lakon); Military slots = 1 class-5 (NOT
+     0, NOT Corvette's 2). Bulkheads causres 0 all grades. CONFIRMED: 1 Huge, 8 utility, no rank gate.
+     (2) kb/ships/imperial-cutter.md NEW (imperial_cutter, edID 128049375, eddbID 26). Gutamaya, class
+     3 (LARGE pad), requires empireRank 12 = **DUKE** (CONFIRMED). hullMass **1100 (HEAVIEST in KB)**,
+     speed 200/boost 320, baseShield **600 (HIGHEST shield in KB)**, baseArmour 400, hardness 70,
+     heatcap 327, masslock **27 (HIGHEST in KB)**, crew 4, fighterHangars TRUE, pitch 18/roll 45/yaw 8
+     (**LEAST AGILE in KB**), reservefuel 1.16, hull 200,493,413 / retail 208,969,451. Core standard
+     [8,8,7,7,7,7,6]: PP8 Thr8 FSD7 LS7 PD7 Sen7 FT6 (**first KB ship with class-8 Thrusters**).
+     Hardpoints [4,3,3,2,2,2,2 + 8 zeros] = **1 Huge + 2 Large + 4 Medium = SEVEN weapon mounts, NO
+     Small** + **8 utility**. Optionals 8,8,6,6,6,5,5,4,3,1 = TEN regular (**TWO class-8** — huge
+     cargo/shield) + **TWO class-5 Military** + class-1 PAS. QUEUE-GUESS CORRECTION: hardpoints are 1
+     Huge + 2 Large + 4 Medium (queue guessed "Large/Medium/Small" — there are **NO Small mounts**).
+     Bulkheads causres 0 all grades.
+     PATH NOTES: BOTH filenames resolved FIRST TRY, no 404 — ships/anaconda.json (key anaconda) and
+     ships/imperial_cutter.json (key imperial_cutter). trunk.md: +2 Ships bullets + rebuilt the
+     large-pad line in the AX/Thargoid section into the full trinity. Corvette page: turned its plain
+     "Imperial Cutter" + "Anaconda" mentions into bidirectional wikilinks.
+     TRINITY SUMMARY: Anaconda = no-gate generalist (most mounts/optionals, best range, cheapest/
+     lightest, 1 Military); Corvette = firepower king (2 Huge, more agile, 2 Military, Rear Admiral);
+     Cutter = shield-tank/trader (600 MJ shield, 2 class-8 optionals, least agile, 2 Military, Duke).
+     NEXT: EXTEND large-pad AX to the dedicated AX BRICK — the Type-10 Defender (Lakon flying fortress,
+     no rank gate, heavy armour + many utility/hardpoints). Queued as concrete Tier-0 URL. After that,
+     AX coverage could finally pivot to Spire/Titan SITE mechanics or AX combat-zone tactics. -->
+
 
 <!-- DONE loop 24: COMPLETED THE ALLIANCE AX TRIO + PIVOTED TO LARGE-PAD AX. 2 new Tier-0 Coriolis
      ship pages (both availability: live, source_count 1, verified false):

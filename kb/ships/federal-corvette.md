@@ -74,7 +74,8 @@ Meta-Alloy Hull Reinforcement for caustic protection.
 
 The Corvette cannot be bought until the commander reaches **Rear Admiral** in the Federal Navy
 ranking — earned by running Federal-aligned missions and Navy promotion missions. This is the Federal
-counterpart to the Imperial Cutter's **Duke** rank gate. Plan the rank grind before committing to a
+counterpart to the [[ships/imperial-cutter|Imperial Cutter]]'s **Duke** rank gate (the
+[[ships/anaconda|Anaconda]] needs no rank at all). Plan the rank grind before committing to a
 Corvette build.
 
 ## AX Build Notes — the large-pad gunship

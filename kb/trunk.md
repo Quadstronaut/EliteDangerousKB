@@ -28,6 +28,8 @@ See [[ships/krait-mk-ii]] for the Krait Mk II (medium-pad multirole; 3 large har
 See [[ships/krait-phantom]] for the Krait Phantom (medium-pad long-range explorer; lighter Krait Mk II, no fighter bay).
 See [[ships/alliance-crusader]] for the Alliance Crusader (medium-pad AX multicrew gunship; only Alliance medium with a fighter bay, 3 Military slots, crew 4).
 See [[ships/federal-corvette]] for the Federal Corvette (large-pad combat flagship; first KB ship with Huge hardpoints (two), class-8 PP/PD, Rear Admiral rank gate).
+See [[ships/anaconda]] for the Anaconda (large-pad no-gate jack-of-all-trades; one Huge but eight total mounts, deepest optionals, best jump range, no rank gate).
+See [[ships/imperial-cutter]] for the Imperial Cutter (large-pad shield-tank/trader; highest base shield (600 MJ), two class-8 optionals, least agile, Duke rank gate).
 
 ## Outfitting
 
@@ -121,8 +123,11 @@ Military slots, but slower); the multicrew [[ships/alliance-crusader]] (the trio
 hull, crew 4, also 3 Military slots); plus the higher-firepower [[ships/krait-mk-ii]] (3 large
 hardpoints + a Ship-Launched Fighter bay) and its lighter long-range explorer sibling the
 [[ships/krait-phantom]] (no fighter bay, no Military slots). For a **large-pad** step up, the
-[[ships/federal-corvette]] is the Core Dynamics combat flagship — two Huge hardpoints + class-8
-PP/PD make it the heaviest AX gunship (Rear Admiral rank gate).
+**large-pad combat trinity**: the [[ships/federal-corvette]] (Core Dynamics, two Huge hardpoints +
+class-8 PP/PD — the heaviest AX gunship, Rear Admiral rank gate), the [[ships/anaconda]] (Faulcon
+DeLacy, one Huge but eight total mounts + deepest optionals + best jump range — and **no rank gate**)
+and the [[ships/imperial-cutter]] (Gutamaya, the shield-tank — highest base shield 600 MJ + two
+class-8 optionals, Duke rank gate).
 AX utilities — the survival/targeting trio every Thargoid-capable ship fits:
 [[outfitting/xeno-scanner]] (IDs the Thargoid and reveals its weak points),
 [[outfitting/shutdown-field-neutraliser]] (negates the EMP shutdown pulse) and
