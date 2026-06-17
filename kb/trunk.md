@@ -45,6 +45,9 @@ See [[outfitting/guardian-gauss-cannon]] for the Guardian Gauss Cannon (fixed AX
 See [[outfitting/guardian-plasma-charger]] for the Guardian Plasma Charger (charge-up AX weapon; absolute damage, fixed/turret).
 See [[outfitting/guardian-shard-cannon]] for the Guardian Shard Cannon (close-range AX shotgun; thermal, 12-shard burst).
 See [[outfitting/ax-multi-cannon]] for the AX Multi-Cannon (standard non-Guardian AX kinetic workhorse; no Guardian unlock).
+See [[outfitting/ax-multi-cannon-enhanced]] for the Enhanced AX Multi-Cannon (gimballed, 2.5× shot-speed upgrade of the base AX MC).
+See [[outfitting/ax-missile-rack]] for the AX Missile Rack (dumbfire AX + explosive missiles; the explosive AX leg).
+See [[outfitting/remote-release-flak-launcher]] for the Remote Release Flak Launcher (anti-swarm flak; clears Thargoid Swarm/Scout clouds).
 
 ## Engineers
 
@@ -84,10 +87,12 @@ and develop unclaimed systems using fleet carriers and construction commodities.
 The Thargoid war narrative concluded, but the content remains fully live: Spire sites,
 Titan wrecks, AX combat zones, and Thargoid interceptor encounters all remain accessible.
 These are tagged `availability: live` throughout the KB.
-AX weapons — the Guardian AX-weapon trio [[outfitting/guardian-gauss-cannon]] (long-range thermal),
-[[outfitting/guardian-plasma-charger]] (absolute-damage charge burst) and
-[[outfitting/guardian-shard-cannon]] (close-range thermal shotgun), plus the non-Guardian
-[[outfitting/ax-multi-cannon]] (standard kinetic workhorse, no unlock). AX defence — the Guardian
-defensive trio [[outfitting/guardian-shield-reinforcement]], [[outfitting/hull-reinforcement|Guardian HRP]]
-and [[outfitting/module-reinforcement|Guardian MRP]].
+AX weapons — **kinetic**: [[outfitting/ax-multi-cannon]] (standard workhorse, no unlock) and its
+[[outfitting/ax-multi-cannon-enhanced|Enhanced]] gimballed upgrade; **explosive**:
+[[outfitting/ax-missile-rack]] (dumbfire AX missiles); the **Guardian trio**
+[[outfitting/guardian-gauss-cannon]] (long-range thermal), [[outfitting/guardian-plasma-charger]]
+(absolute-damage charge burst) and [[outfitting/guardian-shard-cannon]] (close-range thermal shotgun);
+plus **anti-swarm support** [[outfitting/remote-release-flak-launcher]] (flak vs Swarm/Scout clouds).
+AX defence — the Guardian defensive trio [[outfitting/guardian-shield-reinforcement]],
+[[outfitting/hull-reinforcement|Guardian HRP]] and [[outfitting/module-reinforcement|Guardian MRP]].
 <!-- tier:0 src:canonn -->

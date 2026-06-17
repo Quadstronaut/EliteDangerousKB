@@ -49,9 +49,10 @@ shot speed 1600):
 Fixed mounts deal nearly double a turret's per-shot damage; turrets trade that for tracking and cost
 far more. The Large fixed (6.1/shot) is the standard hard hitter of this line.
 
-> **Enhanced variant.** An upgraded **Enhanced AX Multi-Cannon** (Coriolis group `axmce`) exists as a
-> separate module with improved stats and **Small** mounts; it is a likely follow-on KB page. This
-> page covers the base AX Multi-Cannon only.
+> **Enhanced variant.** An upgraded [[outfitting/ax-multi-cannon-enhanced|Enhanced AX Multi-Cannon]]
+> (Coriolis group `axmce`) adds **gimbal mounts** and **2.5× projectile speed** (4000 m/s) over this
+> base line, for far better hit rate on strafing Thargoids — still Medium/Large only, **no Small**.
+> This page covers the base AX Multi-Cannon only.
 
 ## How to fit
 
@@ -70,5 +71,13 @@ The base AX Multi-Cannon is **not a Guardian unlock** — it is sold at stations
 anti-Xeno war effort (rescue megaships and stations in/near former Thargoid space) and via the
 standard Tech Broker where stocked. No Guardian Structure visit is required, which is why it is the
 common first AX weapon.
+
+## Related AX weapons
+
+- [[outfitting/ax-multi-cannon-enhanced]] — the gimballed, faster-firing upgrade of this weapon.
+- [[outfitting/ax-missile-rack]] — the explosive AX missile leg (pairs with this kinetic gun).
+- [[outfitting/remote-release-flak-launcher]] — anti-swarm flak support.
+- [[outfitting/guardian-gauss-cannon]], [[outfitting/guardian-plasma-charger]],
+  [[outfitting/guardian-shard-cannon]] — the Guardian AX trio.
 
 [[trunk]]

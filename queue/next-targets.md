@@ -3,9 +3,49 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_multi_cannon_enhanced.json (tier: 0, type: coriolis, note: Enhanced AX Multi-Cannon -> kb/outfitting/ax-multi-cannon-enhanced.md (new) OR merge as a section into ax-multi-cannon.md. The upgraded AX MC: adds Small mounts + improved stats over the base axmc (done L16). PATH per index.js key axmce -> hardpoints/ax_multi_cannon_enhanced.json. Parse damage/clip/ammo/damagedist (likely X+K)/class+rating; note the new Small size.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_missile_rack.json (tier: 0, type: coriolis, note: AX Missile Rack -> kb/outfitting/ax-missile-rack.md (new). Dumbfire/seeking AX missiles vs Interceptors; the explosive leg of the AX kinetic/explosive mix. PATH per index.js key axmr -> hardpoints/ax_missile_rack.json (enhanced = axmre/ax_missile_rack_enhanced.json). Parse damage/ammo/clip/damagedist/class+rating.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/remote_release_flak_launcher.json (tier: 0, type: coriolis, note: Remote Release Flak Launcher -> kb/outfitting/remote-release-flak-launcher.md (new). The anti-swarm AX utility weapon — detonates flak to clear Thargoid Swarm/Scout clouds; essential AX support. PATH per index.js key rfl -> hardpoints/remote_release_flak_launcher.json. Parse damage/ammo/range/class+rating + remote-detonation note. Sibling tbrfl = remote_release_flechette_launcher.json.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_missile_rack_enhanced.json (tier: 0, type: coriolis, note: Enhanced AX Missile Rack -> kb/outfitting/ax-missile-rack-enhanced.md (new) OR merge into ax-missile-rack.md. The upgraded axmr (done L17, dumbfire X+E, base done). PATH per index.js key axmre -> hardpoints/ax_missile_rack_enhanced.json. Parse damage/ammo/clip/damagedist/class+rating + note what "enhanced" changes vs base (likely shotspeed/dmg, maybe seeking). CONFIRM path via modules/index.js if 404.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/remote_release_flechette_launcher.json (tier: 0, type: coriolis, note: Remote Release Flechette Launcher -> kb/outfitting/remote-release-flechette-launcher.md (new). Sibling of the Flak Launcher (rfl, done L17) — the OTHER anti-swarm remote-detonation weapon; flechette rounds vs Thargoid swarms/scouts. PATH per index.js key tbrfl -> hardpoints/remote_release_flechette_launcher.json. Parse damage/ammo/damagedist/class+rating + remote-detonation note. CONFIRM path via index.js if 404.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/enzyme_missile_rack.json (tier: 0, type: coriolis, note: Enzyme Missile Rack -> kb/outfitting/enzyme-missile-rack.md (new). Caustic/enzyme AX missile that degrades Thargoid hull over time; distinct from the standard AX Missile Rack. PATH per index.js key tbem -> resolve filename via modules/index.js FIRST (enzyme_missile_rack.json is a guess; AX guns have had stale-slug 404s — check index.js require('./x')=.json before fetching). Parse damage/ammo/damagedist/class+rating + the enzyme DoT note. Sibling ntp = nanite torpedo pylon, also open.)
+
+<!-- DONE loop 17: completed the standard (non-Guardian) AX-weapon line — 3 new Tier-0 Coriolis
+     outfitting pages (all availability: live, source_count 1, verified false):
+     (1) kb/outfitting/ax-multi-cannon-enhanced.md NEW (grp axmce, symbol Hpt_ATMultiCannon_*_V2 /
+     Gimbal). The UPGRADE of base axmc (done L16). damagedist {X:1,K:1} (AX+kinetic, same as base).
+     KEY DIFFS vs base: (a) ADDS GIMBAL mount — base is Fixed+Turret only, enhanced is Fixed+Gimbal+
+     Turret; (b) shotspeed 4000 (2.5x base 1600) — far better hit rate on strafing Thargoids; (c)
+     Lrg Fixed dmg 7.3 (vs base 6.1). NO Small (Med/Lrg only) — CORRECTS the L16 queue guess that
+     said "adds Small mounts". ammo 2100, clip 100(F/G)/90(T), range 4000/falloff 2000, reload 4, low
+     heat 0.10-0.28, power 0.46-0.69. 6 std variants (4W Med F D 3.9 / 4X Med G E 3.7 / 4Y Med T E 2.0
+     / 4Z Lrg F B 7.3 / 5A Lrg G C 6.3 / 5B Lrg T D 3.9). 2 pre-eng gimbal reward variants "AX MC
+     (OC, Auto-Load)" (5y Med E, 5z Lrg C): G5 Overcharged + Auto-Loader exp, NOT reeng/gradechange,
+     canApplyExperimental TRUE. Where: Human Tech Broker (AX-weapon line). Also EDITED base
+     ax-multi-cannon.md: fixed the wrong "Small mounts" Enhanced callout -> now correct (gimbal +
+     2.5x shotspeed) + linked to new page; added a "Related AX weapons" section.
+     (2) kb/outfitting/ax-missile-rack.md NEW (grp axmr, symbol Hpt_ATDumbfireMissile_*). The
+     EXPLOSIVE AX leg. damagedist {X:1,E:1} (AX+explosive). DUMBFIRE ONLY (missile "D") — CORRECTS
+     the queue note's "dumbfire/seeking"; no seeking variant in this file. 64 dmg/missile (Med F & both
+     Lrg; Med T 50), piercing 60 (HIGH), falloff 10000 (full dmg to 10km), shotspeed 750, fireint 2.0,
+     reload 5. Fixed+Turret, Med(2)+Lrg(3). ammo 64(M)/128(L), clip 8/12. 4 std variants (x4 Med F B /
+     x5 Med T B / x6 Lrg F A / x7 Lrg T A). 2 pre-eng fixed reward variants "AX MRack (HCap+RFire)"
+     (5w Med E, 5x Lrg C cost 0=CG reward): G5 HighCapacity+RapidFire, dmg 71.5, fireint 3.045,
+     reload 7.85, NOT reeng/gradechange, canApplyExperimental FALSE.
+     (3) kb/outfitting/remote-release-flak-launcher.md NEW (grp rfl, symbol Hpt_FlakMortar_*). The
+     ANTI-SWARM support weapon — remote-detonated flak clears Thargoid Swarm clouds + Scout packs.
+     damagedist {E:1} (100% explosive area burst). NOT flagged experimental in data. Class 2 (Medium)
+     ONLY, rating B, Fixed+Turret. dmg 34, ammo 32, clip 1, reload 2, fireint 2.0, piercing 60,
+     falloff 100000, shotspeed 550, thermload 3.6, power 1.2, mass 4. 2 variants (x8 Med F B cost
+     261800 / x9 Med T B cost 1259200). NO Small/Large, NO pre-eng variant. It's a HARDPOINT weapon
+     (not a utility — distinct from Point Defence). Where: AX war-effort supply chain, no Guardian unlock.
+     trunk.md: +3 Outfitting bullets; AX/Thargoid section reworked into kinetic (axmc + enhanced) /
+     explosive (axmr) / Guardian trio / anti-swarm (rfl) groupings. Bidirectional "Related AX weapons"
+     links added across the new pages + base axmc.
+     PATH NOTES: all 3 hardpoints/*.json (ax_multi_cannon_enhanced, ax_missile_rack,
+     remote_release_flak_launcher) resolved first try, no 404 — index.js keys axmce/axmr/rfl confirmed.
+     Follow-ons queued (paths via index.js, require('./x')=.json): Enhanced AX Missile Rack (axmre ->
+     ax_missile_rack_enhanced), Remote Release Flechette Launcher (tbrfl ->
+     remote_release_flechette_launcher), Enzyme Missile Rack (tbem -> CONFIRM filename via index.js).
+     Remaining AX path still open: ntp (nanite torpedo pylon). -->
+
 
 <!-- DONE loop 16: completed the Guardian AX-weapon trio + seeded the standard AX kinetic line.
      3 new Tier-0 Coriolis outfitting pages (all availability: live, source_count 1, verified false):
