@@ -1,8 +1,51 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/keelback.json (tier: 0, type: coriolis-ship, note: COMPLETES THE TYPE-6 PAIR -- the [[ships/type-6-transporter]]'s armed combat sibling. The Keelback is Lakon's combat-trader variant of the Type-6 airframe: same medium-pad freighter base, but with a Ship-Launched Fighter bay and better hardpoints -- the budget 'trader that can fight back / fly an SLF'. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Lakon)/class (expect 2 = MEDIUM pad, same as Type-6)/hullMass (expect near the Type-6's 155, maybe a touch heavier)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK -- expect more/bigger mounts than the Type-6's 2 Small, the combat upgrade)/internal array (CHECK for a fighter-bay-capable slot + Military slot; the Keelback is famous as the cheapest SLF-capable ship)/costs + rank gate (expect NONE). Write -> kb/ships/keelback.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/type-6-transporter]] (same airframe, combat variant, bidirectional) + [[ships/hauler]] freight ladder + [[trunk]] Ships; CONFIRM key 'keelback' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_dropship.json (tier: 0, type: coriolis-ship, note: OPENS THE FEDERAL MEDIUM COMBAT LINE -- the Federal counterpart to the now-complete Alliance medium trio ([[ships/alliance-chieftain]]/[[ships/alliance-challenger]]/[[ships/alliance-crusader]]); so far only the large-pad [[ships/federal-corvette]] represents the Federal line in the KB. The Federal Dropship is Core Dynamics' base medium combat/troop hull -- the first rung of the Dropship->Assault Ship->Gunship trio, a slow, tanky, rank-gated gunship platform. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Core Dynamics)/class (expect 2 = MEDIUM pad -- CONFIRM)/hullMass (expect HEAVY -- the Dropship is famously sluggish)/speed-boost (expect SLOW)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK -- expect a brawler mix, e.g. 2 Large + smaller)/internal array (CHECK for a Military slot -- Federal combat hulls often have them -- and whether it has fighterHangars)/costs + RANK GATE (federationRank -- the Dropship requires a Federal Navy rank; CONFIRM which, expect a low-mid rank like Midshipman). Write -> kb/ships/federal-dropship.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/federal-corvette]] (the large-pad Federal flagship) + the Alliance medium trio (the parallel line) + [[trunk]] Ships; CONFIRM key 'federal_dropship' via ships/index.js if it 404s.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/imperial_clipper.json (tier: 0, type: coriolis-ship, note: EXTENDS THE GUTAMAYA / IMPERIAL LINE beyond the small-pad pair ([[ships/imperial-eagle]] + [[ships/imperial-courier]]). The Imperial Clipper is Gutamaya's fast, elegant large-pad multirole -- famously one of the fastest big ships, with only Large/Medium hardpoints (no Small) and a large-pad-only quirk despite a mid-size feel. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Gutamaya)/class (expect 3 = LARGE pad -- CONFIRM)/hullMass/speed-boost (expect FAST for its size -- may set a KB big-ship speed mark)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK the Large/Medium mix)/internal array (CHECK Military slot)/costs + RANK GATE (empireRank -- the Clipper requires an Empire rank; CONFIRM which, expect higher than the Courier's Master/3). Write -> kb/ships/imperial-clipper.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/imperial-courier]] + [[ships/imperial-cutter]] (the Gutamaya large-pad flagship) + [[trunk]] Ships; CONFIRM key 'imperial_clipper' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_gunship.json (tier: 0, type: coriolis-ship, note: COMPLETES THE FEDERAL MEDIUM COMBAT TOP END -- the heavy, fighter-bay variant of the Dropship airframe. The Federal Gunship is Core Dynamics' up-armed medium gunship: more/bigger hardpoints than the Dropship, a Ship-Launched Fighter bay, slow and tanky, a higher Federal rank gate. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Core Dynamics)/class (expect 2 = MEDIUM pad)/hullMass (expect HEAVY)/speed-boost (expect SLOW)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK -- expect the most weapon mounts of the Federal mediums)/internal array (CHECK for fighterHangars TRUE + Military slot)/costs + RANK GATE (federationRank -- expect HIGHER than the Dropship's). Write -> kb/ships/federal-gunship.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/federal-dropship]] (same airframe, the base variant) + [[ships/federal-corvette]] + the AX hulls + [[trunk]] Ships; CONFIRM key 'federal_gunship' via ships/index.js if it 404s.)
+
+<!-- DONE loop 35: PAGED THE TWO QUEUED TIER-0 SIBLING-COMPLETING SHIP GAPS (Keelback + Imperial Clipper),
+     finishing the Type-6 airframe pair AND the full Gutamaya/Imperial line. 2 new Tier-0 Coriolis ship
+     pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/keelback.md NEW (key keelback, file keelback.json resolved FIRST TRY 3118 bytes, no 404).
+     edID 128672269, eddbID 27. Lakon, class 2 (MEDIUM pad), NO requirements block = NO rank gate.
+     hull 2,946,463 / retail 3,126,154 = 2nd-CHEAPEST MEDIUM-PAD (class-2) HULL IN KB (verified by scanning
+     all class-2 hull costs: only the Type-6 866,622 is cheaper; Asp 6,145,793 is next above). fighterHangars
+     TRUE -> CHEAPEST FIGHTER-BAY-CAPABLE HULL IN KB (verified vs all fighter-bay pages: next cheapest with a
+     bay is the Alliance Crusader ~22.1M; the famous 'cheapest SLF carrier'). hullMass 180 (HEAVIER than the
+     Type-6's 155 -- QUEUE-GUESS 'a touch heavier' CONFIRMED), speed 200/300 (SLOWER than Type-6's 220/350),
+     baseShield 135 (vs Type-6 90), baseArmour 270 (vs 180), hardness 45 (vs 35), heatcap 215, masslock 8,
+     crew 2, pitch 27/roll 100/yaw 15, reservefuel 0.39. Core standard [4,4,4,1,3,2,4]: PP4 Thr4 FSD4 LS1 PD3
+     Sen2 FT4. Hardpoints [2,2,1,1,0,0,0] = 2 MEDIUM + 2 SMALL = 4 weapon mounts + 3 utility (UPGRADE over the
+     Type-6's 2 Small -- QUEUE-GUESS 'more/bigger mounts' CONFIRMED). Internals [5,5,4,3,2,2,1,PAS-c1] = SEVEN
+     regular (top two class-5) + class-1 PAS, NO Military (ONE FEWER optional than the Type-6's eight -- the
+     combat variant trades internal depth). causres 0 all grades. CROSS-LINKS: type-6-transporter.md ladder
+     section +'vs Keelback' bidirectional airframe-pair bullet; alliance-crusader.md fighter-bay section +
+     a note that the Keelback is the cheaper fighter-bay entry (the Crusader is cheapest with the full
+     AX/multicrew package, not the cheapest SLF carrier overall).
+     (2) kb/ships/imperial-clipper.md NEW (key imperial_clipper, file imperial_clipper.json resolved FIRST
+     TRY 3220 bytes, no 404). edID 128049315, eddbID 13. Gutamaya, class 3 (LARGE pad -- CONFIRMED).
+     RANK GATE CONFIRMED: requirements.empireRank 7 = Empire rank BARON (between the Imperial Courier's
+     Master/3 and the Imperial Cutter's Duke/12 -- QUEUE-GUESS 'higher than the Courier's Master' CONFIRMED).
+     hull 21,116,895 / retail 22,295,860. speed 300/boost 380 = FASTEST LARGE-PAD SHIP IN KB (verified vs all
+     class-3 pages: next is Cutter 200/320; then Anaconda 180/240, Corvette 200/260, Type-10 179/219, Type-9
+     130/200, Panther 181/250 -- QUEUE-GUESS 'may set a KB big-ship speed mark' CONFIRMED). hullMass 400
+     (ties the Anaconda, light for a large hull), baseShield 180, baseArmour 270 (modest -- a fast skirmisher,
+     not a tank), hardness 60, heatcap 304, masslock 12, crew 2, NO fighter bay, pitch 40/roll 80/yaw 18,
+     reservefuel 0.74. Core standard [6,6,5,5,6,5,4]: PP6 Thr6 FSD5 LS5 PD6 Sen5 FT4 (class-6 thrusters on a
+     light hull = the speed). Hardpoints [3,3,2,2,0,0,0,0] = 2 LARGE + 2 MEDIUM = 4 weapon mounts + 4 utility,
+     NO SMALL (QUEUE-GUESS 'only Large/Medium, no Small' CONFIRMED). Internals [7,6,4,4,3,3,2,2,1,PAS-c1] =
+     NINE regular (top class-7) + class-1 PAS, NO Military. causres 0 all grades. GUTAMAYA/IMPERIAL LINE NOW
+     COMPLETE in the KB (Imperial Eagle + Imperial Courier + Imperial Clipper + Imperial Cutter). CROSS-LINK:
+     imperial-cutter.md intro + a bidirectional Gutamaya large-pad-pair note (Clipper = speed/lower gate,
+     Cutter = tank/cargo).
+     PATH NOTE: both bare keys (keelback / imperial_clipper) resolved first try, no index.js probe. trunk.md:
+     +2 Ships bullets (keelback after type-6-transporter; imperial-clipper after imperial-cutter).
+     NEXT: queued two reachable Tier-0 gaps that OPEN THE FEDERAL MEDIUM COMBAT LINE at the TOP -- Federal
+     Dropship (Core Dynamics base medium combat/troop hull, rank-gated) + Federal Gunship (the heavy
+     fighter-bay gunship variant). The Federal line is currently only represented by the large-pad
+     [[ships/federal-corvette]]; these mirror the now-complete Alliance medium trio. The Spire Site stays
+     queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 34: PAGED THE TWO QUEUED TIER-0 SMALL/MEDIUM-PAD GAPS (Imperial Courier + Type-6
      Transporter), completing the Gutamaya small-pad pair and opening the medium-pad budget-freight rung.

@@ -76,7 +76,9 @@ The Crusader is the **only Alliance medium hull with a Ship-Launched Fighter bay
 ship: a hired or wing-mate NPC/CMDR can fly a deployed fighter while the pilot focuses fire, doubling
 the effective gun count against a Thargoid Interceptor. In exchange it is the slowest (180 m/s vs the
 Chieftain's 230) and least manoeuvrable (roll 80 vs 92) of the three, and carries the fewest total
-weapon mounts (six vs the Challenger's seven).
+weapon mounts (six vs the Challenger's seven). Note that for a cheaper way into *just* a fighter bay,
+the [[ships/keelback]] (~3 M CR) is the cheapest fighter-bay-capable hull in the KB — the Crusader is the
+cheapest with the full AX/multicrew package, not the cheapest SLF carrier overall.
 
 ## AX Build Notes — the hull these modules go on
 
