@@ -3,9 +3,35 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_hull_reinforcement.json (tier: 0, type: coriolis, note: Guardian Hull Reinforcement Package -> kb/outfitting/ (new) or merge into hull-reinforcement.md. The Guardian-tech AX upgrade beyond Meta-Alloy HRP: more caustic res + a thermal-res profile, Guardian-unlock. Parse hullreinforcement/causres/thermres by class+rating. Confirm exact path/key via modules/index.js if 404.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_module_reinforcement.json (tier: 0, type: coriolis, note: Guardian Module Reinforcement Package -> merge into module-reinforcement.md (new this loop) or new page. AX module protection w/ thermal res; sibling to standard MRP. Parse protection/integrity/thermres + Guardian-unlock note.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/heat_sink_launcher.json (tier: 0, type: coriolis, note: Heat Sink Launcher -> kb/outfitting/heat-sink-launcher.md. Utility module DIRECTLY referenced by the new shield-cell-bank.md (SCB heat management) and by explorers/silent-running. Parse ammo/clip/heat-dump/reload by class+rating.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_shield_reinforcement_package.json (tier: 0, type: coriolis, note: Guardian Shield Reinforcement Package -> kb/outfitting/ (new) or merge into a shield-reinforcement page. Completes the Guardian defensive trio (HRP/MRP/SRP). PATH CONFIRMED via modules/index.js key gsrp. Powered; parse shieldreinforcement/thermres + Guardian-unlock note.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/guardian_gauss_cannon.json (tier: 0, type: coriolis, note: Guardian Gauss Cannon -> kb/outfitting/ (new ax-weapons page) -> seeds the AX weapon layer. The premier AX anti-interceptor weapon. PATH CONFIRMED via modules/index.js key ggc. Parse damage/dps/distdraw/thermload/class+rating + Guardian-unlock.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_fsd_booster.json (tier: 0, type: coriolis, note: Guardian FSD Booster -> kb/outfitting/ (new) or merge into frame-shift-drive.md. Flat jump-range boost by class; links FSD pages. PATH CONFIRMED via modules/index.js key gfsb. Parse jumpboost by class + Guardian-unlock note.)
+
+<!-- DONE loop 14: completed the Guardian AX outfitting layer + the heat-management utility.
+     2 MERGES + 1 new Tier-0 Coriolis page (all availability: live):
+     (1) kb/outfitting/hull-reinforcement.md MERGED Guardian Hull Reinforcement (grp ghrp) as a full
+     H2 + table. POWERED (unlike std/Meta-Alloy HRP, 0 power): C1 D 0.56MW -> C5 D 1.46MW. causres 0.05
+     (5% FLAT, MORE than Meta-Alloy's 3%) + thermres 0.02 (2%); explres/kinres 0. HIGHEST raw HP of all
+     3 HRP lines (C5 488/450 D/E vs std 390/360 vs MA 351/324). Classes 1-5, E/D only, Guardian unlock.
+     Independent Tier-0 file -> source_count 2->3, stays verified TRUE.
+     (2) kb/outfitting/module-reinforcement.md MERGED Guardian Module Reinforcement (grp gmrp) as a full
+     H2 + table. POWERED (std MRP 0 power): C1 D 0.34MW -> C5 D 0.88MW. SAME protection fractions as std
+     MRP (D 0.60 / E 0.30) -> independent Tier-0 corroboration of the protection mechanic -> source_count
+     1->2, verified false->TRUE. ~10% larger integrity pools than std (C5 385/424 vs 350/385) + Thargoid
+     disruption resistance. Classes 1-5, E/D only, Guardian unlock.
+     (3) kb/outfitting/heat-sink-launcher.md NEW (grp hs). UTILITY mount, class 0 rating I, passive,
+     0.2MW. Single size (no class/rating ladder). clip 1 + ammo 3 reserve = 4 sinks; duration 10s cooling,
+     fireint 5s, reload 10s, ammocost 25cr, mass 1.3t, cost 3500. Sirius variant (id 5W): mass 0.65t,
+     cost 0 (Powerplay reward), pre-eng G1 Expanded Heat Sink Capacity (Misc_HeatSinkCapacity), NOT
+     re-engineerable/grade-changeable/experimental. source_count 1, verified false. Forward-linked from
+     shield-cell-bank.md ("heat sinks" plain ref -> [[wikilink]]).
+     PATH NOTES: queue's guardian_hull_reinforcement.json AND guardian_module_reinforcement.json both
+     404'd (14-byte "404: Not Found"); modules/index.js gave the correct keys/paths:
+     ghrp=internal/guardian_hull_reinforcement_package.json, gmrp=internal/guardian_module_reinforcement_package.json
+     (the _package suffix was missing). heat_sink_launcher.json resolved first try. Follow-ons queued
+     (paths pre-confirmed via index.js): Guardian Shield Reinforcement (gsrp), Guardian Gauss Cannon
+     (ggc, seeds AX weapons), Guardian FSD Booster (gfsb). -->
+
 
 <!-- DONE loop 13: completed the module-protection / shield-recovery layer. 2 new Tier-0 Coriolis pages
      + 1 MERGE (all availability: live):

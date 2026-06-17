@@ -31,7 +31,7 @@ file `internal/shield_cell_bank.json`.
   you cannot fire an SCB the instant you flip it on.
 - **Heat is the cost.** Each activation dumps a large `thermload` of heat (170 at class 1 up to 800
   at class 8). Spamming cells back-to-back will overheat the ship and start cooking modules, so
-  serious builds pair SCBs with **heat sinks** or heat-reducing engineering.
+  serious builds pair SCBs with [[outfitting/heat-sink-launcher|heat sinks]] or heat-reducing engineering.
 
 ## Cells, heal, and the rating trade
 
