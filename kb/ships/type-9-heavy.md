@@ -53,8 +53,10 @@ Filling every optional with cargo racks gives a theoretical maximum of roughly *
 cargo. A practical fit sacrifices a slot or two for a shield generator, a Frame Shift Drive
 (SCO) for faster in-system transit, and a fuel tank, still leaving well over 1,000 t of cargo.
 For even larger capacity at a higher price, see the [[ships/panther-clipper-mk-ii]]; the Type-9
-remains the cost-effective bulk hauler. Engineer the FSD at [[engineers/felicity-farseer]]
-(Increased Range) to offset the heavy laden mass.
+remains the cost-effective bulk hauler. The combat sibling on the **same Lakon airframe** (identical
+sluggish pitch 20 / roll 20 / yaw 8) is the [[ships/type-10-defender]] — it trades the twin class-8
+cargo optionals for armour, nine weapon mounts and a class-8 Power Plant to become an AX gunship.
+Engineer the FSD at [[engineers/felicity-farseer]] (Increased Range) to offset the heavy laden mass.
 
 ## Acquisition
 
