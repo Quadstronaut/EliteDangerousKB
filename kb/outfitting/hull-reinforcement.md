@@ -119,7 +119,10 @@ AX/Thargoid content — Spire sites, Titan wrecks, AX combat zones, interceptor 
 fully `availability: live`, so caustic resistance is current, relevant outfitting. AX builds
 typically **mix** Meta-Alloy and Guardian HRPs (for caustic res) with standard HRPs, since stacking
 pushes resistances toward a cap; Guardian HRPs lead on raw HP and resist but cost a slot's worth of
-power, so power-starved hulls lean on the unpowered Meta-Alloy variant.
+power, so power-starved hulls lean on the unpowered Meta-Alloy variant. On a full Guardian AX build the
+HRP is one leg of the **Guardian defensive trio** alongside the
+[[outfitting/module-reinforcement|Guardian MRP]] (modules) and the
+[[outfitting/guardian-shield-reinforcement|Guardian Shield Reinforcement Package]] (shields).
 
 ## How to fit
 

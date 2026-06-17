@@ -29,16 +29,19 @@ Module reference pages: stats, classes/ratings, costs from the Tier-0 Coriolis d
 See [[outfitting/mining-tools]] for the mining toolkit (lasers, abrasion blaster, sub-surface
 displacement missile, seismic charge launcher, pulse wave analyser).
 See [[outfitting/frame-shift-drive]] for the FSD module reference (legacy + SCO Supercruise Overcharge).
+See [[outfitting/guardian-fsd-booster]] for the Guardian FSD Booster (flat +LY jump bonus by class; Guardian unlock).
 See [[outfitting/fuel-scoop]] for the Fuel Scoop (massless; scoop-rate by class/rating).
 See [[outfitting/limpet-controllers]] for Prospector & Collector Limpet Controllers (mining drones).
 See [[outfitting/refinery]] for the Refinery (converts mined fragments; bins by class/rating).
 See [[outfitting/shield-generator]] for Shield, Bi-Weave & Prismatic generators (multiplier mechanic, class/rating).
 See [[outfitting/shield-booster]] for the Shield Booster (utility-mount % shield boost).
 See [[outfitting/shield-cell-bank]] for the Shield Cell Bank (active shield recharge; cells/heal by class/rating).
+See [[outfitting/guardian-shield-reinforcement]] for the Guardian Shield Reinforcement Package (powered flat +MJ shield; completes the Guardian defensive trio).
 See [[outfitting/hull-reinforcement]] for the Hull Reinforcement Package (flat armour HP + resists; incl. Meta-Alloy & Guardian caustic variants).
 See [[outfitting/module-reinforcement]] for the Module Reinforcement Package (protects modules; E/D capacity-vs-absorption trade; incl. powered Guardian AX variant).
 See [[outfitting/cargo-rack]] for Cargo Racks (capacity by class; corrosion-resistant & expanded variants).
 See [[outfitting/heat-sink-launcher]] for the Heat Sink Launcher (utility-mount heat venting; pairs with SCBs, AX & silent running).
+See [[outfitting/guardian-gauss-cannon]] for the Guardian Gauss Cannon (fixed AX anti-Interceptor weapon; thermal, charge-fired).
 
 ## Engineers
 
@@ -78,4 +81,7 @@ and develop unclaimed systems using fleet carriers and construction commodities.
 The Thargoid war narrative concluded, but the content remains fully live: Spire sites,
 Titan wrecks, AX combat zones, and Thargoid interceptor encounters all remain accessible.
 These are tagged `availability: live` throughout the KB.
+AX outfitting seed: [[outfitting/guardian-gauss-cannon]] (anti-Interceptor weapon), plus the Guardian
+defensive trio — [[outfitting/guardian-shield-reinforcement]], [[outfitting/hull-reinforcement|Guardian HRP]],
+and [[outfitting/module-reinforcement|Guardian MRP]].
 <!-- tier:0 src:canonn -->

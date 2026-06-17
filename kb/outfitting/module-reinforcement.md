@@ -100,7 +100,9 @@ What it brings, confirmed by its own Tier-0 module file:
 AX/Thargoid content — Spire sites, Titan wrecks, AX combat zones, interceptor encounters — remains
 fully `availability: live`, so the Guardian MRP's Thargoid-disruption resistance is current, relevant
 outfitting. It pairs with the Guardian Hull Reinforcement Package
-([[outfitting/hull-reinforcement]]) on a dedicated AX hull.
+([[outfitting/hull-reinforcement]]) and the Guardian Shield Reinforcement Package
+([[outfitting/guardian-shield-reinforcement]]) on a dedicated AX hull — together the three form the
+**Guardian defensive trio**: modules → hull → shields.
 
 ## How to fit
 
