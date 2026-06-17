@@ -16,7 +16,9 @@ the budget, cold-running entry to serious exploration. Its defining trait is an 
 heat capacity, which lets it sit close to hot stars while fuel-scooping without overheating, and a
 class-5 Frame Shift Drive on a light 260 t hull for long jumps at a very low price. As the only
 **small-pad** ship of the explorer line, it completes the trio alongside the medium-pad
-[[ships/asp-explorer]] (roomy classic) and [[ships/mandalay]] (modern max-range).
+[[ships/asp-explorer]] (roomy classic) and [[ships/mandalay]] (modern max-range). Its combat/recon
+sibling is the cheaper, lighter [[ships/diamondback-scout]] — the Explorer is the ranged Diamondback,
+the Scout is the fighter.
 
 ## Overview
 
@@ -38,7 +40,7 @@ Source: Coriolis-data ship definition `diamondback_explorer` (edID 128671831, ed
 - **Base armour:** 150 · **Hull hardness:** 42 (low — not a combat hull)
 - **Heat capacity:** 351 — the **highest of any ship paged in this KB**. This is the data behind
   the DBX's famous cool-running reputation: it stays cooler than rivals while fuel-scooping near
-  hot stars.
+  hot stars. (Its [[ships/diamondback-scout]] sibling is second at 346 — the family trait.)
 - **Mass lock factor:** 10
 - **Manoeuvrability (deg/s):** pitch 35 · roll 90 · yaw 13
 - **Reserve fuel:** 0.52 t
