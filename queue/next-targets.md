@@ -1,8 +1,44 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_dropship.json (tier: 0, type: coriolis-ship, note: OPENS THE FEDERAL MEDIUM COMBAT LINE -- the Federal counterpart to the now-complete Alliance medium trio ([[ships/alliance-chieftain]]/[[ships/alliance-challenger]]/[[ships/alliance-crusader]]); so far only the large-pad [[ships/federal-corvette]] represents the Federal line in the KB. The Federal Dropship is Core Dynamics' base medium combat/troop hull -- the first rung of the Dropship->Assault Ship->Gunship trio, a slow, tanky, rank-gated gunship platform. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Core Dynamics)/class (expect 2 = MEDIUM pad -- CONFIRM)/hullMass (expect HEAVY -- the Dropship is famously sluggish)/speed-boost (expect SLOW)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK -- expect a brawler mix, e.g. 2 Large + smaller)/internal array (CHECK for a Military slot -- Federal combat hulls often have them -- and whether it has fighterHangars)/costs + RANK GATE (federationRank -- the Dropship requires a Federal Navy rank; CONFIRM which, expect a low-mid rank like Midshipman). Write -> kb/ships/federal-dropship.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/federal-corvette]] (the large-pad Federal flagship) + the Alliance medium trio (the parallel line) + [[trunk]] Ships; CONFIRM key 'federal_dropship' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_assault_ship.json (tier: 0, type: coriolis-ship, note: COMPLETES THE FEDERAL MEDIUM TRIO -- the MISSING MIDDLE variant between the now-paged base [[ships/federal-dropship]] (Midshipman gate, 5 mounts, no fighter bay, ~13.5 M CR) and heavy top [[ships/federal-gunship]] (Ensign gate, 7 mounts, 3 Military, fighter bay, ~34.8 M CR). The Federal Assault Ship is Core Dynamics' SPEED/AGILITY refinement of the same 580 t airframe -- traditionally the FASTEST and most maneuverable of the three (expect higher speed/boost + better roll/pitch than the Dropship's 180/300, roll 80), a lighter-armed but nimbler brawler. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Core Dynamics)/class (expect 2 = MEDIUM pad)/hullMass (expect ~580, same airframe)/speed-boost (CHECK -- expect FASTER than both siblings)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw (CHECK -- expect the most agile of the trio)/core-standard array/hardpoints array (CHECK -- expect a mid count between the Dropship's 5 and Gunship's 7)/internal array (CHECK Military slot count -- expect ~2, and whether fighterHangars -- expect NONE)/costs + RANK GATE (federationRank -- expect BETWEEN Midshipman/3 and Ensign/7, likely Petty Officer/4 or Chief Petty Officer/5). Write -> kb/ships/federal-assault-ship.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/federal-dropship]] + [[ships/federal-gunship]] (same airframe siblings) + [[ships/federal-corvette]] + [[trunk]] Ships; CONFIRM key 'federal_assault_ship' via ships/index.js if it 404s.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_gunship.json (tier: 0, type: coriolis-ship, note: COMPLETES THE FEDERAL MEDIUM COMBAT TOP END -- the heavy, fighter-bay variant of the Dropship airframe. The Federal Gunship is Core Dynamics' up-armed medium gunship: more/bigger hardpoints than the Dropship, a Ship-Launched Fighter bay, slow and tanky, a higher Federal rank gate. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Core Dynamics)/class (expect 2 = MEDIUM pad)/hullMass (expect HEAVY)/speed-boost (expect SLOW)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw/core-standard array/hardpoints array (CHECK -- expect the most weapon mounts of the Federal mediums)/internal array (CHECK for fighterHangars TRUE + Military slot)/costs + RANK GATE (federationRank -- expect HIGHER than the Dropship's). Write -> kb/ships/federal-gunship.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/federal-dropship]] (same airframe, the base variant) + [[ships/federal-corvette]] + the AX hulls + [[trunk]] Ships; CONFIRM key 'federal_gunship' via ships/index.js if it 404s.)
+<!-- DONE loop 36: PAGED THE TWO QUEUED TIER-0 FEDERAL MEDIUM-COMBAT GAPS (Federal Dropship + Federal
+     Gunship), opening the Federal medium line (previously only the large-pad [[ships/federal-corvette]]
+     represented the Federal line in the KB). 2 new Tier-0 Coriolis ship pages (both availability: live,
+     source_count 1, verified false):
+     (1) kb/ships/federal-dropship.md NEW (key federal_dropship, file resolved FIRST TRY 3793 bytes, no
+     404). edID 128049321, eddbID 9. Core Dynamics, class 2 (MEDIUM pad). RANK GATE CONFIRMED:
+     requirements.federationRank 3 = Federal Navy MIDSHIPMAN (QUEUE-GUESS 'low-mid rank like Midshipman'
+     CONFIRMED). hull 13,510,106 / retail 14,314,210. hullMass 580 (HEAVY -- sluggish, CONFIRMED),
+     speed 180/boost 300 (SLOW, CONFIRMED), baseShield 200, baseArmour 300, hardness 60, heatcap 331,
+     masslock 14, crew 2, pitch 30/roll 80/yaw 14, reservefuel 0.83. NO fighterHangars (no SLF bay).
+     Core standard [6,6,5,5,6,4,4]: PP6 Thr6 FSD5 LS5 PD6 Sen4 FT4. Hardpoints [3,2,2,2,2,0,0,0,0] =
+     1 LARGE + 4 MEDIUM = 5 weapon mounts + 4 utility. QUEUE-GUESS CORRECTION: the queue guessed
+     '2 Large + smaller' -- WRONG, only ONE Large (1L+4M). Internals [6,5,5,4,Mil-c4,Mil-c4,3,3,2,1,
+     PAS-c1] = EIGHT regular (top class-6) + TWO class-4 Military + class-1 PAS (Military slot CHECK ->
+     YES, two class-4). causres 0 all grades.
+     (2) kb/ships/federal-gunship.md NEW (key federal_gunship, file resolved FIRST TRY 4098 bytes, no
+     404). edID 128672152, eddbID 10. Core Dynamics, class 2 (MEDIUM pad). RANK GATE CONFIRMED:
+     requirements.federationRank 7 = Federal Navy ENSIGN (HIGHER than the Dropship's Midshipman/3 --
+     QUEUE-GUESS 'expect HIGHER' CONFIRMED). hull 34,814,912 / retail 35,814,210. hullMass 580 (same
+     airframe), speed 170/boost 280 (SLOWER than the Dropship's 180/300 -- the slowest Federal medium),
+     baseShield 250, baseArmour 350 (both higher than the Dropship -- tankier), hardness 60, heatcap 325,
+     masslock 14, crew 2, pitch 25/roll 80/yaw 18, reservefuel 0.82. fighterHangars TRUE (SLF bay --
+     CONFIRMED). Core standard [6,6,5,5,7,5,4]: PP6 Thr6 FSD5 LS5 PD7 Sen5 FT4 (class-7 PD, bigger than
+     the Dropship's PD6 -- feeds the larger weapon bank). Hardpoints [3,2,2,2,2,1,1,0,0,0,0] = 1 LARGE +
+     4 MEDIUM + 2 SMALL = 7 weapon mounts + 4 utility (MOST mounts of the Federal mediums -- QUEUE-GUESS
+     CONFIRMED, vs the Dropship's 5). Internals [6,6,5,Mil-c4,Mil-c4,Mil-c4,2,2,1,PAS-c1] = SIX regular
+     (top two class-6) + THREE class-4 Military + class-1 PAS. NOTABLE TRADE: the Gunship has FEWER
+     regular optionals (6 vs the Dropship's 8) but ONE MORE Military slot (3 vs 2) plus the fighter bay.
+     causres 0 all grades.
+     CROSS-LINKS: federal-corvette.md 'Versus the medium AX hulls' section +a bidirectional bullet naming
+     the two new medium-pad Federal stablemates. trunk.md: +2 Ships bullets (federal-dropship +
+     federal-gunship after federal-corvette). Both new pages cross-link each other + the Corvette + the
+     Alliance medium trio, and forward-ref [[ships/federal-assault-ship]] (the missing middle variant).
+     PATH NOTE: both bare keys (federal_dropship / federal_gunship) resolved first try, no index.js probe.
+     NEXT: queued the Federal Assault Ship (federal_assault_ship) -- the MISSING MIDDLE of the trio
+     (speed/agility variant between the Dropship and Gunship), to complete the Federal medium line. The
+     Spire Site stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 35: PAGED THE TWO QUEUED TIER-0 SIBLING-COMPLETING SHIP GAPS (Keelback + Imperial Clipper),
      finishing the Type-6 airframe pair AND the full Gutamaya/Imperial line. 2 new Tier-0 Coriolis ship
