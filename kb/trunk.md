@@ -21,6 +21,7 @@ See [[ships/cobra-mk-iii]] for the Cobra Mk III (small-pad multirole; the iconic
 See [[ships/cobra-mk-v]] for the Cobra Mk V (small multirole, stocked at Deciat).
 See [[ships/mandalay]] for the Mandalay (light medium-pad long-range explorer).
 See [[ships/asp-explorer]] for the Asp Explorer (classic affordable medium-pad long-range explorer; class-5 FSD, eight optionals, no rank gate — the cheaper, roomier companion to the Mandalay).
+See [[ships/diamondback-explorer]] for the Diamondback Explorer (budget small-pad long-range explorer; highest heat capacity in the KB for cool fuel-scooping, 1 Large + 2 Medium hardpoints, single seat, no rank gate — the cheap small-pad member of the explorer trio).
 See [[ships/type-8-transporter]] for the Type-8 Transporter (best medium-pad hauler).
 See [[ships/type-11-prospector]] for the Type-11 Prospector (medium-pad dedicated miner).
 See [[ships/type-9-heavy]] for the Type-9 Heavy (large-pad bulk hauler).
@@ -30,6 +31,7 @@ See [[ships/alliance-challenger]] for the Alliance Challenger (medium-pad AX hea
 See [[ships/krait-mk-ii]] for the Krait Mk II (medium-pad multirole; 3 large hardpoints, fighter bay).
 See [[ships/krait-phantom]] for the Krait Phantom (medium-pad long-range explorer; lighter Krait Mk II, no fighter bay).
 See [[ships/fer-de-lance]] for the Fer-de-Lance (premier medium-pad combat ship; smallest hull with a Huge hardpoint, big class-6 PD + 300 MJ shield, weak FSD/shallow internals — Zorgon Peterson glass cannon, no rank gate).
+See [[ships/vulture]] for the Vulture (Core Dynamics small-pad heavy fighter; two Large hardpoints on a size-1 hull + nimblest roll (110) in the KB, one class-5 Military slot, famously bottlenecked by a class-4 power plant, no rank gate — the small-pad companion to the Fer-de-Lance).
 See [[ships/alliance-crusader]] for the Alliance Crusader (medium-pad AX multicrew gunship; only Alliance medium with a fighter bay, 3 Military slots, crew 4).
 See [[ships/federal-corvette]] for the Federal Corvette (large-pad combat flagship; first KB ship with Huge hardpoints (two), class-8 PP/PD, Rear Admiral rank gate).
 See [[ships/anaconda]] for the Anaconda (large-pad no-gate jack-of-all-trades; one Huge but eight total mounts, deepest optionals, best jump range, no rank gate).

@@ -59,13 +59,15 @@ Source: Coriolis-data ship definition `asp` (edID 128049303, eddbID 3).
 Bulkheads carry `causres 0` on every grade, so for any AX detour fit a Meta-Alloy
 [[outfitting/hull-reinforcement]] package for caustic resistance.
 
-## Asp Explorer vs Mandalay
+## Asp Explorer vs the explorer line
 
-Both are medium-pad explorers with a class-5 FSD. The **Asp Explorer** is the cheaper,
-older classic: heavier (280 t vs 230 t) so a little less range, but with eight optional
-internals and a very low entry price (~6.1 M CR hull). The newer [[ships/mandalay]] is
-lighter and nimbler with class-leading jump range, at roughly triple the hull cost. Pick
-the Asp as an affordable, roomy first explorer; the Mandalay when you want maximum range.
+Both the Asp and the [[ships/mandalay]] are medium-pad explorers with a class-5 FSD. The **Asp
+Explorer** is the cheaper, older classic: heavier (280 t vs 230 t) so a little less range, but
+with eight optional internals and a very low entry price (~6.1 M CR hull). The newer Mandalay is
+lighter and nimbler with class-leading jump range, at roughly triple the hull cost. Pick the Asp
+as an affordable, roomy first explorer; the Mandalay when you want maximum range. For an even
+cheaper **small-pad** option, the [[ships/diamondback-explorer]] is the coldest-running of the
+three (ideal for tight fuel-scooping) but carries shallower internals and a single seat.
 
 ## Build notes
 
