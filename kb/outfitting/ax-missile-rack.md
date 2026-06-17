@@ -72,13 +72,18 @@ fixed loadouts. The Large variant's **cost 0** marks it as a reward (e.g. Commun
 
 AX weapons are obtained from the **anti-Xeno war-effort supply chain** (rescue megaships / stations
 in and near former Thargoid space) and the **Human Tech Broker**. No Guardian Structure visit is
-required. The Enhanced variant (`axmre`) is a follow-on research target.
+required. The upgraded [[outfitting/ax-missile-rack-enhanced|Enhanced AX Missile Rack]] (`axmre`)
+hits harder (77 vs 64) with faster missiles (1250 vs 750 m/s); the caustic
+[[outfitting/enzyme-missile-rack|Enzyme Missile Rack]] (`tbem`) is the damage-over-time sibling.
 
 ## Related AX weapons
 
+- [[outfitting/ax-missile-rack-enhanced]] — the upgraded `v2` of this missile rack.
+- [[outfitting/enzyme-missile-rack]] — the caustic/enzyme AX missile (hull DoT).
 - [[outfitting/ax-multi-cannon]] / [[outfitting/ax-multi-cannon-enhanced]] — the kinetic AX leg.
 - [[outfitting/guardian-gauss-cannon]], [[outfitting/guardian-plasma-charger]],
   [[outfitting/guardian-shard-cannon]] — the Guardian AX trio.
-- [[outfitting/remote-release-flak-launcher]] — anti-swarm flak support.
+- [[outfitting/remote-release-flak-launcher]] / [[outfitting/remote-release-flechette-launcher]] —
+  anti-swarm support.
 
 [[trunk]]

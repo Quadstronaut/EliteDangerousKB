@@ -3,9 +3,39 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_missile_rack_enhanced.json (tier: 0, type: coriolis, note: Enhanced AX Missile Rack -> kb/outfitting/ax-missile-rack-enhanced.md (new) OR merge into ax-missile-rack.md. The upgraded axmr (done L17, dumbfire X+E, base done). PATH per index.js key axmre -> hardpoints/ax_missile_rack_enhanced.json. Parse damage/ammo/clip/damagedist/class+rating + note what "enhanced" changes vs base (likely shotspeed/dmg, maybe seeking). CONFIRM path via modules/index.js if 404.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/remote_release_flechette_launcher.json (tier: 0, type: coriolis, note: Remote Release Flechette Launcher -> kb/outfitting/remote-release-flechette-launcher.md (new). Sibling of the Flak Launcher (rfl, done L17) — the OTHER anti-swarm remote-detonation weapon; flechette rounds vs Thargoid swarms/scouts. PATH per index.js key tbrfl -> hardpoints/remote_release_flechette_launcher.json. Parse damage/ammo/damagedist/class+rating + remote-detonation note. CONFIRM path via index.js if 404.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/enzyme_missile_rack.json (tier: 0, type: coriolis, note: Enzyme Missile Rack -> kb/outfitting/enzyme-missile-rack.md (new). Caustic/enzyme AX missile that degrades Thargoid hull over time; distinct from the standard AX Missile Rack. PATH per index.js key tbem -> resolve filename via modules/index.js FIRST (enzyme_missile_rack.json is a guess; AX guns have had stale-slug 404s — check index.js require('./x')=.json before fetching). Parse damage/ammo/damagedist/class+rating + the enzyme DoT note. Sibling ntp = nanite torpedo pylon, also open.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/nanite_torpedo_pylon.json (tier: 0, type: coriolis, note: Nanite Torpedo Pylon -> kb/outfitting/nanite-torpedo-pylon.md (new). The LAST open AX missile/torpedo-family weapon — anti-Thargoid torpedo (nanite payload). PATH CONFIRMED via index.js L18: key ntp -> require('./hardpoints/nanite_torpedo_pylon') = hardpoints/nanite_torpedo_pylon.json (note: require has NO .json suffix but the file IS .json). Parse damage/ammo/clip/damagedist/class+rating + torpedo/seeking note + any pre-eng variant. Cross-link the AX missile family: ax-missile-rack(+enhanced), enzyme-missile-rack. After ntp the AX-weapon line is COMPLETE.)
+- AX-utility line (next coverage area once ntp closes the AX weapons): candidates Xeno Scanner, Shutdown Field Neutraliser, Caustic Sink Launcher, AX/Thargoid scanners. RESOLVE each filename via modules/index.js FIRST (require('./x')=.json; AX modules have had stale-slug 404s). All availability: live. Generate 1-3 concrete URLs from index.js keys next search loop.
+
+<!-- DONE loop 18: completed the AX MISSILE family (3 new Tier-0 Coriolis outfitting pages, all
+     availability: live, source_count 1, verified false):
+     (1) kb/outfitting/ax-missile-rack-enhanced.md NEW (grp axmre, symbol Hpt_ATDumbfireMissile_*_v2).
+     The v2 UPGRADE of base axmr (done L17). damagedist {X:1,E:1}, dumbfire only (missile "D"). KEY
+     DIFFS vs base: dmg 77 (Fixed) / 64 (Med Turret) vs base 64/50; shotspeed 1250 (vs 750, 1.67x);
+     power 1.30/1.72/1.85 (vs 1.20/1.62/1.75). 4 std variants only — NO pre-eng reward variants (base
+     had 2). Lower nominal ratings (Fixed Med D / Turret Med E / Fixed Lrg B / Turret Lrg D). Med+Lrg,
+     Fixed+Turret. ammo 64/128, clip 8/12, piercing 60, fireint 2.0, reload 5. NOTE file OMITS the
+     falloff field base carried. Human Tech Broker. Bidirectional links added to base ax-missile-rack.md.
+     (2) kb/outfitting/remote-release-flechette-launcher.md NEW (grp tbrfl, symbol
+     Hpt_FlechetteLauncher_*_Medium). KINETIC sibling of the Flak Launcher (rfl, done L17) — the OTHER
+     remote-detonation anti-swarm weapon. damagedist {K:1} (100% kinetic shrapnel, NOT explosive).
+     NOT experimental-flagged. Class 2 (Med) ONLY, rating B, Fixed+Turret. dmg 13, ammo 72 (vs flak 32),
+     piercing 80(F)/70(T) (vs flak 60), breachdmg 6.5 (flak had none), clip 1, reload 2, fireint 2.0,
+     shotspeed 550, power 1.20, mass 4. 2 variants (xy Med F B 353761 / yF Med T B 1279200). NO pre-eng.
+     Added a "Flak vs Flechette" compare section to both pages. AX war-effort supply / Human Tech Broker.
+     (3) kb/outfitting/enzyme-missile-rack.md NEW (grp tbem, symbol Hpt_CausticMissile_Fixed_Medium).
+     The CAUSTIC AX missile = "Caustic Missile" internally; caustic enzyme DoT degrades Thargoid hull
+     over time (DoT magnitude NOT in Coriolis data — did not invent). damagedist {E:1}, low direct
+     damage 5. experimental:true. Class 2 Med FIXED ONLY (no Turret/Small/Large). clip 8, ammo 64,
+     reload 5, fireint 2.0, piercing 60, shotspeed 750, thermload 1.5, power 1.20, cost 480501. Base
+     variant xt + 1 pre-eng CG-reward variant 5Z "Caust Enzyme (High Cap)" (G5 HighCapacity, locked:
+     not reeng/gradechange, no experimental; stored clip 7/ammo 40).
+     trunk.md: +3 Outfitting bullets; AX/Thargoid section explosive line extended (enhanced + enzyme),
+     anti-swarm line extended (flechette). PATH NOTES: all 3 paths resolved first try (axmre/tbrfl/tbem),
+     no 404 — index.js keys confirmed this loop; enzyme guess was correct. Follow-on queued: ntp (nanite
+     torpedo pylon, path CONFIRMED via index.js) = LAST AX missile-family weapon. After ntp the entire
+     AX-weapon line is complete; next coverage = AX-utility modules (xeno scanner / shutdown field
+     neutraliser / caustic sink launcher). -->
+
 
 <!-- DONE loop 17: completed the standard (non-Guardian) AX-weapon line — 3 new Tier-0 Coriolis
      outfitting pages (all availability: live, source_count 1, verified false):
