@@ -3,7 +3,31 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/decontamination_limpet_controller.json (tier: 0, type: coriolis, note: Decontamination Limpet Controller -> kb/outfitting/limpet-controllers.md (MERGE as a new H2, or new page kb/outfitting/decontamination-limpet-controller.md). The AX limpet line: deploys limpets that strip CAUSTIC contamination off your own hull or an allied ship — the limpet-borne complement to the [[outfitting/caustic-sink-launcher]] (sink = self, instant; decon limpet = self/ally, sustained). PATH per loop-19 note: key dtl -> internal/decontamination_limpet_controller.json (require no-suffix = .json) — CONFIRM filename via modules/index.js if it 404s. availability: live. Parse class/rating/limpets/time/range/power. Cross-link [[outfitting/limpet-controllers]] (prospector/collector siblings) + the AX-utility trio.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/alliance_chieftain.json (tier: 0, type: coriolis, note: Alliance Chieftain -> kb/ships/alliance-chieftain.md NEW. THE iconic medium-pad AX combat hull — the platform that carries the AX-weapon/utility line the KB just completed. Parse manufacturer (Lakon/Alliance), mass/hullMass, hardpoints[] (it has the AX-friendly 3L+1M+... layout), utilities, internal[], baseShieldStrength, armour, hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "chieftain" -> ships/alliance_chieftain.json. Cross-link the AX-utility trio + AX weapons as "the hull these modules go on".)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/krait_mkii.json (tier: 0, type: coriolis, note: Krait Mk II -> kb/ships/krait-mk-ii.md NEW. Popular versatile AX multirole (3 large hardpoints, good internals, fighter bay) — the heavier alternative to the Chieftain for AX. Parse same fields. CONFIRM filename via ships/index.js if it 404s — key likely "kraitmkii" -> ships/krait_mkii.json (or krait_mk_ii.json). Cross-link AX outfitting + the Chieftain.)
+
+<!-- DONE loop 21: COMPLETED THE AX-UTILITY MODULE LINE — added the AX LIMPET leg, the last
+     AX-utility module. 1 new Tier-0 Coriolis outfitting page (availability: live, source_count 1,
+     verified false): kb/outfitting/decontamination-limpet-controller.md NEW (grp dtl, symbol
+     Int_DroneControl_Decontamination_Size{1,3,5,7}_Class1). It is an OPTIONAL INTERNAL (not a
+     utility hardpoint like the caustic sink) commanding a limpet that removes CAUSTIC chemicals
+     from the hull over time + applies a SMALL amount of hull repair; can target self OR a nearby
+     allied ship. The sustained limpet-borne complement to [[outfitting/caustic-sink-launcher]]
+     (sink = instant, self-only, utility mount; decon limpet = gradual, self/ally, internal slot,
+     +minor repair). DATA: 4 sizes ONLY — classes 1/3/5/7, ALL rating E (no A–E ladder, unlike the
+     mining prospector/collector controllers). maximum (= max simultaneous limpets): C1 1 / C3 2 /
+     C5 3 / C7 4. range (km): 0.6 / 0.88 / 1.3 / 2.04 (short — own hull or nearby ally). mass: 1.3
+     / 2 / 20 / 128 t. power: 0.18 / 0.2 / 0.5 / 0.97 MW. cost: 3,600 / 16,200 / 145,800 / 1,312,200
+     CR. ids y1-y4. NO `time` (limpet-lifetime) field in this controller's data. Where: standard
+     module, AX/rescue supply. PATH NOTE: internal/decontamination_limpet_controller.json resolved
+     FIRST TRY (1957 bytes, no 404) — loop-19 path note confirmed, require('./x')=.json holds.
+     trunk.md: +1 Outfitting bullet + extended the AX-utilities line in the AX/Thargoid section.
+     Bidirectional link added to [[outfitting/limpet-controllers]] (turned the "decontamination"
+     out-of-scope mention into a wikilink). With this, the WHOLE AX outfitting line (weapons +
+     defence + utilities) is complete. NEXT: pivot to AX HULLS — the platforms that carry this kit.
+     Queued the Alliance Chieftain (iconic medium AX combat ship) + Krait Mk II (heavier AX
+     multirole), both Tier-0 Coriolis ships/, to tie the AX module line to concrete builds. -->
+
 
 <!-- DONE loop 20: COMPLETED THE AX-UTILITY TRIO — the survival/targeting kit that turns any hull
      into a Thargoid-capable ship. 3 new Tier-0 Coriolis outfitting pages (all availability: live,

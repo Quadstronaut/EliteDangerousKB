@@ -16,9 +16,10 @@ changed_note:
 **Limpet Controllers** are **optional internal** modules that command single-use drones
 (*limpets*) carried as cargo. Each controller type commands one job; this page covers the two
 **mining** controllers — **Prospector** and **Collector** — that the mining loop depends on.
-(Other controllers exist for fuel transfer, hatch-breaking, repair, decontamination, recon,
-research and rescue; those are not mining tools and are out of scope here.) Stats below are
-from the Tier-0 Coriolis module definitions.
+(Other controllers exist for fuel transfer, hatch-breaking, repair,
+[[outfitting/decontamination-limpet-controller|decontamination]], recon, research and rescue;
+those are not mining tools and are out of scope here.) Stats below are from the Tier-0 Coriolis
+module definitions.
 
 Two rules of thumb decide your fit:
 - **Class** sets how many limpets the controller runs **at once** — bigger slot, more drones.

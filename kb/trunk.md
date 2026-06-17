@@ -55,6 +55,7 @@ See [[outfitting/remote-release-flechette-launcher]] for the Remote Release Flec
 See [[outfitting/xeno-scanner]] for the Xeno Scanner (utility AX scanner; IDs Thargoid type & reveals subsystems/weak points; base/Enhanced/Pulse Wave).
 See [[outfitting/shutdown-field-neutraliser]] for the Shutdown Field Neutraliser (counters the Thargoid EMP shutdown-field pulse).
 See [[outfitting/caustic-sink-launcher]] for the Caustic Sink Launcher (utility-mount caustic venting; the heat-sink analogue for Thargoid caustic DoT).
+See [[outfitting/decontamination-limpet-controller]] for the Decontamination Limpet Controller (optional-internal AX limpet; sustained caustic removal + minor hull repair, self or ally).
 
 ## Engineers
 
@@ -110,5 +111,7 @@ AX defence — the Guardian defensive trio [[outfitting/guardian-shield-reinforc
 AX utilities — the survival/targeting trio every Thargoid-capable ship fits:
 [[outfitting/xeno-scanner]] (IDs the Thargoid and reveals its weak points),
 [[outfitting/shutdown-field-neutraliser]] (negates the EMP shutdown pulse) and
-[[outfitting/caustic-sink-launcher]] (purges caustic DoT, the heat-sink analogue).
+[[outfitting/caustic-sink-launcher]] (purges caustic DoT, the heat-sink analogue);
+plus the optional-internal [[outfitting/decontamination-limpet-controller]] (a limpet that
+removes caustic contamination over time + minor hull repair — self or ally).
 <!-- tier:0 src:canonn -->
