@@ -12,8 +12,9 @@ changed_note:
 # Cobra Mk V
 
 The Cobra Mk V is a **small-class multirole ship** by **Faulcon DeLacy**, a modern
-successor to the classic Cobra line introduced in late 2024. It trades the Cobra
-Mk III's bare-bones agility for more internal capacity, four utility mounts, and a
+successor to the classic [[ships/cobra-mk-iii|Cobra Mk III]] line, introduced in late
+2024. It trades the Cobra Mk III's bare-bones agility for more internal capacity, four
+utility mounts, and a
 three-seat multicrew cockpit, while keeping a small (size-1) landing pad so it can
 dock anywhere. It is stocked at [[locations/deciat]]'s Garay Terminal shipyard.
 

@@ -11,8 +11,9 @@ availability: live
 # Python Mk II
 
 The Python Mk II is a medium-class multirole ship manufactured by Faulcon DeLacy,
-introduced in the Odyssey era. It is widely regarded as one of the best medium ships
-for combat and general-purpose use due to its hardpoint layout and internal capacity.
+introduced in the Odyssey era. It is the modern combat refinement of the classic
+[[ships/python|Python]]. It is widely regarded as one of the best medium ships for
+combat and general-purpose use due to its hardpoint layout and internal capacity.
 
 ## Overview
 
