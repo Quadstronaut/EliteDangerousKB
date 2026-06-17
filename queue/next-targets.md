@@ -1,6 +1,47 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_assault_ship.json (tier: 0, type: coriolis-ship, note: COMPLETES THE FEDERAL MEDIUM TRIO -- the MISSING MIDDLE variant between the now-paged base [[ships/federal-dropship]] (Midshipman gate, 5 mounts, no fighter bay, ~13.5 M CR) and heavy top [[ships/federal-gunship]] (Ensign gate, 7 mounts, 3 Military, fighter bay, ~34.8 M CR). The Federal Assault Ship is Core Dynamics' SPEED/AGILITY refinement of the same 580 t airframe -- traditionally the FASTEST and most maneuverable of the three (expect higher speed/boost + better roll/pitch than the Dropship's 180/300, roll 80), a lighter-armed but nimbler brawler. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Core Dynamics)/class (expect 2 = MEDIUM pad)/hullMass (expect ~580, same airframe)/speed-boost (CHECK -- expect FASTER than both siblings)/baseShield/baseArmour/hardness/heatCapacity/masslock/roll-pitch-yaw (CHECK -- expect the most agile of the trio)/core-standard array/hardpoints array (CHECK -- expect a mid count between the Dropship's 5 and Gunship's 7)/internal array (CHECK Military slot count -- expect ~2, and whether fighterHangars -- expect NONE)/costs + RANK GATE (federationRank -- expect BETWEEN Midshipman/3 and Ensign/7, likely Petty Officer/4 or Chief Petty Officer/5). Write -> kb/ships/federal-assault-ship.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/federal-dropship]] + [[ships/federal-gunship]] (same airframe siblings) + [[ships/federal-corvette]] + [[trunk]] Ships; CONFIRM key 'federal_assault_ship' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/mamba.json (tier: 0, type: coriolis-ship, note: COMPLETES THE PREMIER MEDIUM-COMBAT PAIR -- the Mamba is the Zorgon Peterson SPEED variant alongside the now-paged [[ships/fer-de-lance]] (same maker, both medium-pad combat hulls). Expect a FAST, fixed-weapon gunship: traditionally one of the highest base speeds in the game (CHECK speed/boost vs the FDL's 260/350 -- expect FASTER), a single Huge hardpoint like the FDL, and a reputation as a straight-line dragster that trades the FDL's agility for raw pace. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Zorgon Peterson)/class (expect 2 = MEDIUM pad)/hullMass/speed-boost (CHECK -- expect among the fastest in KB)/baseShield/baseArmour/hardness (expect ~70 combat)/heatCapacity/masslock/pitch-roll-yaw (CHECK -- expect LOWER agility than the FDL, the dragster trade)/core-standard array/hardpoints array (CHECK -- expect 1 Huge + Mediums like the FDL)/internal array (CHECK Military slot count)/costs + any rank gate (expect NONE -- Zorgon Peterson hulls are credit-only). Write -> kb/ships/mamba.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/fer-de-lance]] (the agility sibling) + [[ships/python]] + [[trunk]] Ships; CONFIRM key 'mamba' via ships/index.js if it 404s.)
+
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/dolphin.json (tier: 0, type: coriolis-ship, note: OPENS THE UNREPRESENTED SAUD KRUGER PASSENGER LINE -- the Dolphin is the small-pad luxury passenger liner, the entry rung of the Saud Kruger trio (Dolphin -> Orca -> Beluga Liner), a manufacturer with ZERO pages in the KB so far. Expect a sleek, cool-running passenger hull built for cabins not combat: low hardpoints, an emphasis on optional-internal space for passenger cabins, and a famously efficient/cool jump profile. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Saud Kruger)/class (expect 1 = SMALL pad)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity (CHECK -- Saud Kruger hulls run cool)/masslock/pitch-roll-yaw/core-standard array/hardpoints array (expect FEW/small -- a liner, not a fighter)/internal array (CHECK depth for passenger cabins; expect NO Military slot)/costs + any rank gate (expect NONE). Write -> kb/ships/dolphin.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link the Saud Kruger siblings [[ships/orca]] + [[ships/beluga-liner]] (forward-refs) + [[trunk]] Ships; CONFIRM key 'dolphin' via ships/index.js if it 404s.)
+
+<!-- DONE loop 37: PAGED THE QUEUED TIER-0 FEDERAL ASSAULT SHIP -- COMPLETING THE FEDERAL MEDIUM
+     COMBAT TRIO (base [[ships/federal-dropship]] + speed/agility [[ships/federal-assault-ship]] +
+     heavy [[ships/federal-gunship]]). 1 new Tier-0 Coriolis ship page (availability: live,
+     source_count 1, verified false):
+     kb/ships/federal-assault-ship.md NEW (key federal_assault_ship, file resolved FIRST TRY 3762
+     bytes, no 404). edID 128672145, eddbID 8. Core Dynamics, class 2 (MEDIUM pad). RANK GATE
+     CONFIRMED: requirements.federationRank 5 = Federal Navy CHIEF PETTY OFFICER (QUEUE-GUESS
+     'Petty Officer/4 or Chief Petty Officer/5' CONFIRMED; sits between the Dropship's Midshipman/3
+     and the Gunship's Ensign/7). hull 19,111,109 / retail 19,814,210.
+     **KEY QUEUE-GUESS CORRECTION -- NOT THE SAME AIRFRAME MASS**: hullMass 480 (the queue guessed
+     '~580, same airframe' -- WRONG; the Assault Ship is 100 t LIGHTER than both 580 t siblings).
+     speed 210/boost 350 = FASTEST of the Federal medium trio (Dropship 180/300, Gunship 170/280;
+     QUEUE-GUESS 'FASTER than both' CONFIRMED). baseShield 200 / baseArmour 300 (ties the Dropship,
+     below the Gunship's 250/350). hardness 60 (same across trio). heatCapacity 286 = LOWEST of the
+     three (Dropship 331, Gunship 325 -- runs hotter). masslock 14, crew 2, NO fighter bay (no
+     fighterHangars key; QUEUE-GUESS 'expect NONE' CONFIRMED). pitch 38/roll 90/yaw 19 = MOST AGILE
+     of the Federal mediums (Dropship 30/80/14, Gunship 25/80/18; QUEUE-GUESS 'most agile' CONFIRMED).
+     reservefuel 0.72. Core standard [6,6,5,5,6,4,4]: PP6 Thr6 FSD5 LS5 PD6 Sen4 FT4 = IDENTICAL core
+     to the Dropship (Gunship steps PD->7, Sen->5).
+     **HARDPOINTS QUEUE-GUESS CORRECTION**: [3,3,2,2,0,0,0,0] = 2 LARGE + 2 MEDIUM = 4 weapon mounts
+     + 4 utility. The queue guessed 'a mid count between the Dropship's 5 and Gunship's 7' -- WRONG:
+     only 4 mounts, FEWEST of the trio, BUT the ONLY Federal medium with TWO Large hardpoints (the
+     Dropship/Gunship each carry a single Large + Mediums). Trades mount count for bigger-calibre slots.
+     Internals [5,5,4,Mil-c4,Mil-c4,3,2,2,1,PAS-c1] = SEVEN regular (top two class-5) + TWO class-4
+     Military (QUEUE-GUESS '~2' CONFIRMED) + class-1 PAS -- between the Dropship's 8 regular/2 Military
+     and the Gunship's 6 regular/3 Military. causres 0 all grades.
+     CROSS-PAGE FIXES (the 480 t Assault Ship breaks the old 'all 580 t' trio claim): (a)
+     federal-dropship.md 'The Federal medium combat line' section re-scoped from 'all 580 t' to 'not
+     all the same mass (Assault Ship 480 t)' + the Assault-Ship bullet fleshed out (was 'not yet
+     paged'); (b) federal-gunship.md same section, same two fixes. trunk.md: +1 Ships bullet
+     (federal-assault-ship inserted between federal-dropship and federal-gunship, keeping the trio
+     ordered base->assault->gunship).
+     PATH NOTE: bare key federal_assault_ship resolved first try, no index.js probe.
+     NEXT: the Federal medium line is now COMPLETE (trio + the large-pad Corvette). Queued two
+     reachable Tier-0 gaps at the TOP -- Mamba (Zorgon Peterson fast-combat sibling of the
+     [[ships/fer-de-lance]], completing the premier medium-combat pair) + Dolphin (opens the
+     entirely-unrepresented Saud Kruger passenger line: Dolphin -> Orca -> Beluga). The Spire Site
+     stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 36: PAGED THE TWO QUEUED TIER-0 FEDERAL MEDIUM-COMBAT GAPS (Federal Dropship + Federal
      Gunship), opening the Federal medium line (previously only the large-pad [[ships/federal-corvette]]
