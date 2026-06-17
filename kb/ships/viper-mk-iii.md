@@ -35,8 +35,8 @@ small a hull.
 Source: Coriolis-data ship definition `viper` (= the Mk III; the Mk IV is a separate hull). edID
 128049273, eddbID 22.
 
-- **Hull mass:** 50 t — the lightest dedicated combat hull in the KB; only the 25 t starter
-  [[ships/sidewinder]] is lighter (next-lightest combat hulls are the Cobra Mk III at 180 t and the
+- **Hull mass:** 50 t — the lightest dedicated combat hull in the KB; only the non-combat 25 t
+  [[ships/sidewinder]] and 14 t [[ships/hauler]] are lighter (next-lightest combat hulls are the Cobra Mk III at 180 t and the
   Diamondback Scout at 170 t). The low mass is the basis of its speed.
 - **Top speed:** 320 m/s · **Boost:** 400 m/s — the **highest base speed of any ship paged here**
   (the Cobra Mk III matches the 400 boost but only 280 base).
