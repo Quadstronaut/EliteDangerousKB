@@ -69,9 +69,14 @@ Bulkheads carry `causres 0` on every grade.
   hardpoint, a larger class-6 Power Distributor and far more shield, but it needs a medium pad and
   costs ~10×. The Vulture delivers two Large mounts and best-in-KB agility on a small pad for a
   fraction of the price; the FDL trades agility for raw mount size and sustained energy draw.
+- **vs the cheap small-pad fighters [[ships/viper-mk-iii]] and [[ships/diamondback-scout]]:** both
+  are far cheaper, lighter entry combat hulls with four smaller mounts (2 Medium + 2 Small) rather
+  than the Vulture's two Large. The Viper is the fast interceptor (320/400, thin armour, a Military
+  slot); the Scout is the cool-running recon fighter. The Vulture is the step up in firepower and
+  shield once you can afford ~4.9 M CR and solve its power budget.
 - **As a small-pad brawler** it sits alongside the other Core Dynamics combat lineage and the
-  large-pad [[ships/federal-corvette]] as the entry rung of dedicated combat — outturning bigger
-  ships while two Large weapons do the work, provided you solve the power budget.
+  large-pad [[ships/federal-corvette]] as the entry rung of dedicated heavy combat — outturning
+  bigger ships while two Large weapons do the work, provided you solve the power budget.
 
 ## Build notes
 

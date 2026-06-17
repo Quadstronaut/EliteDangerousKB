@@ -23,7 +23,8 @@ combat, light trading, and exploration alike. Its modern small-pad successor is 
 - **Size class:** 1 (Small landing pad — docks anywhere, including outposts and planetary ports)
 - **Role:** Multirole (combat, light hauling, exploration)
 - **Rank requirement:** none — credits only (no `requirements` block in the Coriolis data)
-- **Hull cost:** 208,372 CR (hull only — the cheapest ship in the KB)
+- **Hull cost:** 208,372 CR (hull only — long the KB's cheapest, now undercut by the
+  [[ships/viper-mk-iii]] at 96,733 CR)
 - **Retail cost:** 349,718 CR (with stock modules)
 - **Crew seats:** 2
 
@@ -44,7 +45,8 @@ Source: Coriolis-data ship definition `cobra_mk_iii` (edID 128049279, eddbID 4).
 
 - **Core internals:** Power Plant **4**, Thrusters **4**, Frame Shift Drive **4**,
   Life Support **3**, Power Distributor **3**, Sensors **3**, Fuel Tank **4**.
-- **Hardpoints:** 2 × Medium + 2 × Small (four mounts).
+- **Hardpoints:** 2 × Medium + 2 × Small (four mounts) — the same layout as the fast-attack
+  [[ships/viper-mk-iii]] and the [[ships/diamondback-scout]].
 - **Utility mounts:** 2.
 - **Optional internals:** sizes 4, 4, 4, 2, 2, 2, 1, 1 (eight slots — three class-4)
   plus a reserved class-1 **Planetary Approach Suite** (planet-landing and SRV capable).
@@ -62,6 +64,14 @@ cheaper, faster classic (180 t, boost 400, 4 hardpoints, 2 utility, eight option
 The newer [[ships/cobra-mk-v]] trades a little of that bare-bones agility for more
 capacity — five hardpoints, four utility mounts, and a three-seat multicrew cockpit.
 Pick the Mk III for a cheap, fast all-rounder; the Mk V for more mounts and crew.
+
+## Cobra Mk III vs the small-pad combat hulls
+
+The Mk III shares its 2 Medium + 2 Small mount layout with the dedicated combat
+[[ships/viper-mk-iii]] (faster, lighter, cheaper, with a Military slot but thin armour and
+short legs) and the [[ships/diamondback-scout]] (cooler-running, 4 utility mounts). The Cobra's
+edge is its eight optionals and multirole flexibility — it hauls and explores as readily as it
+fights, where those two are purpose-built fighters.
 
 ## Acquisition
 

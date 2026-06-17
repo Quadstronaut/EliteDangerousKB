@@ -17,11 +17,12 @@ Central index of the KB. Each section links to the main topic pages.
 Core vessel knowledge: stats, outfitting slots, rebuy costs, role recommendations.
 See [[ships/python]] for the Python (medium-pad multirole workhorse; 3 Large + 2 Medium hardpoints, ten optionals, no rank gate — the classic; combat refinement is the Mk II).
 See [[ships/python-mk-ii]] for the Python Mk II.
-See [[ships/cobra-mk-iii]] for the Cobra Mk III (small-pad multirole; the iconic cheap, fast, agile starter — cheapest hull in the KB; modern successor is the Mk V).
+See [[ships/cobra-mk-iii]] for the Cobra Mk III (small-pad multirole; the iconic cheap, fast, agile starter — long the cheapest hull in the KB, now undercut by the [[ships/viper-mk-iii]]; modern successor is the Mk V).
 See [[ships/cobra-mk-v]] for the Cobra Mk V (small multirole, stocked at Deciat).
 See [[ships/mandalay]] for the Mandalay (light medium-pad long-range explorer).
 See [[ships/asp-explorer]] for the Asp Explorer (classic affordable medium-pad long-range explorer; class-5 FSD, eight optionals, no rank gate — the cheaper, roomier companion to the Mandalay).
 See [[ships/diamondback-explorer]] for the Diamondback Explorer (budget small-pad long-range explorer; highest heat capacity in the KB for cool fuel-scooping, 1 Large + 2 Medium hardpoints, single seat, no rank gate — the cheap small-pad member of the explorer trio).
+See [[ships/diamondback-scout]] for the Diamondback Scout (cheap, light small-pad combat/recon ship; 2 Medium + 2 Small hardpoints + 4 utility, heat capacity 346 — 2nd-highest in KB, single seat, no Military slot, no rank gate — the budget combat/recon sibling of the Diamondback Explorer).
 See [[ships/type-8-transporter]] for the Type-8 Transporter (best medium-pad hauler).
 See [[ships/type-11-prospector]] for the Type-11 Prospector (medium-pad dedicated miner).
 See [[ships/type-9-heavy]] for the Type-9 Heavy (large-pad bulk hauler).
@@ -32,6 +33,7 @@ See [[ships/krait-mk-ii]] for the Krait Mk II (medium-pad multirole; 3 large har
 See [[ships/krait-phantom]] for the Krait Phantom (medium-pad long-range explorer; lighter Krait Mk II, no fighter bay).
 See [[ships/fer-de-lance]] for the Fer-de-Lance (premier medium-pad combat ship; smallest hull with a Huge hardpoint, big class-6 PD + 300 MJ shield, weak FSD/shallow internals — Zorgon Peterson glass cannon, no rank gate).
 See [[ships/vulture]] for the Vulture (Core Dynamics small-pad heavy fighter; two Large hardpoints on a size-1 hull + nimblest roll (110) in the KB, one class-5 Military slot, famously bottlenecked by a class-4 power plant, no rank gate — the small-pad companion to the Fer-de-Lance).
+See [[ships/viper-mk-iii]] for the Viper Mk III (Faulcon DeLacy fast-attack small-pad interceptor; cheapest hull in the KB (96,733 CR) and lightest (50 t), fastest base speed (320/400), 2 Medium + 2 Small hardpoints + one class-3 Military slot, thin armour, runs hot, no rank gate — the budget bounty-hunter).
 See [[ships/alliance-crusader]] for the Alliance Crusader (medium-pad AX multicrew gunship; only Alliance medium with a fighter bay, 3 Military slots, crew 4).
 See [[ships/federal-corvette]] for the Federal Corvette (large-pad combat flagship; first KB ship with Huge hardpoints (two), class-8 PP/PD, Rear Admiral rank gate).
 See [[ships/anaconda]] for the Anaconda (large-pad no-gate jack-of-all-trades; one Huge but eight total mounts, deepest optionals, best jump range, no rank gate).

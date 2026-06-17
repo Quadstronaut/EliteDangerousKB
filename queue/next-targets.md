@@ -1,8 +1,50 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/diamondback_scout.json (tier: 0, type: coriolis-ship, note: COMPLETES THE DIAMONDBACK PAIR with the just-paged [[ships/diamondback-explorer]]. The Diamondback Scout (DBS) is the cheaper, lighter small-pad combat/recon sibling - Lakon's nimble entry combat ship (the explorer is the ranged variant; the scout is the cheap fighter). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Lakon)/class (expect 1 = SMALL pad)/hullMass (expect LIGHTER than DBX 260)/speed-boost/baseShield/baseArmour/hardness/heatCapacity (note whether it shares the DBX cool-running trait)/masslock/core-standard array/hardpoints array (count Large/Med/Small + utility = trailing zeros)/internal array (optionals + PAS, CHECK for a Military slot like the Vulture had)/costs. Write -> kb/ships/diamondback-scout.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/diamondback-explorer]] (bidirectional Diamondback-pair note: scout = cheaper combat/recon, explorer = ranged) + the small-pad combat hulls [[ships/vulture]] + [[ships/cobra-mk-iii]] + [[engineers/felicity-farseer]] + [[trunk]] Ships. CONFIRM filename via ships/index.js if diamondback_scout.json 404s - Coriolis key likely "diamondback_scout" or "dbs".)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/viper_mk_iv.json (tier: 0, type: coriolis-ship, note: COMPLETES THE VIPER PAIR with the just-paged [[ships/viper-mk-iii]] (mirrors the Cobra Mk III/V + Diamondback Scout/Explorer pair pattern). The Viper Mk IV is Faulcon DeLacy's heavier, tankier evolution of the Mk III: more armour/optionals/utility and better defences at the cost of the Mk III's raw speed. Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Faulcon DeLacy)/class (expect 1 = SMALL pad)/hullMass (expect HEAVIER than Mk III's 50 - the Mk IV is the tankier sibling)/speed-boost (expect SLOWER than 320/400)/baseShield/baseArmour (expect HIGHER than Mk III's 70)/hardness/heatCapacity/masslock/core-standard array/hardpoints array (expect same 2 Medium + 2 Small family but CONFIRM)/internal array (optionals + PAS, CHECK Military slot like the Mk III had)/costs. Write -> kb/ships/viper-mk-iv.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/viper-mk-iii]] (bidirectional Viper-pair note: Mk III = fast/cheap interceptor, Mk IV = tankier multirole) + [[ships/cobra-mk-iii]] + [[ships/vulture]] + [[trunk]] Ships. CONFIRM filename via ships/index.js if viper_mk_iv.json 404s - Coriolis key likely "viper_mk_iv".)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/viper.json (tier: 0, type: coriolis-ship, note: SMALL-PAD COMBAT-STARTER GAP - the iconic cheap, fast small-pad combat ship, companion to the just-paged [[ships/vulture]] in the small-pad combat line. The Viper Mk III is Faulcon DeLacy's fast-attack interceptor: very high top speed, light combat hull, the classic budget bounty-hunter. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Faulcon DeLacy)/class (expect 1 = SMALL pad)/hullMass/speed-boost (expect HIGH top speed - its signature trait)/baseShield/baseArmour/hardness/heatCapacity/masslock/core-standard array/hardpoints array (expect 2 Medium + 2 Small = [2,2,1,1,...] + utility trailing zeros)/internal array (shallow optionals + PAS, check Military)/costs. Write -> kb/ships/viper-mk-iii.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/vulture]] (small-pad combat step up: Viper = fast/cheap, Vulture = two-Large heavy guns) + [[ships/cobra-mk-iii]] (small-pad sibling/contrast) + [[trunk]] Ships. CONFIRM filename via ships/index.js if viper.json 404s - Coriolis key likely "viper" (Mk III) vs "viper_mk_iv" (Mk IV).)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/sidewinder.json (tier: 0, type: coriolis-ship, note: FOUNDATIONAL STARTER-SHIP GAP - the Sidewinder is the universal free starter every commander begins in (and respawns to on insurance default), yet it has no KB page. Faulcon DeLacy's tiny size-1 multirole: cheapest/smallest hull, the baseline every other ship is measured against. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Faulcon DeLacy)/class (expect 1 = SMALL pad)/hullMass (expect VERY low - likely a new KB lightest, vs Viper Mk III's 50)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/core-standard array (expect tiny - max class ~2)/hardpoints array (expect 2 Small + utility)/internal array (shallow optionals + PAS)/costs (expect the new KB-cheapest, undercutting Viper Mk III's 96,733). Write -> kb/ships/sidewinder.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/viper-mk-iii]] + [[ships/cobra-mk-iii]] (the natural first-upgrade paths) + [[trunk]] Ships. CONFIRM filename via ships/index.js if sidewinder.json 404s - Coriolis key likely "sidewinder".)
+
+<!-- DONE loop 30: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Diamondback Scout + Viper Mk III),
+     completing the Diamondback pair and seeding the small-pad combat-starter line. 2 new Tier-0
+     Coriolis ship pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/diamondback-scout.md NEW. KEY GOTCHA: the top-level Coriolis key is "diamondback"
+     (NOT "diamondback_scout") inside file diamondback_scout.json - asymmetric vs the Explorer's
+     "diamondback_explorer" key. Resolved on the URL diamondback_scout.json first try (3096 bytes,
+     no 404). edID 128671217, eddbID 6. Lakon, class 1 (SMALL pad), NO requirements block = no rank
+     gate. hullMass 170 (LIGHTER than DBX 260, as predicted), speed 280/boost 380, baseShield 120,
+     baseArmour 120 (symmetrical), hardness 40 (low), **heatCapacity 346 = 2nd-HIGHEST in KB** (just
+     under its DBX sibling 351, above Type-10 335) - CONFIRMS the Diamondback cool-running family
+     trait. masslock 8, crew 1 (single-seat, like DBX), pitch 42/roll 100/yaw 15, reservefuel 0.49,
+     hull 463,926 / retail 564,329 (cheap). Core standard [4,4,4,2,3,2,4]: PP4 Thr4 **FSD4** LS2 PD3
+     Sen2 FT4 (class-4 FSD = modest range vs DBX class-5 - the pair split: scout=fighter, explorer=
+     ranged). Hardpoints [2,2,1,1,0,0,0,0] = **2 Medium + 2 Small = 4 weapon mounts** (one MORE than
+     DBX's 3, but no Large) + **4 utility**. Optionals 3,3,3,2,1,1 (SIX, top class-3 - shallower than
+     DBX's 8/class-4) + class-1 PAS. **NO Military slot** (queue asked "CHECK for a Military slot like
+     the Vulture had" - answer NO; contrast the Viper Mk III, which HAS one). Bulkheads causres 0 all.
+     (2) kb/ships/viper-mk-iii.md NEW (key viper, file viper.json, resolved first try 3295 bytes, no
+     404). edID 128049273, eddbID 22. Faulcon DeLacy, class 1 (SMALL pad), NO rank gate. **hullMass
+     50 = by FAR the lightest hull in KB** (next: Cobra Mk III 180 / DBS 170). speed **320/boost 400
+     = fastest base speed in KB** (Cobra matches 400 boost but only 280 base) - signature trait
+     CONFIRMED. baseShield 105, baseArmour **70 (low - thin)**, hardness 35, **heatCapacity 195 (LOW
+     - runs hot**, opposite of the Diamondbacks). masslock 7, crew 1, pitch 35/roll 90/yaw 15,
+     reservefuel 0.41. **hull 96,733 / retail 142,931 = NEW CHEAPEST HULL IN KB**, undercutting the
+     Cobra Mk III (prior cheapest, hull 208,372). Core standard [3,3,3,2,3,3,2]: PP3 Thr3 FSD3 LS2
+     PD3 Sen3 **FT2 (tiny tank - short legs)**, small core capped at class-3. Hardpoints [2,2,1,1,0,0]
+     = **2 Medium + 2 Small = 4 mounts** (same as Cobra Mk III) + **2 utility**. Optionals 3,3,2,1,1,1
+     (SIX) + **ONE class-3 Military slot** (eligible mahr/hr/scb/mrp/gsrp/gmrp/ghrp) + class-1 PAS.
+     QUEUE-GUESS RESULTS: 2M+2S [2,2,1,1,...] CONFIRMED; "check Military" -> YES, has a class-3
+     Military slot (notable on so cheap/small a hull). Bulkheads causres 0 all.
+     CROSS-PAGE FIXES: the Cobra Mk III page + its trunk bullet both claimed "cheapest hull in the KB"
+     - CORRECTED to note the Viper Mk III now undercuts it (96,733 < 208,372), same discipline as the
+     loop-29 "nimblest roll" check. Bidirectional links added: DBX page (Diamondback-pair sibling note
+     + heatcap 346 mention), Vulture page (small-pad cheap-fighter siblings bullet), Cobra Mk III page
+     (new "vs small-pad combat hulls" section). trunk.md: +2 Ships bullets (Scout after DBX; Viper
+     after Vulture in the small-pad combat grouping).
+     PATH NOTE: the "diamondback" key (not "diamondback_scout") is the loop's one surprise - file name
+     != inner key for the Scout; record for future Lakon variant probes. NEXT: queued two reachable
+     Tier-0 ship gaps at the TOP - Viper Mk IV (completes the Viper pair: tankier multirole sibling) +
+     Sidewinder (the universal starter ship, a glaring foundational gap; likely the new KB-cheapest/
+     lightest). The Spire Site stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 29: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Diamondback Explorer + Vulture), completing
      the explorer trio and seeding the small-pad combat line. 2 new Tier-0 Coriolis ship pages (both
