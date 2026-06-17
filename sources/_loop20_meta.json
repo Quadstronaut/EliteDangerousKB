@@ -1,0 +1,26 @@
+{
+  "caustic-sink-launcher": {
+    "url": "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/caustic_sink_launcher.json",
+    "sha8": "bff42f09",
+    "raw_sha256": "07ca15d4314e23d56a044f1e9af047420fd1fbe5becf4fcd42cae029687c7df5",
+    "bytes": 466,
+    "resumable": true,
+    "path": "sources/bff42f09-caustic-sink-launcher.raw"
+  },
+  "xeno-scanner": {
+    "url": "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/xeno_scanner.json",
+    "sha8": "6732baa2",
+    "raw_sha256": "53dd6253afb6e78fcf30aa73dc17637f9eecfcc3d3226c5989bc673ca594fb7f",
+    "bytes": 1120,
+    "resumable": true,
+    "path": "sources/6732baa2-xeno-scanner.raw"
+  },
+  "shutdown-field-neutraliser": {
+    "url": "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/shutdown_field_neutraliser.json",
+    "sha8": "9fc32b63",
+    "raw_sha256": "44ba14e9df2cc2bc37ba27d46de5982d4afeea36432413018d598e80d25dcc99",
+    "bytes": 839,
+    "resumable": true,
+    "path": "sources/9fc32b63-shutdown-field-neutraliser.raw"
+  }
+}
