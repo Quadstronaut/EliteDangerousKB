@@ -3,7 +3,38 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_10_defender.json (tier: 0, type: coriolis, note: Type-10 Defender -> kb/ships/type-10-defender.md NEW. EXTEND LARGE-PAD AX from the combat trinity (Corvette/Anaconda/Cutter, all done) to the dedicated AX BRICK: the Lakon Type-10 Defender — a slow, heavily-armoured flying fortress built as an AX gunship/platform, prized for its big utility-mount count and many hardpoints rather than agility. Expect class 3 (LARGE pad), NO rank gate (Lakon — just CR + likely Horizons), very high armour + lots of utility mounts (count the zeros in hardpoints[]), big hardpoint count, deep optionals, possible Military slots. Parse manufacturer (Lakon), hullMass (heavy), speed/boost (slow), hardpoints[] (count Large/Medium/Small + Huge?), utilities, internal[] incl Military slots, baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "type_10_defender" -> ships/type_10_defender.json (NOTE the Type-9 file was type_9_heavy.json, Type-8 was type_8_transport.json — the Defender may follow a similar suffix pattern; check index.js first if 404). Cross-link the AX weapon/utility/defence line + the large-pad trinity [[ships/federal-corvette]]/[[ships/anaconda]]/[[ships/imperial-cutter]] + the bulk hauler sibling [[ships/type-9-heavy]] (same Lakon Type-9 airframe). After this, AX coverage could finally pivot to Spire/Titan SITE mechanics or AX combat-zone tactics (Tier-2 Canonn/wiki prose).)
+- https://elite-dangerous.fandom.com/wiki/Thargoid_Spire_Site (tier: 2, type: wiki-prose, note: PIVOT — the whole AX HULL line is now complete (medium Chieftain/Challenger/Crusader + Krait pair, large-pad trinity Corvette/Anaconda/Cutter + the Type-10 Defender armour brick), so move from AX *ships* to AX *SITE mechanics*. Target the Thargoid Spire Site (a.k.a. Spire/Robigo-style Maelstrom spire) — CURRENT, availability: live (the war narrative ended but Spire sites are accessible). This is Tier-2 PROSE: fetch via Fetcher, then SUMMARIZE via mcp__ollama-tools__summarize_text qwen3-coder:30b with the fact-extraction prompt (key claims, named entities, currency signals, OBSOLETE yes/no, per-claim availability). Extract: what a Spire site IS, how to find/approach one, the loot/objective loop (Thargoid materials, e.g. Titan Drive Component etc.), hazards (caustic, heat, Thargoid defenders), and which AX kit applies. Write -> kb/ax-thargoid/sites/thargoid-spire-site.md NEW (source_type: wiki, tier 2, verified false, availability: live). CONFIRM the slug if it 404s — try "Thargoid_Spire", "Spire_Site", or the Canonn structured API (api.canonn.tech, Tier-0 JSON: system/bodyName/lat-long/type) as a higher-trust fallback. Cross-link the AX weapon/utility/defence outfitting line + the AX hulls (esp. [[ships/type-10-defender]] as the durable site-runner) + [[trunk]] AX/Thargoid section. After this, AX site coverage could extend to Titan wrecks / AX combat-zone tactics, or Canonn structured site listings.)
+
+<!-- DONE loop 26: COMPLETED THE LARGE-PAD AX LINE — added the dedicated AX ARMOUR BRICK, finishing
+     the whole AX-hull roster (medium trio + Krait pair + large trinity + this). 1 new Tier-0 Coriolis
+     ship page (availability: live, source_count 1, verified false):
+     kb/ships/type-10-defender.md NEW (type_10_defender, edID 128785619, eddbID 32). Lakon, class 3
+     (LARGE pad), **NO requirements block = NO rank gate** (credits only, like the Anaconda). hullMass
+     **1200 (HEAVIEST hull in KB**, above Cutter 1100), speed 179/boost 219 (slow), baseShield **320
+     (LOW — armour-tank, not shield-tank)**, baseArmour **580 (HIGHEST armour in KB**, above Anaconda
+     525), hardness **75 (HIGHEST hardness in KB**, above Corvette/Cutter 70), heatcap 335, masslock 26,
+     crew 4, fighterHangars TRUE, pitch 20/roll 20/yaw 8 (**very sluggish — IDENTICAL airframe figures
+     to the Type-9 Heavy**), reservefuel 0.77, hull 121,334,619 / retail 124,755,342. Core standard
+     [8,7,7,5,7,4,6]: PP8 Thr7 FSD7 LS5 PD7 Sen4 FT6. Hardpoints [3,3,3,3,2,2,2,1,1 + 8 zeros] = **4
+     Large + 3 Medium + 2 Small = NINE weapon mounts (MOST in KB)**, **NO Huge** + **8 utility**.
+     Optionals 8,7,6,5,4,4,3,3,2,1 = TEN regular + **TWO class-5 Military** + class-1 PAS. Bulkheads
+     causres 0 all grades.
+     QUEUE-GUESS RESULTS: class 3 + no rank gate + very high armour + 8 utility + big hardpoint count +
+     Military slots ALL CONFIRMED. CORRECTION: **NO Huge hardpoint** (queue asked "Huge?") — max mount
+     is Large; firepower comes from COUNT (9 mounts) not a Huge slot. Military slots = 2 class-5 (NOT
+     unknown). NOTABLE: only the FIRST of the 2 Military slots is eligible for Meta-Alloy HRP (mahr);
+     the second slot's eligible set omits mahr.
+     PATH NOTE: ships/type_10_defender.json resolved FIRST TRY, no 404 (the feared type_9_heavy-style
+     suffix did not apply here). trunk.md: +1 Ships bullet + extended the large-pad line from "trinity"
+     to "trinity plus the dedicated armour brick" (and softened the Corvette's "heaviest AX gunship" to
+     "highest-firepower AX gunship" since the Type-10 is now the heaviest hull). Type-9 Heavy page:
+     added a bidirectional airframe-sibling link (same Lakon airframe, combat variant).
+     ROSTER SUMMARY (large-pad AX): Corvette = firepower king (2 Huge, Rear Admiral); Anaconda = no-gate
+     generalist (best range); Cutter = shield-tank (600 MJ, Duke); Type-10 = armour brick (580 armour /
+     75 hardness / 9 mounts, no Huge, no gate). NEXT: PIVOT from AX ships to AX SITE MECHANICS — queued
+     the Thargoid Spire Site (Tier-2 wiki prose, summarize via qwen3-coder:30b; Canonn structured API as
+     a higher-trust fallback). After that: Titan wrecks / AX combat-zone tactics. -->
+
 
 <!-- DONE loop 25: COMPLETED THE LARGE-PAD COMBAT TRINITY (Corvette/Anaconda/Cutter). 2 new Tier-0
      Coriolis ship pages (both availability: live, source_count 1, verified false):
