@@ -64,6 +64,7 @@ Community Goal reward.
 
 ## Related AX weapons
 
+- [[outfitting/nanite-torpedo-pylon]] — the seeking nanite torpedo (vent-disruption payload).
 - [[outfitting/ax-missile-rack]] / [[outfitting/ax-missile-rack-enhanced]] — the explosive AX missiles.
 - [[outfitting/ax-multi-cannon]] / [[outfitting/ax-multi-cannon-enhanced]] — the kinetic AX leg.
 - [[outfitting/guardian-gauss-cannon]], [[outfitting/guardian-plasma-charger]],

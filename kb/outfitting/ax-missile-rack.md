@@ -78,6 +78,7 @@ hits harder (77 vs 64) with faster missiles (1250 vs 750 m/s); the caustic
 
 ## Related AX weapons
 
+- [[outfitting/nanite-torpedo-pylon]] — the seeking nanite torpedo (vent-disruption payload).
 - [[outfitting/ax-missile-rack-enhanced]] — the upgraded `v2` of this missile rack.
 - [[outfitting/enzyme-missile-rack]] — the caustic/enzyme AX missile (hull DoT).
 - [[outfitting/ax-multi-cannon]] / [[outfitting/ax-multi-cannon-enhanced]] — the kinetic AX leg.

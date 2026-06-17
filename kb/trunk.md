@@ -49,6 +49,7 @@ See [[outfitting/ax-multi-cannon-enhanced]] for the Enhanced AX Multi-Cannon (gi
 See [[outfitting/ax-missile-rack]] for the AX Missile Rack (dumbfire AX + explosive missiles; the explosive AX leg).
 See [[outfitting/ax-missile-rack-enhanced]] for the Enhanced AX Missile Rack (upgraded v2; 77 dmg, faster missiles).
 See [[outfitting/enzyme-missile-rack]] for the Enzyme Missile Rack (caustic AX missile; degrades Thargoid hull over time).
+See [[outfitting/nanite-torpedo-pylon]] for the Nanite Torpedo Pylon (seeking AX torpedo; nanite vent-disruption payload — the last AX missile-family weapon).
 See [[outfitting/remote-release-flak-launcher]] for the Remote Release Flak Launcher (anti-swarm flak; clears Thargoid Swarm/Scout clouds).
 See [[outfitting/remote-release-flechette-launcher]] for the Remote Release Flechette Launcher (anti-swarm kinetic shrapnel; flak's sibling).
 
@@ -93,10 +94,12 @@ These are tagged `availability: live` throughout the KB.
 AX weapons — **kinetic**: [[outfitting/ax-multi-cannon]] (standard workhorse, no unlock) and its
 [[outfitting/ax-multi-cannon-enhanced|Enhanced]] gimballed upgrade; **explosive**:
 [[outfitting/ax-missile-rack]] (dumbfire AX missiles) plus its
-[[outfitting/ax-missile-rack-enhanced|Enhanced]] upgrade and the caustic
-[[outfitting/enzyme-missile-rack|Enzyme Missile Rack]] (hull damage-over-time); the **Guardian trio**
-[[outfitting/guardian-gauss-cannon]] (long-range thermal), [[outfitting/guardian-plasma-charger]]
-(absolute-damage charge burst) and [[outfitting/guardian-shard-cannon]] (close-range thermal shotgun);
+[[outfitting/ax-missile-rack-enhanced|Enhanced]] upgrade, the caustic
+[[outfitting/enzyme-missile-rack|Enzyme Missile Rack]] (hull damage-over-time) and the seeking
+[[outfitting/nanite-torpedo-pylon|Nanite Torpedo Pylon]] (nanite vent-disruption payload); the
+**Guardian trio** [[outfitting/guardian-gauss-cannon]] (long-range thermal),
+[[outfitting/guardian-plasma-charger]] (absolute-damage charge burst) and
+[[outfitting/guardian-shard-cannon]] (close-range thermal shotgun);
 plus **anti-swarm support** [[outfitting/remote-release-flak-launcher]] (explosive flak) and
 [[outfitting/remote-release-flechette-launcher]] (kinetic flechette) vs Swarm/Scout clouds.
 AX defence — the Guardian defensive trio [[outfitting/guardian-shield-reinforcement]],

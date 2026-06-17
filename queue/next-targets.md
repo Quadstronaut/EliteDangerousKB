@@ -3,8 +3,30 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/nanite_torpedo_pylon.json (tier: 0, type: coriolis, note: Nanite Torpedo Pylon -> kb/outfitting/nanite-torpedo-pylon.md (new). The LAST open AX missile/torpedo-family weapon — anti-Thargoid torpedo (nanite payload). PATH CONFIRMED via index.js L18: key ntp -> require('./hardpoints/nanite_torpedo_pylon') = hardpoints/nanite_torpedo_pylon.json (note: require has NO .json suffix but the file IS .json). Parse damage/ammo/clip/damagedist/class+rating + torpedo/seeking note + any pre-eng variant. Cross-link the AX missile family: ax-missile-rack(+enhanced), enzyme-missile-rack. After ntp the AX-weapon line is COMPLETE.)
-- AX-utility line (next coverage area once ntp closes the AX weapons): candidates Xeno Scanner, Shutdown Field Neutraliser, Caustic Sink Launcher, AX/Thargoid scanners. RESOLVE each filename via modules/index.js FIRST (require('./x')=.json; AX modules have had stale-slug 404s). All availability: live. Generate 1-3 concrete URLs from index.js keys next search loop.
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/caustic_sink_launcher.json (tier: 0, type: coriolis, note: Caustic Sink Launcher -> kb/outfitting/caustic-sink-launcher.md (new). AX caustic-venting utility — ejects accumulated caustic the way a heat sink ejects heat; essential vs Thargoid caustic clouds/enzyme. PATH CONFIRMED via index.js L33: key csl -> hardpoints/caustic_sink_launcher.json (require no-suffix = .json). availability: live. Parse class/rating/clip/ammo/reload/duration + any pre-eng variant. Cross-link [[outfitting/heat-sink-launcher]] (heat analogue) + the AX weapon family.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/xeno_scanner.json (tier: 0, type: coriolis, note: Xeno Scanner -> kb/outfitting/xeno-scanner.md (new). Utility scanner that IDs Thargoid type + reveals subsystems/weak points; makes AX targeting effective. PATH CONFIRMED via index.js L48: key xs -> hardpoints/xeno_scanner.json. availability: live. Parse class/rating/range/angle/power. Cross-link AX weapons + shutdown-field-neutraliser.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/shutdown_field_neutraliser.json (tier: 0, type: coriolis, note: Shutdown Field Neutraliser -> kb/outfitting/shutdown-field-neutraliser.md (new). Counters the Thargoid EMP shutdown-field pulse that disables ship systems mid-fight. PATH CONFIRMED via index.js L46: key sfn -> hardpoints/shutdown_field_neutraliser.json. availability: live. Parse class/rating/range/power. AX-utility candidate still open after these: decontamination_limpet_controller.json (dtl, internal/, removes caustic) -> AX limpet line.)
+
+<!-- DONE loop 19: COMPLETED THE ENTIRE AX-WEAPON LINE — the last AX missile/torpedo-family weapon.
+     1 new Tier-0 Coriolis outfitting page (availability: live, source_count 1, verified false):
+     kb/outfitting/nanite-torpedo-pylon.md NEW (grp ntp, symbol Hpt_ATVentDisruptorPylon_Fixed_*).
+     The SEEKING anti-Thargoid torpedo (missile "S" — distinct from the dumbfire axmr/axmre "D"). The
+     internal symbol "ATVentDisruptorPylon" reveals the mechanism: a guided torpedo carrying a NANITE
+     payload aimed at Thargoid caustic/cooling VENTS, not conventional hull damage. KEY DATA FACT:
+     damage 0 with damagedist {E:1} — the data carries NO direct hull damage and NO payload magnitude,
+     so no numeric effect was invented (same discipline as enzyme-missile-rack's DoT). 2 variants only,
+     both Fixed, rating I, single-shot clip 1: 4Q Medium (class 2, ammo 64, power 0.4, mass 3, integ 50,
+     cost 843,170) / 4R Large (class 3, ammo 125, power 0.7, mass 5, integ 80, cost 1,627,419). Constants:
+     reload 3, fireint 2.0, shotspeed 1000, thermload 35 (high), breachdmg 0, distdraw 0. NO Small, NO
+     Turret, NO pre-eng reward variant. Source: Human Tech Broker / AX war-effort supply (no Guardian
+     unlock). trunk.md: +1 Outfitting bullet + AX/Thargoid explosive line extended (now lists the seeking
+     nanite torpedo alongside axmr/axmre/enzyme). Bidirectional "Related AX weapons" backlinks added to
+     ax-missile-rack.md, ax-missile-rack-enhanced.md, enzyme-missile-rack.md. PATH NOTE: ntp resolved
+     first try (hardpoints/nanite_torpedo_pylon.json), no 404. NEXT COVERAGE = AX-UTILITY MODULES: paths
+     resolved this loop via index.js and queued as concrete URLs — csl (caustic_sink_launcher), xs
+     (xeno_scanner), sfn (shutdown_field_neutraliser); dtl (decontamination_limpet_controller, internal/)
+     still open after. After ntp the AX-WEAPON line is COMPLETE; AX coverage now shifts to utilities. -->
+
 
 <!-- DONE loop 18: completed the AX MISSILE family (3 new Tier-0 Coriolis outfitting pages, all
      availability: live, source_count 1, verified false):

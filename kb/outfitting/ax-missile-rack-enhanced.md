@@ -70,6 +70,7 @@ AX-weapon broker line), not a Guardian Structure unlock. The base
 
 ## Related AX weapons
 
+- [[outfitting/nanite-torpedo-pylon]] — the seeking nanite torpedo (vent-disruption payload).
 - [[outfitting/ax-missile-rack]] — the base explosive AX missile this upgrades.
 - [[outfitting/ax-multi-cannon]] / [[outfitting/ax-multi-cannon-enhanced]] — the kinetic AX leg.
 - [[outfitting/enzyme-missile-rack]] — the caustic/enzyme AX missile.
