@@ -3,9 +3,40 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/caustic_sink_launcher.json (tier: 0, type: coriolis, note: Caustic Sink Launcher -> kb/outfitting/caustic-sink-launcher.md (new). AX caustic-venting utility — ejects accumulated caustic the way a heat sink ejects heat; essential vs Thargoid caustic clouds/enzyme. PATH CONFIRMED via index.js L33: key csl -> hardpoints/caustic_sink_launcher.json (require no-suffix = .json). availability: live. Parse class/rating/clip/ammo/reload/duration + any pre-eng variant. Cross-link [[outfitting/heat-sink-launcher]] (heat analogue) + the AX weapon family.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/xeno_scanner.json (tier: 0, type: coriolis, note: Xeno Scanner -> kb/outfitting/xeno-scanner.md (new). Utility scanner that IDs Thargoid type + reveals subsystems/weak points; makes AX targeting effective. PATH CONFIRMED via index.js L48: key xs -> hardpoints/xeno_scanner.json. availability: live. Parse class/rating/range/angle/power. Cross-link AX weapons + shutdown-field-neutraliser.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/shutdown_field_neutraliser.json (tier: 0, type: coriolis, note: Shutdown Field Neutraliser -> kb/outfitting/shutdown-field-neutraliser.md (new). Counters the Thargoid EMP shutdown-field pulse that disables ship systems mid-fight. PATH CONFIRMED via index.js L46: key sfn -> hardpoints/shutdown_field_neutraliser.json. availability: live. Parse class/rating/range/power. AX-utility candidate still open after these: decontamination_limpet_controller.json (dtl, internal/, removes caustic) -> AX limpet line.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/decontamination_limpet_controller.json (tier: 0, type: coriolis, note: Decontamination Limpet Controller -> kb/outfitting/limpet-controllers.md (MERGE as a new H2, or new page kb/outfitting/decontamination-limpet-controller.md). The AX limpet line: deploys limpets that strip CAUSTIC contamination off your own hull or an allied ship — the limpet-borne complement to the [[outfitting/caustic-sink-launcher]] (sink = self, instant; decon limpet = self/ally, sustained). PATH per loop-19 note: key dtl -> internal/decontamination_limpet_controller.json (require no-suffix = .json) — CONFIRM filename via modules/index.js if it 404s. availability: live. Parse class/rating/limpets/time/range/power. Cross-link [[outfitting/limpet-controllers]] (prospector/collector siblings) + the AX-utility trio.)
+
+<!-- DONE loop 20: COMPLETED THE AX-UTILITY TRIO — the survival/targeting kit that turns any hull
+     into a Thargoid-capable ship. 3 new Tier-0 Coriolis outfitting pages (all availability: live,
+     source_count 1, verified false), all class-0 utility mounts:
+     (1) kb/outfitting/caustic-sink-launcher.md NEW (grp csl, single variant id 4A rating I, symbol
+     Hpt_CausticSinkLauncher_Turret_Tiny). The caustic analogue of the Heat Sink Launcher — fires a
+     caustic sink that instantly purges accumulated caustic DoT (Thargoid clouds / enzyme missiles /
+     Titan-Maelstrom). NO class/rating ladder (one size). KEY: clip 1 + ammo 5 = SIX sinks (vs heat
+     sink's 4). ammocost 10, fireint 5.0, reload 10, power 0.6, eps 0.4, distdraw 2, mass 1.7,
+     integ 45, cost 50,000, passive 1. Where: Human Tech Broker / AX supply. Cross-linked
+     [[outfitting/heat-sink-launcher]].
+     (2) kb/outfitting/xeno-scanner.md NEW (grp xs). IDs Thargoid type + reveals subsystems/weak
+     points (mandatory to target Interceptor hearts). 3 variants, all class 0, shared scantime 10s /
+     angle 23 / boot 2s. RANGE is the differentiator: xs base rating E 500m (power 0.2, mass 1.3,
+     integ 56, cost 365,698) / 3y Enhanced Xeno Scanner (Mk2) rating C 2000m (power 0.8, same mass/
+     integ, cost 745,948 — the practical default) / 4B Pulse Wave Xeno Scanner rating C 1000m but
+     heavier (mass 3, integ 100, power 1.0, cost 850,000). Symbols XenoScanner_Basic / XenoScannerMk2_
+     Basic / XenoScanner_Advanced.
+     (3) kb/outfitting/shutdown-field-neutraliser.md NEW (grp sfn). Counters the Thargoid EMP
+     shutdown-field pulse that disables ship systems. 2 variants, both class 0, shared cooldown 10 /
+     duration 1 / passive 1. Sn base rating F range 3000m (power 0.2, activepower 0.25, mass 1.3,
+     integ 35, cost 63,000) / 4E "Thargoid Pulse Neutraliser" V2 rating E (power 0.4, activepower 0.33,
+     mass 3, integ 70, cost 150,000) — its range field is 0 in Coriolis data (recorded verbatim, NOT
+     invented). activepower (draw while firing) is distinct from passive power. Symbols
+     AntiUnknownShutdown_Tiny / _Tiny_V2.
+     trunk.md: +3 Outfitting bullets + new "AX utilities" line in the AX/Thargoid section (scanner /
+     shutdown neutraliser / caustic sink trio). Bidirectional AX-utility cross-links across all 3 new
+     pages + [[outfitting/heat-sink-launcher]]. PATH NOTES: all 3 hardpoints/*.json (caustic_sink_
+     launcher, xeno_scanner, shutdown_field_neutraliser) resolved first try, no 404 — index.js keys
+     csl/xs/sfn confirmed last loop. NEXT: decontamination_limpet_controller (dtl, internal/) = the AX
+     LIMPET line (sustained caustic removal, self/ally) — queued. After that the core AX-utility set is
+     complete; AX coverage could then move to AX hull/build guidance or Spire/Titan site mechanics. -->
+
 
 <!-- DONE loop 19: COMPLETED THE ENTIRE AX-WEAPON LINE — the last AX missile/torpedo-family weapon.
      1 new Tier-0 Coriolis outfitting page (availability: live, source_count 1, verified false):

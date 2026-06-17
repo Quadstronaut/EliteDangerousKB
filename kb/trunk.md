@@ -52,6 +52,9 @@ See [[outfitting/enzyme-missile-rack]] for the Enzyme Missile Rack (caustic AX m
 See [[outfitting/nanite-torpedo-pylon]] for the Nanite Torpedo Pylon (seeking AX torpedo; nanite vent-disruption payload — the last AX missile-family weapon).
 See [[outfitting/remote-release-flak-launcher]] for the Remote Release Flak Launcher (anti-swarm flak; clears Thargoid Swarm/Scout clouds).
 See [[outfitting/remote-release-flechette-launcher]] for the Remote Release Flechette Launcher (anti-swarm kinetic shrapnel; flak's sibling).
+See [[outfitting/xeno-scanner]] for the Xeno Scanner (utility AX scanner; IDs Thargoid type & reveals subsystems/weak points; base/Enhanced/Pulse Wave).
+See [[outfitting/shutdown-field-neutraliser]] for the Shutdown Field Neutraliser (counters the Thargoid EMP shutdown-field pulse).
+See [[outfitting/caustic-sink-launcher]] for the Caustic Sink Launcher (utility-mount caustic venting; the heat-sink analogue for Thargoid caustic DoT).
 
 ## Engineers
 
@@ -104,4 +107,8 @@ plus **anti-swarm support** [[outfitting/remote-release-flak-launcher]] (explosi
 [[outfitting/remote-release-flechette-launcher]] (kinetic flechette) vs Swarm/Scout clouds.
 AX defence — the Guardian defensive trio [[outfitting/guardian-shield-reinforcement]],
 [[outfitting/hull-reinforcement|Guardian HRP]] and [[outfitting/module-reinforcement|Guardian MRP]].
+AX utilities — the survival/targeting trio every Thargoid-capable ship fits:
+[[outfitting/xeno-scanner]] (IDs the Thargoid and reveals its weak points),
+[[outfitting/shutdown-field-neutraliser]] (negates the EMP shutdown pulse) and
+[[outfitting/caustic-sink-launcher]] (purges caustic DoT, the heat-sink analogue).
 <!-- tier:0 src:canonn -->
