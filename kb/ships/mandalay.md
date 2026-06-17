@@ -15,7 +15,9 @@ The Mandalay is a **medium-class long-range explorer** by **Zorgon Peterson**, i
 late 2024. It is one of the lightest medium hulls in the game (230 t) and pairs that low mass
 with a class-5 Frame Shift Drive and a class-6 optional bay for a large fuel scoop, giving it
 class-leading jump range for explorers and Trailblazers prospecting runs. It is also strikingly
-agile for an explorer, with a roll rate close to a dedicated combat ship.
+agile for an explorer, with a roll rate close to a dedicated combat ship. Its classic, cheaper
+predecessor in the explorer role is the [[ships/asp-explorer]] — heavier and a little
+shorter-ranged, but far less costly and with deep internal room.
 
 ## Overview
 
