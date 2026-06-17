@@ -3,7 +3,50 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://elite-dangerous.fandom.com/wiki/Thargoid_Spire_Site (tier: 2, type: wiki-prose, note: PIVOT — the whole AX HULL line is now complete (medium Chieftain/Challenger/Crusader + Krait pair, large-pad trinity Corvette/Anaconda/Cutter + the Type-10 Defender armour brick), so move from AX *ships* to AX *SITE mechanics*. Target the Thargoid Spire Site (a.k.a. Spire/Robigo-style Maelstrom spire) — CURRENT, availability: live (the war narrative ended but Spire sites are accessible). This is Tier-2 PROSE: fetch via Fetcher, then SUMMARIZE via mcp__ollama-tools__summarize_text qwen3-coder:30b with the fact-extraction prompt (key claims, named entities, currency signals, OBSOLETE yes/no, per-claim availability). Extract: what a Spire site IS, how to find/approach one, the loot/objective loop (Thargoid materials, e.g. Titan Drive Component etc.), hazards (caustic, heat, Thargoid defenders), and which AX kit applies. Write -> kb/ax-thargoid/sites/thargoid-spire-site.md NEW (source_type: wiki, tier 2, verified false, availability: live). CONFIRM the slug if it 404s — try "Thargoid_Spire", "Spire_Site", or the Canonn structured API (api.canonn.tech, Tier-0 JSON: system/bodyName/lat-long/type) as a higher-trust fallback. Cross-link the AX weapon/utility/defence outfitting line + the AX hulls (esp. [[ships/type-10-defender]] as the durable site-runner) + [[trunk]] AX/Thargoid section. After this, AX site coverage could extend to Titan wrecks / AX combat-zone tactics, or Canonn structured site listings.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/asp_explorer.json (tier: 0, type: coriolis-ship, note: ICONIC EXPLORER GAP. The Asp Explorer is the classic mid-game exploration ship — the natural companion to the already-paged [[ships/mandalay]] (modern light explorer). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Lakon)/class/hullMass/fuelCapacity-reserveFuel/speed-boost/baseShield/baseArmour/hardness/masslock/core-standard array/hardpoints array (count Large/Med/Small + utility = trailing zeros)/internal array (optionals + any Military + PAS)/costs. Write -> kb/ships/asp-explorer.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/mandalay]] (explorer sibling), [[engineers/felicity-farseer]] (FSD), [[outfitting/fuel-scoop]] + [[outfitting/guardian-fsd-booster]] (explorer fit), [[outfitting/frame-shift-drive]], and [[trunk]] Ships. CONFIRM filename via ships/index.js if asp_explorer.json 404s — Coriolis key is likely "asp".)
+
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/fer_de_lance.json (tier: 0, type: coriolis-ship, note: PREMIER MEDIUM COMBAT GAP. The Fer-de-Lance is the iconic Zorgon Peterson medium combat ship (one Huge hardpoint on a medium hull). Complements the AX/combat ship line and the medium multiroles ([[ships/python]], [[ships/krait-mk-ii]]). Tier-0 Coriolis JSON, parse directly: same field set as above; note whether it carries a Huge (class-4) hardpoint and its weak power-distributor/optionals tradeoff. Write -> kb/ships/fer-de-lance.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link the medium combat hulls + [[trunk]] Ships. CONFIRM filename via ships/index.js if fer_de_lance.json 404s.)
+
+- https://elite-dangerous.fandom.com/wiki/Thargoid_Spire_Site (tier: 2, type: wiki-prose, status: BLOCKED loop 27 — Fandom is Cloudflare-JS-challenged (whole domain returns a "Just a moment..." interstitial via the Fetcher, NOT a 404) AND api.canonn.tech ConnectTimeouts (host unreachable from this env). RETRY a later loop; if Fandom stays blocked, try a non-Fandom prose source or re-probe the Canonn API (it has been intermittently up). note: PIVOT — the whole AX HULL line is now complete (medium Chieftain/Challenger/Crusader + Krait pair, large-pad trinity Corvette/Anaconda/Cutter + the Type-10 Defender armour brick), so move from AX *ships* to AX *SITE mechanics*. Target the Thargoid Spire Site (a.k.a. Spire/Robigo-style Maelstrom spire) — CURRENT, availability: live (the war narrative ended but Spire sites are accessible). This is Tier-2 PROSE: fetch via Fetcher, then SUMMARIZE via mcp__ollama-tools__summarize_text qwen3-coder:30b with the fact-extraction prompt (key claims, named entities, currency signals, OBSOLETE yes/no, per-claim availability). Extract: what a Spire site IS, how to find/approach one, the loot/objective loop (Thargoid materials, e.g. Titan Drive Component etc.), hazards (caustic, heat, Thargoid defenders), and which AX kit applies. Write -> kb/ax-thargoid/sites/thargoid-spire-site.md NEW (source_type: wiki, tier 2, verified false, availability: live). CONFIRM the slug if it 404s — try "Thargoid_Spire", "Spire_Site", or the Canonn structured API (api.canonn.tech, Tier-0 JSON: system/bodyName/lat-long/type) as a higher-trust fallback. Cross-link the AX weapon/utility/defence outfitting line + the AX hulls (esp. [[ships/type-10-defender]] as the durable site-runner) + [[trunk]] AX/Thargoid section. After this, AX site coverage could extend to Titan wrecks / AX combat-zone tactics, or Canonn structured site listings.)
+
+<!-- DONE loop 27: SPIRE-SITE TARGET BLOCKED -> PIVOTED TO TWO FOUNDATIONAL TIER-0 SHIP GAPS.
+     The queued Thargoid Spire Site (Tier-2 Fandom prose) could NOT be acquired this loop:
+     elite-dangerous.fandom.com is Cloudflare-JS-challenged across the WHOLE domain (the Fetcher
+     gets a 5.6KB "Just a moment..." interstitial, not the article — so alternate slugs would not
+     help) AND the higher-trust fallback api.canonn.tech ConnectTimeouts (host unreachable from this
+     env). This is a transient ACQUISITION block, NOT obsolescence/404 -> the target was NOT
+     recorded in seen.json (neither record_source nor record_discard) and stays QUEUED (re-annotated
+     BLOCKED, demoted below the new reachable targets) so a later loop retries it.
+     To stay productive (never-idle mandate), pivoted to two reachable Tier-0 Coriolis ship gaps,
+     each COMPLETING AN EXISTING SIBLING PAIR (mirrors the krait/cobra base+variant pattern):
+     (1) kb/ships/python.md NEW (python, edID 128049339, eddbID 17). Faulcon DeLacy, class 2 (MEDIUM
+     pad), NO requirements block = NO rank gate (credits only). hullMass 350, speed 230/boost 300,
+     baseShield 260, baseArmour 260 (symmetrical), hardness 65, heatcap 300, masslock 17, crew 2, NO
+     fighter bay, pitch 29/roll 90/yaw 10, reservefuel 0.83, hull 55,324,684 / retail 56,978,179.
+     Core standard [7,6,5,4,7,6,5]: PP7 Thr6 FSD5 LS4 PD7 Sen6 FT5. Hardpoints [3,3,3,2,2,+4 zeros] =
+     **3 Large + 2 Medium = 5 mounts (three Large — heavy for a medium)** + **4 utility**. Optionals
+     6,6,6,5,5,4,3,3,2,1 (TEN, three class-6) + class-1 PAS. NO Military slots. Bulkheads causres 0
+     all grades. Bidirectional sibling link to [[ships/python-mk-ii]] (added a "modern combat
+     refinement of the classic Python" line to the Mk II intro). The classic medium workhorse;
+     Mk II is the combat refinement.
+     (2) kb/ships/cobra-mk-iii.md NEW (cobra_mk_iii, edID 128049279, eddbID 4). Faulcon DeLacy, class
+     1 (SMALL pad), NO rank gate. **CHEAPEST hull in the KB: hull 208,372 / retail 349,718.** hullMass
+     180, speed 280/boost 400 (fast), baseShield 80, baseArmour 120, hardness 35 (low), heatcap 225,
+     masslock 8, crew 2, NO fighter bay, pitch 40/**roll 100 (nimblest roll in KB)**/yaw 10,
+     reservefuel 0.49. Core standard [4,4,4,3,3,3,4]: PP4 Thr4 FSD4 LS3 PD3 Sen3 FT4. Hardpoints
+     [2,2,1,1,+2 zeros] = **2 Medium + 2 Small = 4 mounts** + **2 utility**. Optionals 4,4,4,2,2,2,1,1
+     (EIGHT, three class-4) + class-1 PAS. NO Military slots. Bulkheads causres 0 all grades.
+     Bidirectional sibling link to [[ships/cobra-mk-v]] (turned its "classic Cobra line" mention into a
+     [[ships/cobra-mk-iii]] wikilink). The iconic cheap/fast/agile starter; Mk V is the modern
+     successor.
+     PATH NOTES: BOTH Coriolis filenames resolved FIRST TRY, no 404 — ships/python.json (key python) and
+     ships/cobra_mk_iii.json (key cobra_mk_iii). URL format confirmed from cobra-mk-v frontmatter:
+     raw.githubusercontent.com/EDCD/coriolis-data/master/ships/<key>.json (no dist/ prefix). trunk.md:
+     +2 Ships bullets (python after python-mk-ii, cobra-mk-iii after... before cobra-mk-v).
+     NEXT: queued two more reachable Tier-0 ship gaps at the TOP so the next loop progresses regardless
+     of the Spire block — Asp Explorer (explorer sibling of Mandalay) + Fer-de-Lance (premier medium
+     combat, one Huge on a medium). The Spire Site stays queued (blocked) for retry. -->
+
 
 <!-- DONE loop 26: COMPLETED THE LARGE-PAD AX LINE — added the dedicated AX ARMOUR BRICK, finishing
      the whole AX-hull roster (medium trio + Krait pair + large trinity + this). 1 new Tier-0 Coriolis

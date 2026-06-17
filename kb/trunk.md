@@ -15,7 +15,9 @@ Central index of the KB. Each section links to the main topic pages.
 ## Ships
 
 Core vessel knowledge: stats, outfitting slots, rebuy costs, role recommendations.
+See [[ships/python]] for the Python (medium-pad multirole workhorse; 3 Large + 2 Medium hardpoints, ten optionals, no rank gate — the classic; combat refinement is the Mk II).
 See [[ships/python-mk-ii]] for the Python Mk II.
+See [[ships/cobra-mk-iii]] for the Cobra Mk III (small-pad multirole; the iconic cheap, fast, agile starter — cheapest hull in the KB; modern successor is the Mk V).
 See [[ships/cobra-mk-v]] for the Cobra Mk V (small multirole, stocked at Deciat).
 See [[ships/mandalay]] for the Mandalay (light medium-pad long-range explorer).
 See [[ships/type-8-transporter]] for the Type-8 Transporter (best medium-pad hauler).
