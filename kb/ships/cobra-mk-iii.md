@@ -23,8 +23,8 @@ combat, light trading, and exploration alike. Its modern small-pad successor is 
 - **Size class:** 1 (Small landing pad — docks anywhere, including outposts and planetary ports)
 - **Role:** Multirole (combat, light hauling, exploration)
 - **Rank requirement:** none — credits only (no `requirements` block in the Coriolis data)
-- **Hull cost:** 208,372 CR (hull only — long the KB's cheapest, now undercut by the
-  [[ships/viper-mk-iii]] at 96,733 CR)
+- **Hull cost:** 208,372 CR (hull only — long the KB's cheapest, since undercut by the
+  [[ships/viper-mk-iii]] at 96,733 CR and the free starter [[ships/sidewinder]] at 4,588 CR)
 - **Retail cost:** 349,718 CR (with stock modules)
 - **Crew seats:** 2
 

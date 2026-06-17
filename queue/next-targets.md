@@ -1,8 +1,50 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/viper_mk_iv.json (tier: 0, type: coriolis-ship, note: COMPLETES THE VIPER PAIR with the just-paged [[ships/viper-mk-iii]] (mirrors the Cobra Mk III/V + Diamondback Scout/Explorer pair pattern). The Viper Mk IV is Faulcon DeLacy's heavier, tankier evolution of the Mk III: more armour/optionals/utility and better defences at the cost of the Mk III's raw speed. Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Faulcon DeLacy)/class (expect 1 = SMALL pad)/hullMass (expect HEAVIER than Mk III's 50 - the Mk IV is the tankier sibling)/speed-boost (expect SLOWER than 320/400)/baseShield/baseArmour (expect HIGHER than Mk III's 70)/hardness/heatCapacity/masslock/core-standard array/hardpoints array (expect same 2 Medium + 2 Small family but CONFIRM)/internal array (optionals + PAS, CHECK Military slot like the Mk III had)/costs. Write -> kb/ships/viper-mk-iv.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/viper-mk-iii]] (bidirectional Viper-pair note: Mk III = fast/cheap interceptor, Mk IV = tankier multirole) + [[ships/cobra-mk-iii]] + [[ships/vulture]] + [[trunk]] Ships. CONFIRM filename via ships/index.js if viper_mk_iv.json 404s - Coriolis key likely "viper_mk_iv".)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/eagle.json (tier: 0, type: coriolis-ship, note: COMPLETES THE EARLY-GAME SMALL-PAD FIGHTER CLUSTER seeded by the just-paged [[ships/sidewinder]]. The Eagle Mk II is Core Dynamics' cheap, ultra-agile rookie fighter — the natural "first real fighter" step up from the Sidewinder, and the small-pad agility benchmark (expect very high roll/pitch, possibly challenging the Sidewinder/Vulture's roll 110). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Core Dynamics)/class (expect 1 = SMALL pad)/hullMass (expect very low, near Sidewinder's 25-50 range)/speed-boost (expect FAST + very agile)/baseShield/baseArmour (expect thin)/hardness/heatCapacity/masslock/core-standard array (expect shallow, class ~2-3)/hardpoints array (expect 3 Small = 3 mounts, the Eagle's signature triple-small)/internal array (shallow optionals + PAS, CHECK Military slot)/costs (expect cheap, near Sidewinder/Viper range). Write -> kb/ships/eagle.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/sidewinder]] + [[ships/viper-mk-iii]] (the rookie small-pad fighter trio) + [[trunk]] Ships; RECHECK the "nimblest roll" claim on [[ships/vulture]]/[[ships/sidewinder]] if the Eagle's roll exceeds 110. CONFIRM filename via ships/index.js if eagle.json 404s - Coriolis key likely "eagle" (the Imperial Eagle is the separate key "empire_eagle").)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/sidewinder.json (tier: 0, type: coriolis-ship, note: FOUNDATIONAL STARTER-SHIP GAP - the Sidewinder is the universal free starter every commander begins in (and respawns to on insurance default), yet it has no KB page. Faulcon DeLacy's tiny size-1 multirole: cheapest/smallest hull, the baseline every other ship is measured against. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Faulcon DeLacy)/class (expect 1 = SMALL pad)/hullMass (expect VERY low - likely a new KB lightest, vs Viper Mk III's 50)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/core-standard array (expect tiny - max class ~2)/hardpoints array (expect 2 Small + utility)/internal array (shallow optionals + PAS)/costs (expect the new KB-cheapest, undercutting Viper Mk III's 96,733). Write -> kb/ships/sidewinder.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/viper-mk-iii]] + [[ships/cobra-mk-iii]] (the natural first-upgrade paths) + [[trunk]] Ships. CONFIRM filename via ships/index.js if sidewinder.json 404s - Coriolis key likely "sidewinder".)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/adder.json (tier: 0, type: coriolis-ship, note: THE OTHER STARTER STEP-UP from the [[ships/sidewinder]] - the Adder is Zorgon Peterson's cheap small-pad multipurpose, famous as the budget early-game explorer/hauler with a surprisingly long jump range for its size and price. Rounds out the early small-pad tier (fighter line = Eagle/Viper; the Adder = the cheap utility/explorer alternative). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Zorgon Peterson)/class (expect 1 = SMALL pad)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/core-standard array (CHECK FSD class - the Adder's reputation is good range, so expect a relatively healthy FSD for its size)/hardpoints array (expect mix of Small + maybe 1 Medium)/internal array (optionals + PAS, CHECK Military slot)/costs (expect cheap). Write -> kb/ships/adder.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/sidewinder]] + [[ships/hauler]] (forward-ref, if/when paged) + [[ships/cobra-mk-iii]] (the multirole step up) + [[trunk]] Ships. CONFIRM filename via ships/index.js if adder.json 404s - Coriolis key likely "adder".)
+
+<!-- DONE loop 31: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Viper Mk IV + Sidewinder), completing the
+     Viper pair and adding the universal starter baseline. 2 new Tier-0 Coriolis ship pages (both
+     availability: live, source_count 1, verified false):
+     (1) kb/ships/viper-mk-iv.md NEW (key viper_mk_iv, file viper_mk_iv.json resolved FIRST TRY,
+     3379 bytes, no 404). edID 128672255, eddbID 28. Faulcon DeLacy, class 1 (SMALL pad), NO
+     requirements block = NO rank gate. **hullMass 190** (nearly 4x the Mk III's 50 - the tankier
+     sibling CONFIRMED), speed 270/boost 340 (SLOWER than Mk III's 320/400 - CONFIRMED), baseShield
+     150 / baseArmour 150 (symmetrical; both well above Mk III's 105/70 - tankier CONFIRMED),
+     hardness 35 (same as Mk III), heatCapacity 209 (slightly above Mk III's 195), masslock 7, crew
+     1, pitch 30/roll 90/yaw 12, reservefuel 0.46. hull 312,797 / retail 437,931. Core standard
+     [4,4,4,2,3,3,4]: PP4 Thr4 FSD4 LS2 PD3 Sen3 **FT4** (bigger core than Mk III's [3,3,3,2,3,3,2];
+     class-4 fuel tank vs Mk III's class-2 = longer legs). Hardpoints [2,2,1,1,0,0] = **2 Medium +
+     2 Small = 4 mounts + 2 utility** (IDENTICAL mount layout to the Mk III - queue's "same family"
+     CONFIRMED; the queue guessed "more utility" but utility is the SAME 2). Optionals 4,4,3,2,2,1,1,1
+     = **EIGHT** (top class-4; vs Mk III's SIX top class-3 - deeper, the multirole edge) + **ONE
+     class-3 Military slot** (eligible mahr/hr/scb/mrp/gsrp/gmrp/ghrp, same as Mk III) + class-1 PAS.
+     causres 0 all grades. QUEUE-GUESS RESULT: "more armour/optionals" YES; "more utility" NO (same 2).
+     (2) kb/ships/sidewinder.md NEW (key sidewinder, file sidewinder.json resolved FIRST TRY, 2991
+     bytes, no 404). edID 128049249, eddbID 18. Faulcon DeLacy, class 1 (SMALL pad), NO rank gate.
+     **hullMass 25 = NEW LIGHTEST HULL IN KB** (undercuts Viper Mk III's 50). **hull 4,588 / retail
+     32,000 = NEW CHEAPEST HULL IN KB** (undercuts Viper Mk III's 96,733 by an order of magnitude).
+     speed 220/boost 320, baseShield 40 / baseArmour 60 (fragile), hardness 20 (low), heatCapacity
+     140 (very low), masslock 6, crew 1, pitch 42/**roll 110**/yaw 16, reservefuel 0.30. Core standard
+     [2,2,2,1,1,1,1]: PP2 Thr2 FSD2 LS1 PD1 Sen1 FT1 (tiny, max class 2 = shallowest core in KB).
+     Hardpoints [1,1,0,0] = **2 Small = 2 mounts + 2 utility**. Optionals 2,2,1,1,1,1 = SIX (top
+     class-2) + class-1 PAS, **NO Military**. causres 0 all grades.
+     CROSS-PAGE DISCIPLINE FIXES (Sidewinder is now the KB cheapest AND lightest, displacing the Viper
+     Mk III - same "cheapest hull" correction discipline as loops 29/30): (a) Viper Mk III page intro +
+     hull-cost + hull-mass lines re-scoped to "cheapest/lightest DEDICATED COMBAT hull" with a note the
+     free Sidewinder is cheaper/lighter; (b) Cobra Mk III page + its trunk bullet's cheapest-lineage
+     note extended to name the Sidewinder as the current KB cheapest; (c) ROLL TIE: the Sidewinder's
+     roll 110 TIES the Vulture's "nimblest roll in KB" claim - Vulture page + Sidewinder page both now
+     state the tie (Vulture page edited from "highest" to "highest, tied with the Sidewinder"). trunk.md:
+     +2 Ships bullets (viper-mk-iv + sidewinder after viper-mk-iii); viper-mk-iii trunk bullet re-scoped
+     from "cheapest hull in KB" to "lightest combat hull".
+     PATH NOTE: both iconic keys resolved on the bare expected filename (viper_mk_iv / sidewinder), no
+     index.js probe needed. NEXT: queued two reachable Tier-0 early-game small-pad ship gaps at the TOP
+     to keep progressing past the Spire block - Eagle Mk II (Core Dynamics cheap agile rookie fighter,
+     may challenge the roll-110 nimblest claim) + Adder (Zorgon Peterson cheap multipurpose, the budget
+     explorer/hauler step-up). Both complete the early small-pad tier seeded by the Sidewinder. The Spire
+     Site stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 30: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Diamondback Scout + Viper Mk III),
      completing the Diamondback pair and seeding the small-pad combat-starter line. 2 new Tier-0
