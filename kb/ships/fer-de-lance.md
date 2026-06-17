@@ -73,7 +73,7 @@ Bulkheads carry `causres 0` on every grade. The low heat capacity makes a
   mounts, an SLF bay, deeper internals); the Fer-de-Lance is the pure duellist with the single
   Huge slot and best-in-class agility for its size.
 - **vs [[ships/vulture]]:** the Vulture is the small-pad expression of the same firepower-to-size
-  philosophy — two Large hardpoints and the nimblest roll in the KB on a size-1 hull, at a
+  philosophy — two Large hardpoints and a class-leading roll (110, now 2nd to the [[ships/eagle]]) on a size-1 hull, at a
   fraction of the cost, but power-starved by a class-4 plant and far lower shield. The
   Fer-de-Lance is the medium-pad step up: one Huge mount, a class-6 distributor and much more
   shield, in exchange for a medium pad and a far higher price.

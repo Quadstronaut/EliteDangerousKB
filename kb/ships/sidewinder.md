@@ -40,8 +40,8 @@ Source: Coriolis-data ship definition `sidewinder` (edID 128049249, eddbID 18).
 - **Heat capacity:** 140 (very low)
 - **Mass lock factor:** 6
 - **Manoeuvrability (deg/s):** pitch 42 · **roll 110** · yaw 16. The roll rate of 110 **ties the
-  [[ships/vulture]] for the nimblest roll of any ship paged in this KB** — the featherweight hull
-  spins on a dime even if it cannot hit hard.
+  [[ships/vulture]] for the second-nimblest roll in the KB** — behind only the [[ships/eagle]]
+  Mk II (roll 120). The featherweight hull still spins on a dime even if it cannot hit hard.
 - **Reserve fuel:** 0.30 t (tiny — short legs)
 
 ## Slot Layout
