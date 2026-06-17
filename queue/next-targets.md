@@ -1,8 +1,53 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/orca.json (tier: 0, type: coriolis-ship, note: CONTINUES THE SAUD KRUGER LUXURY-LINER LINE just opened by [[ships/dolphin]] -- the Orca is the MIDDLE rung (Dolphin -> Orca -> Beluga Liner), the larger passenger liner that steps up from the small-pad Dolphin. Expect a bigger luxury hull with more cabin space and the same luxuryCabins:true Saud Kruger signature. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Saud Kruger)/class (CHECK -- expect 2 or 3, a step up from the Dolphin's class 1)/hullMass/speed-boost (the Orca is famously one of the faster big passenger ships -- CHECK)/baseShield/baseArmour/hardness/heatCapacity/masslock/luxuryCabins (expect true)/pitch-roll-yaw/core-standard array/hardpoints array (expect FEW/small -- a liner)/internal array (CHECK depth for passenger cabins; expect NO Military)/costs + any rank gate (expect NONE). Write -> kb/ships/orca.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link the Saud Kruger siblings [[ships/dolphin]] + [[ships/beluga-liner]] + [[trunk]] Ships; CONFIRM key 'orca' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/type_7_transport.json (tier: 0, type: coriolis-ship, note: GLARING LAKON FREIGHTER GAP -- the KB has the whole Lakon "Type" trader line EXCEPT the Type-7: [[ships/type-6-transporter]] (small/medium budget trader), [[ships/type-8-transporter]], [[ships/type-9-heavy]], [[ships/type-10-defender]] and [[ships/type-11-prospector]] are all paged, but the Type-7 Transporter -- the medium-pad dedicated bulk hauler that sits between the Type-6 and the large-pad Type-9 -- is MISSING. Expect a class-2 (MEDIUM pad) Lakon freighter, NO rank gate, deep cargo-biased optionals, token armament (a few Small), good cargo-per-credit. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Lakon)/class (expect 2)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/pitch-roll-yaw/core-standard array (CHECK FSD+fuel tank for range)/hardpoints array (expect FEW Small)/internal array (expect DEEP cargo, NO Military)/costs + rank gate (expect NONE). Write -> kb/ships/type-7-transporter.md NEW (source_type: coriolis, tier 0, verified false, availability: live). KEY UNCERTAIN: try type_7_transport.json first; if 404, CONFIRM the key via ships/index.js (the Type-6 key was 'type_6_transporter', so 'type_7_transporter' is the fallback). Cross-link the Lakon Type line [[ships/type-6-transporter]] + [[ships/type-9-heavy]] + [[trunk]] Ships.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/beluga.json (tier: 0, type: coriolis-ship, note: COMPLETES THE SAUD KRUGER LUXURY-LINER TRIO -- the Beluga Liner is the LARGE-pad flagship passenger ship (Dolphin -> Orca -> Beluga Liner), the biggest dedicated luxury liner with the MOST passenger-cabin capacity in the game. Expect a large, heavy hull with the deepest optional internals of the trio, the luxuryCabins:true signature, and token armament. Tier-0 Coriolis JSON, parse directly: extract name (Beluga Liner)/manufacturer (Saud Kruger)/class (expect 3 = LARGE pad)/hullMass (expect heavy)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/luxuryCabins (expect true)/pitch-roll-yaw/core-standard array/hardpoints array (expect FEW/small)/internal array (CHECK -- expect the DEEPEST cabin space of the trio; expect NO Military)/costs + any rank gate (expect NONE). Write -> kb/ships/beluga-liner.md NEW (source_type: coriolis, tier 0, verified false, availability: live). NOTE the file key is likely 'beluga' (display name 'Beluga Liner'); CONFIRM via ships/index.js if beluga.json 404s. Cross-link the Saud Kruger siblings [[ships/dolphin]] + [[ships/orca]] + [[trunk]] Ships.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/cobra_mk_iv.json (tier: 0, type: coriolis-ship, note: COMPLETES THE COBRA LINE -- the KB has [[ships/cobra-mk-iii]] (the iconic cheap multirole) and [[ships/cobra-mk-v]] (the newer variant) but NOT the Cobra Mk IV, the heavier/roomier Faulcon DeLacy sibling of the Mk III. Expect a class-1 (SMALL pad) hull, NO rank gate, heavier than the Mk III with more internals but slower/less agile (the classic Mk III-vs-Mk IV trade). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Faulcon DeLacy)/class (expect 1)/hullMass (expect HEAVIER than Mk III)/speed-boost (expect SLOWER)/baseShield/baseArmour/hardness/heatCapacity/masslock/pitch-roll-yaw/core-standard array/hardpoints array (CHECK vs Mk III's 2M+2S)/internal array (expect DEEPER than Mk III; CHECK Military)/costs + rank gate (expect NONE). Write -> kb/ships/cobra-mk-iv.md NEW (source_type: coriolis, tier 0, verified false, availability: live). KEY: try cobra_mk_iv.json first (the Mk III key was 'cobra_mk_iii'); CONFIRM via ships/index.js if it 404s. Cross-link [[ships/cobra-mk-iii]] + [[ships/cobra-mk-v]] + [[trunk]] Ships -- note the Cobra Mk IV was a pre-order/limited ship historically, so flag availability carefully.)
+
+<!-- DONE loop 39: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Orca + Beluga Liner) -- COMPLETING THE SAUD
+     KRUGER LUXURY-LINER TRIO opened by the Dolphin in loop 38 (Dolphin -> Orca -> Beluga Liner). 2 new
+     Tier-0 Coriolis ship pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/orca.md NEW (key orca, file orca.json resolved FIRST TRY 3174 bytes, no 404). edID
+     128049327, eddbID 16. Saud Kruger. **CLASS 3 = LARGE PAD** (QUEUE-GUESS 'expect 2 or 3' -> it's 3,
+     a LARGE-pad ship, NOT medium -- the Orca and Beluga are BOTH large-pad; only the Dolphin is
+     small-pad). **NO requirements block AT ALL** = NO rank gate, no horizons flag (the Dolphin/Beluga
+     carry horizons:true; the Orca carries nothing). luxuryCabins:true (Saud Kruger signature CONFIRMED).
+     hull 47,800,723 / retail 48,539,887. hullMass 290 (light for a large hull). **speed 300/boost 380 =
+     TIES THE [[ships/imperial-clipper]] FOR FASTEST LARGE-PAD SPEED IN KB** (QUEUE-GUESS 'famously one of
+     the faster big passenger ships' CONFIRMED -- exact 300/380 tie). baseShield 220, baseArmour 220,
+     hardness 55, heatCapacity 262, masslock 16, crew 2, pitch 25/roll 55/yaw 18 (sluggish roll),
+     reservefuel 0.79. Core standard [5,6,5,6,5,4,5]: PP5 Thr6 FSD5 **LS6** PD5 Sen4 FT5 (class-6
+     thrusters drive the speed; the class-6 Life Support is an oversized Saud Kruger liner trait).
+     Hardpoints [3,2,2,0,0,0,0] = 1 LARGE + 2 MEDIUM = 3 weapon mounts + 4 utility (QUEUE-GUESS 'FEW/small'
+     -- more than the Dolphin's 2 Small, but still token). Internals [6,5,5,5,4,3,2,2,1] + PAS-c1 = NINE
+     regular (top class-6) + PAS, NO Military (QUEUE-GUESS 'expect NO Military' CONFIRMED). causres 0 all.
+     (2) kb/ships/beluga-liner.md NEW (key beluga, display 'Beluga Liner', file beluga.json resolved FIRST
+     TRY 3424 bytes, no 404). edID 128049345, eddbID 30. Saud Kruger, **class 3 = LARGE pad** (CONFIRMED).
+     requirements.horizons:true (game-version flag, NOT a rank gate). luxuryCabins:true + **fighterHangars:
+     true** = the ONLY liner of the trio with a Ship-Launched Fighter bay (Orca + Dolphin have none). hull
+     79,694,761 / retail 84,532,764 (priciest of the trio). **hullMass 950 = heaviest of the trio by far**
+     (Orca 290, Dolphin 140; QUEUE-GUESS 'heavy' CONFIRMED). speed 200/boost 280 (SLOW -- contrast the
+     light Orca's 300/380). baseShield 280 / baseArmour 280 (highest of the trio), hardness 60, heatCapacity
+     283, masslock 18, **crew 4** (full multicrew), pitch 25/roll 60/yaw 17, reservefuel 0.81. Core standard
+     [6,7,7,8,6,5,7]: PP6 Thr7 FSD7 **LS8** PD6 Sen5 FT7 -- the **class-8 Life Support** is the hull's
+     LARGEST core slot (oversized Saud Kruger trait, bigger than the Orca's class-6). Hardpoints
+     [2,2,2,2,2,0,0,0,0,0,0] = 5 MEDIUM = 5 weapon mounts (no Large/Huge) + 6 utility (MORE mounts than the
+     Orca's 3, all medium-calibre). Internals [6,6,6,6,5,5,4,3,3,3,3,1] + PAS-c1 = TWELVE regular (top FOUR
+     class-6 = the DEEPEST internals of the trio) + PAS, NO Military (QUEUE-GUESS 'DEEPEST cabin space, no
+     Military' CONFIRMED). causres 0 all.
+     CROSS-PAGE FIXES (the Orca's 300/380 ties the Clipper's speed record + the Orca is large-pad not
+     medium): (a) imperial-clipper.md intro + Hull-Stats speed line re-scoped from 'the fastest large-pad
+     ship in the KB' to 'joint-fastest, tied with the Orca'; (b) dolphin.md passenger-line section fixed --
+     it wrongly called the Orca 'the mid medium-pad liner' (the Orca is LARGE-pad, class 3); now notes all
+     three siblings except the Dolphin are large-pad. trunk.md: clipper bullet re-scoped to 'joint-fastest
+     (tied with the Orca)'; +2 Ships bullets (orca + beluga-liner after dolphin, keeping the Saud Kruger
+     trio together).
+     PATH NOTE: both bare keys (orca / beluga) resolved first try, no index.js probe. The luxury-liner
+     trio (Dolphin + Orca + Beluga Liner) is now COMPLETE in the KB.
+     NEXT: queued two reachable Tier-0 line-completing gaps at the TOP -- Type-7 Transporter (the MISSING
+     middle of the Lakon Type freighter line: Type-6/8/9/10/11 all paged, Type-7 absent) + Cobra Mk IV
+     (completes the Cobra line: Mk III + Mk V paged, Mk IV absent -- flag its limited/pre-order availability
+     carefully). The Spire Site stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 38: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Mamba + Dolphin) -- completing the Zorgon
      Peterson medium-combat pair AND opening the previously-unrepresented Saud Kruger passenger line.

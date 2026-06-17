@@ -13,8 +13,9 @@ changed_note:
 
 The Imperial Clipper is **Gutamaya's fast, elegant large-pad multirole** — the ship that extends the
 Imperial/Gutamaya line beyond the small-pad pair ([[ships/imperial-eagle]] + [[ships/imperial-courier]])
-up to a large hull. Its calling card is **speed**: at 300 m/s base / 380 m/s boost it is the **fastest
-large-pad ship in the KB**, far quicker than any other class-3 hull. It pairs that pace with **2 Large +
+up to a large hull. Its calling card is **speed**: at 300 m/s base / 380 m/s boost it is the **joint-fastest
+large-pad ship in the KB** (tied with the [[ships/orca]] passenger liner), far quicker than any other
+class-3 hull. It pairs that pace with **2 Large +
 2 Medium hardpoints** (no Small mounts) and a famous quirk — despite a mid-size feel and handling, it
 needs a **Large landing pad**. Buying one requires the Empire rank **Baron**.
 
@@ -36,8 +37,9 @@ Source: Coriolis-data ship definition `imperial_clipper` (edID 128049315, eddbID
 
 - **Hull mass:** 400 t — light for a large hull (ties the [[ships/anaconda]]), which helps both speed
   and jump range.
-- **Top speed:** 300 m/s · **Boost:** 380 m/s — **the fastest of any large-pad ship in the KB**. The
-  next-quickest large hull is the [[ships/imperial-cutter]] (200/320); the rest — Anaconda (180/240),
+- **Top speed:** 300 m/s · **Boost:** 380 m/s — **joint-fastest of any large-pad ship in the KB**,
+  matched only by the [[ships/orca]] (the Saud Kruger liner is the same 300/380). The next-quickest
+  large hull is the [[ships/imperial-cutter]] (200/320); the rest — Anaconda (180/240),
   [[ships/federal-corvette]] (200/260), [[ships/type-10-defender]] (179/219), [[ships/type-9-heavy]]
   (130/200), [[ships/panther-clipper-mk-ii]] (181/250) — trail well behind. Straight-line speed is the
   Clipper's signature.
