@@ -64,9 +64,10 @@ Bulkheads carry `causres 0` on every grade.
 
 - **vs [[ships/orca]] and [[ships/beluga-liner]]:** the Dolphin is the **small** entry point of
   the Saud Kruger luxury trio — cheapest, lightest, and small-pad (it docks at outposts the
-  large-pad Orca and Beluga cannot reach). The Orca is the mid medium-pad liner and the Beluga the
-  large flagship with the most cabin space. All three share the luxury-cabin capability; the Dolphin
-  is where it starts.
+  large-pad Orca and Beluga cannot reach). The Orca is the fast mid-tier **large-pad** liner
+  (300/380, light 290 t) and the Beluga the large-pad flagship with the most cabin space — both, like
+  the Dolphin, are large-pad ships. All three share the luxury-cabin capability; the Dolphin is where
+  it starts.
 - **vs cargo haulers like the [[ships/type-6-transporter]]:** both are cheap, light Lakon/Saud
   Kruger small-to-medium utility hulls with token weapons, but the Type-6 fills its bays with
   **cargo racks** while the Dolphin fills its (luxury-capable) bays with **passenger cabins**. Pick
