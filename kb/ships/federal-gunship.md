@@ -78,11 +78,14 @@ Meta-Alloy Hull Reinforcement.
 ## The Federal medium combat line
 
 The Gunship is the **heavy top variant** of Core Dynamics' three medium gunships — all class-2
-(medium pad), all 580 t, all rank-gated:
+(medium pad), all rank-gated, but **not all the same mass** (the Assault Ship is lighter at 480 t; the
+Dropship and Gunship are 580 t):
 
-- **[[ships/federal-dropship]]** — the base variant: Midshipman gate, 1 Large + 4 Medium (5 mounts),
-  two class-4 Military slots, **no fighter bay**, eight regular optionals, ~13.5 M CR.
-- **[[ships/federal-assault-ship]]** — the speed/agility mid-trio variant (not yet paged).
+- **[[ships/federal-dropship]]** — the base variant: Midshipman gate, 580 t, 1 Large + 4 Medium
+  (5 mounts), two class-4 Military slots, **no fighter bay**, eight regular optionals, ~13.5 M CR.
+- **[[ships/federal-assault-ship]]** — the speed/agility middle variant: **Chief Petty Officer** gate,
+  the lightest at **480 t**, fastest (210/350) and most agile, **2 Large + 2 Medium** (4 mounts — the
+  only two-Large layout of the trio), two class-4 Military slots, **no fighter bay**, ~19.1 M CR.
 - **Federal Gunship** (this page) — the heavy top variant: **Ensign** gate, 1 Large + 4 Medium +
   2 Small (7 mounts), **three** class-4 Military slots, class-7 PD, **a fighter bay**, but slower
   (170/280) and far pricier (~34.8 M CR), with only six regular optionals.
