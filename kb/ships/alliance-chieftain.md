@@ -16,8 +16,10 @@ Alliance. It is the iconic medium-pad **anti-Xeno (AX) brawler**: agile, tough, 
 among medium hulls — fitted with **three Military internal slots** that take only reinforcement
 and defence modules. That combination of high hull hardness, a strong roll rate, and stacked
 reinforcement makes it the platform of choice for carrying the KB's AX weapon and utility line
-into Thargoid combat. Requires **Horizons**. Its tankier, slower sibling is the
-[[ships/alliance-challenger|Alliance Challenger]].
+into Thargoid combat. Requires **Horizons**. It is the lightest, fastest and most agile of the
+**Alliance trio** — its tankier, slower sibling is the [[ships/alliance-challenger|Alliance
+Challenger]], and the multicrew/fighter-bay sibling is the [[ships/alliance-crusader|Alliance
+Crusader]].
 
 ## Overview
 

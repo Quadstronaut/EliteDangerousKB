@@ -103,8 +103,9 @@ layout and the same hull hardness (**65**); pick by playstyle:
   agile (roll 92 / pitch 39 vs 90 / 32), faster (230 / 330 vs 204 / 310), and cheaper, with two
   Large hardpoints for bigger guns. Pick it when turn rate and big-gun punch beat raw durability.
 
-> The third Alliance sibling is the **Alliance Crusader** (a multicrew/fighter-bay variant) — not
-> yet paged in this KB.
+> The third Alliance sibling is the [[ships/alliance-crusader|Alliance Crusader]] — the
+> multicrew/fighter-bay variant (crew 4, the only Alliance medium with a Ship-Launched Fighter bay),
+> at the cost of being the slowest and least agile of the trio.
 
 ## Acquisition
 

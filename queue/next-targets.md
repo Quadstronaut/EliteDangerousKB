@@ -3,8 +3,47 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/alliance_crusader.json (tier: 0, type: coriolis, note: Alliance Crusader -> kb/ships/alliance-crusader.md NEW. The THIRD and final Alliance AX sibling — completes the Lakon/Alliance trio (Chieftain agile / Challenger tank / Crusader multicrew). The Crusader's defining trait is a built-in Ship-Launched Fighter bay + 3-seat crew (the only Alliance medium with a fighter hangar) — expect fighterHangars TRUE and crew 3, vs Chieftain/Challenger crew 2 no-SLF. Parse manufacturer (Lakon/Alliance), hullMass, speed/boost, baseShield/baseArmour/hardness, hardpoints[] + utilities, internal[] (CHECK the Military slot count — Alliance hulls carry class-4 Military slots; Crusader may have 2 vs the others' 3), price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "alliance_crusader" -> ships/alliance_crusader.json. Cross-link [[ships/alliance-chieftain]] + [[ships/alliance-challenger]] (sibling trio) + the AX weapon/utility line. I already referenced the Crusader as "not yet paged" in alliance-challenger.md — turn that into a wikilink when written.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/federal_corvette.json (tier: 0, type: coriolis, note: Federal Corvette -> kb/ships/federal-corvette.md NEW. PIVOT TO LARGE-PAD AX: the iconic Core Dynamics large-pad combat flagship and a premier heavy AX gunship — the big-hull counterpart to the medium Chieftain/Krait line. Expect class 3 (LARGE pad), very high armour/shield, lots of hardpoints (inchuge Huge-class? — Corvette has a class-4 Huge mount), Military slots, requires a Federal Rear Admiral rank to purchase (note rank-gate). Parse manufacturer (Core Dynamics), hullMass, hardpoints[] (watch for the HUGE class-4 mount — first ship in KB with one), utilities, internal[] incl Military slots, baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "federal_corvette" -> ships/federal_corvette.json. Cross-link the AX weapon/utility/defence line as the large-pad platform; contrast vs the medium [[ships/alliance-challenger]]/[[ships/krait-mk-ii]] as the step up to large-pad AX.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/anaconda.json (tier: 0, type: coriolis, note: Anaconda -> kb/ships/anaconda.md NEW. CONTINUE LARGE-PAD: the classic Lakon large-pad multirole flagship — the do-everything ship (combat / exploration / hauling) and a long-standing AX platform. Expect class 3 (LARGE pad), ONE Huge (class-4) hardpoint (vs the Corvette's two), big core internals (class-8 PP/PD?), 8 utility mounts (matches the Corvette's count — Anaconda is the reference 8-utility hull), deep optional bank incl. multiple class-7/8. NO rank gate (unlike Corvette/Cutter) — just CR. Parse manufacturer (Lakon), hullMass, hardpoints[] (count the Huge mounts — expect 1), utilities (expect 8), internal[] incl Military slots (CHECK — Anaconda may have 0 Military slots, unlike the Corvette's 2), baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "anaconda" -> ships/anaconda.json. Cross-link [[ships/federal-corvette]] (large-pad sibling) + the AX weapon/utility/defence line; contrast: Anaconda = no rank gate + best jump range, Corvette = more firepower/agility.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/imperial_cutter.json (tier: 0, type: coriolis, note: Imperial Cutter -> kb/ships/imperial-cutter.md NEW. COMPLETE THE LARGE-PAD COMBAT TRINITY (Corvette/Anaconda/Cutter): the Gutamaya large-pad flagship — the Imperial counterpart to the Federal Corvette. The trade vs the Corvette: the Cutter is the better TRADER/shield-tank (huge shield, massive cargo) and the worse pure combat ship (less agile, fewer/smaller forward huge mounts). Expect class 3 (LARGE pad), very high baseShield (highest in game?), 1 Huge + Large/Medium/Small hardpoints, class-8 internals, rank gate = Imperial Navy rank DUKE (the Imperial counterpart to the Corvette's Rear Admiral — note the gate). Parse manufacturer (Gutamaya), hullMass, hardpoints[] (count Huge), utilities, internal[] incl Military slots, baseShield/baseArmour/hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "imperial_cutter" -> ships/imperial_cutter.json. Cross-link [[ships/federal-corvette]] (rival flagship) + [[ships/anaconda]] + the AX line; contrast Corvette (combat) vs Cutter (shield-tank/trade) vs Anaconda (jack-of-all, no rank gate).)
+
+<!-- DONE loop 24: COMPLETED THE ALLIANCE AX TRIO + PIVOTED TO LARGE-PAD AX. 2 new Tier-0 Coriolis
+     ship pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/alliance-crusader.md NEW (alliance_crusader, edID 128816581, eddbID 36). Lakon/
+     Alliance, class 2 (medium pad), requires Horizons. hullMass 500 (heaviest of the trio), speed
+     180/boost 300 (SLOWEST), baseShield 200, baseArmour 300, hardness 65, heatcap 316, masslock 13,
+     crew 4, fighterHangars TRUE (only Alliance medium with an SLF bay), pitch 32 / roll 80 (least
+     agile) / yaw 16, reservefuel 0.77, hull cost 22,096,565 / retail 22,866,341. Core: PP6 Thr6 FSD5
+     LS5 PD6 Sen4 FT4 (SAME core as Chieftain/Challenger). Hardpoints 1L+2M+3S (SIX mounts) + 4
+     utility. Optionals 6,5,3,3,2,2,1 (seven regular) + THREE class-4 MILITARY slots (mahr/hr/scb/mrp/
+     gsrp/gmrp/ghrp) + class-1 PAS. Bulkheads causres 0 all grades.
+     QUEUE-GUESS CORRECTIONS: crew = 4 (NOT 3); Military slots = 3 (SAME as the other two, NOT 2).
+     fighter bay TRUE confirmed. It's the multicrew gunship: only fighter bay + crew 4, but slowest/
+     least agile + fewest weapon mounts (6 vs Challenger's 7, both have only 1 Large). Cross-linked
+     [[ships/alliance-chieftain]] + [[ships/alliance-challenger]] (turned the challenger's "not yet
+     paged" note into a wikilink; added the trio line to the chieftain intro) + full AX line +
+     [[ships/federal-corvette]] as the large-pad step up. ALLIANCE TRIO NOW COMPLETE.
+     (2) kb/ships/federal-corvette.md NEW (federal_corvette, edID 128049369, eddbID 25). Core
+     Dynamics, class 3 (LARGE pad), requires Federal Navy rank REAR ADMIRAL (federationRank 12).
+     hullMass 900, speed 200/boost 260, baseShield 555, baseArmour 370, HARDNESS 70 (highest in KB),
+     heatcap 333, masslock 24 (very high), crew 4, fighterHangars TRUE, pitch 28 / roll 75 / yaw 8,
+     reservefuel 1.13, hull cost 183,156,068 / retail 187,969,450. Core: PP8 Thr7 FSD6 LS5 PD8 Sen8
+     FT5 (class-8 PP + class-8 PD = signature). Hardpoints 2 HUGE (class-4) + 1L + 2M + 2S (SEVEN
+     mounts) + 8 UTILITY. First KB ship with Huge hardpoints — and it has TWO. Optionals 7,7,7,6,6,5,
+     5,4,4,3,1 (ELEVEN) + TWO class-5 MILITARY slots (bigger than the Alliance class-4, but only 2) +
+     class-1 PAS. Bulkheads causres 0 all grades.
+     QUEUE-GUESS CORRECTIONS: TWO Huge mounts (not one); 8 utility (validated zeros-in-hardpoints-
+     array rule vs Panther=6/Type-9=4); 2 class-5 Military slots. Cross-linked the AX line as the
+     large-pad platform + contrasted vs medium [[ships/alliance-challenger]]/[[ships/krait-mk-ii]].
+     PATH NOTES: BOTH filenames resolved FIRST TRY, no 404 — ships/alliance_crusader.json (key
+     alliance_crusader) and ships/federal_corvette.json (key federal_corvette). trunk.md: +2 Ships
+     bullets + extended the AX-hulls line with the Crusader (medium) and the Corvette (large-pad step
+     up). DATA NOTE: Coriolis lists Corvette Sensors at class 8 (standard[5]=8) — recorded verbatim
+     per Tier-0 trust; flag for corroboration (source_count 1, verified false).
+     NEXT: CONTINUE LARGE-PAD AX — the Anaconda (Lakon do-everything flagship, 1 Huge, NO rank gate,
+     best jump range) + the Imperial Cutter (Gutamaya shield-tank flagship, Duke rank gate) complete
+     the large-pad combat trinity (Corvette/Anaconda/Cutter). Both queued as concrete Tier-0 URLs.
+     After those, AX coverage could move to Spire/Titan SITE mechanics or AX combat-zone tactics. -->
+
 
 <!-- DONE loop 23: COMPLETED THE QUEUED AX-HULL PAIR — the tankier Alliance sibling + the explorer
      Krait sibling. 2 new Tier-0 Coriolis ship pages (both availability: live, source_count 1,
