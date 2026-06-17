@@ -109,6 +109,10 @@ top-tier choice for all of them.
   **medium-pad** AX brawlers: cheaper, dock anywhere, three Military slots (Challenger) or three
   Large hardpoints (Krait), but far less raw firepower and shield. Pick a medium when pad access and
   cost matter more than the Corvette's ceiling.
+- **[[ships/federal-dropship]]** / **[[ships/federal-gunship]]** — the Corvette's own **medium-pad
+  Federal stablemates** (Core Dynamics, rank-gated). The Dropship is the cheap base brawler
+  (Midshipman gate); the Gunship is the heavy fighter-bay top variant (Ensign gate, seven mounts,
+  three Military slots). Both are far cheaper, lower-gated medium steps below the large-pad Corvette.
 
 ## Acquisition
 
