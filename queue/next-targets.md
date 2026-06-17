@@ -3,8 +3,38 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/alliance_chieftain.json (tier: 0, type: coriolis, note: Alliance Chieftain -> kb/ships/alliance-chieftain.md NEW. THE iconic medium-pad AX combat hull — the platform that carries the AX-weapon/utility line the KB just completed. Parse manufacturer (Lakon/Alliance), mass/hullMass, hardpoints[] (it has the AX-friendly 3L+1M+... layout), utilities, internal[], baseShieldStrength, armour, hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "chieftain" -> ships/alliance_chieftain.json. Cross-link the AX-utility trio + AX weapons as "the hull these modules go on".)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/krait_mkii.json (tier: 0, type: coriolis, note: Krait Mk II -> kb/ships/krait-mk-ii.md NEW. Popular versatile AX multirole (3 large hardpoints, good internals, fighter bay) — the heavier alternative to the Chieftain for AX. Parse same fields. CONFIRM filename via ships/index.js if it 404s — key likely "kraitmkii" -> ships/krait_mkii.json (or krait_mk_ii.json). Cross-link AX outfitting + the Chieftain.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/alliance_challenger.json (tier: 0, type: coriolis, note: Alliance Challenger -> kb/ships/alliance-challenger.md NEW. The TANKIEST of the three Alliance AX hulls — the Chieftain's heavier sibling: more hardpoints/Military slots, higher armour/hardness, slower. Completes the Alliance AX line started loop 22. Parse manufacturer (Lakon/Alliance), hullMass, hardpoints[], utilities, internal[] (watch for the Military slot count — likely MORE than the Chieftain's 3), baseShieldStrength, baseArmour, hardness, price. availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "challenger" -> ships/alliance_challenger.json. Cross-link [[ships/alliance-chieftain]] + the AX weapon/utility line as the hull this kit goes on.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/krait_phantom.json (tier: 0, type: coriolis, note: Krait Phantom -> kb/ships/krait-phantom.md NEW. The Krait Mk II's EXPLORER-leaning sibling: lighter, NO fighter bay, fewer/leaner hardpoints but an extra/larger optional internal and longer jump range — the long-range counterpart to the combat Krait Mk II. Parse same fields; note fighterHangars likely ABSENT and crew likely 2 (vs Mk II's 3). availability: live. CONFIRM filename via ships/index.js if it 404s — key likely "kraitphantom" -> ships/krait_phantom.json. Cross-link [[ships/krait-mk-ii]] as the combat sibling + [[engineers/felicity-farseer]] for FSD range.)
+
+<!-- DONE loop 22: PIVOTED FROM AX MODULES TO AX HULLS — added the two iconic medium-pad AX
+     platforms that carry the now-complete AX weapon/utility/defence line. 2 new Tier-0 Coriolis
+     ship pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/alliance-chieftain.md NEW (alliance_chieftain, edID 128816574). Lakon/Alliance,
+     class 2 (medium pad), requires Horizons. hullMass 400, speed 230/boost 330, baseShield 200,
+     baseArmour 280, HARDNESS 65 (high), heatcap 289, masslock 13, crew 2, NO fighter bay
+     (fighterHangars absent), roll 92 (very agile), pitch 39 / yaw 16, reservefuel 0.77, hull cost
+     18,612,476 / retail 19,382,252. Core: PP6 Thr6 FSD5 LS5 PD6 Sen4 FT4. Hardpoints 2L+1M+3S
+     (six mounts) + 4 utility. Optionals 6,5,4,2,2,1 + THREE class-4 MILITARY slots + class-1 PAS.
+     DEFINING TRAIT = the 3 Military slots (eligible per data: mahr/hr/scb/mrp/gsrp/gmrp/ghrp) — the
+     AX-defence reinforcement modules go here without costing cargo/utility internals. Bulkheads
+     causres 0 on ALL grades (no caustic res from hull; fit Meta-Alloy HRP). Cross-linked the full AX
+     weapon line + AX utility trio + decon limpet + the Military-eligible defence modules + a vs-Krait
+     compare section.
+     (2) kb/ships/krait-mk-ii.md NEW (krait_mkii, edID 128816567). Faulcon DeLacy, class 2 (medium
+     pad). hullMass 320, speed 240/boost 330, baseShield 220, baseArmour 220, hardness 55, heatcap
+     300, masslock 16, crew 3, fighterHangars TRUE (SLF bay), roll 90 / pitch 26 / yaw 10, reservefuel
+     0.63, hull cost 44,160,710 / retail 45,814,205. Core: PP7 Thr6 FSD5 LS4 PD7 Sen6 FT5 (big class-7
+     PP + PD). Hardpoints 3L+2M (five mounts — heavier than Chieftain) + 4 utility. Optionals
+     6,6,5,5,4,3,3,2,1 + class-1 PAS. NO Military slots (key contrast w/ Chieftain). Bulkheads causres
+     0. Cross-linked AX weapon/utility line + a vs-Chieftain compare section.
+     PATH NOTES: BOTH filenames resolved FIRST TRY, no 404 — ships/alliance_chieftain.json (key
+     alliance_chieftain) and ships/krait_mkii.json (key krait_mkii; the "kraitmkii" guess mapped to
+     krait_mkii.json). trunk.md: +2 Ships bullets + new "AX hulls" line in the AX/Thargoid section.
+     NEXT: complete the Alliance AX trio (Alliance Challenger = tankiest sibling) + the Krait Phantom
+     (explorer sibling of the Mk II) — both queued as concrete Tier-0 URLs. After those, AX-hull
+     coverage could extend to a large-pad AX platform (Anaconda / Federal Corvette) or Spire/Titan
+     site mechanics. -->
+
 
 <!-- DONE loop 21: COMPLETED THE AX-UTILITY MODULE LINE — added the AX LIMPET leg, the last
      AX-utility module. 1 new Tier-0 Coriolis outfitting page (availability: live, source_count 1,

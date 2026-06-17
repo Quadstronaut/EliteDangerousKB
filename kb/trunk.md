@@ -22,6 +22,8 @@ See [[ships/type-8-transporter]] for the Type-8 Transporter (best medium-pad hau
 See [[ships/type-11-prospector]] for the Type-11 Prospector (medium-pad dedicated miner).
 See [[ships/type-9-heavy]] for the Type-9 Heavy (large-pad bulk hauler).
 See [[ships/panther-clipper-mk-ii]] for the Panther Clipper Mk II (largest-cargo ship).
+See [[ships/alliance-chieftain]] for the Alliance Chieftain (medium-pad AX combat brawler; 3 Military slots).
+See [[ships/krait-mk-ii]] for the Krait Mk II (medium-pad multirole; 3 large hardpoints, fighter bay).
 
 ## Outfitting
 
@@ -108,6 +110,9 @@ plus **anti-swarm support** [[outfitting/remote-release-flak-launcher]] (explosi
 [[outfitting/remote-release-flechette-launcher]] (kinetic flechette) vs Swarm/Scout clouds.
 AX defence — the Guardian defensive trio [[outfitting/guardian-shield-reinforcement]],
 [[outfitting/hull-reinforcement|Guardian HRP]] and [[outfitting/module-reinforcement|Guardian MRP]].
+AX hulls — the medium-pad platforms this kit goes on: the [[ships/alliance-chieftain]]
+(agile, high-hardness brawler with three dedicated Military reinforcement slots) and the heavier,
+higher-firepower [[ships/krait-mk-ii]] (3 large hardpoints + a Ship-Launched Fighter bay).
 AX utilities — the survival/targeting trio every Thargoid-capable ship fits:
 [[outfitting/xeno-scanner]] (IDs the Thargoid and reveals its weak points),
 [[outfitting/shutdown-field-neutraliser]] (negates the EMP shutdown pulse) and
