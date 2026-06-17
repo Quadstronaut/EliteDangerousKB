@@ -68,6 +68,10 @@ Bulkheads carry `causres 0` on every grade.
   plus three class-6 optionals out-haul a Python, with six weapon mounts for self-defence, but it costs
   ~35 M CR. The Type-6 is the budget-entry medium freighter beneath it: a fraction of the price and cargo,
   the ship you fly while saving for a Type-8 (or skipping straight to a [[ships/type-9-heavy]] for bulk).
+- **vs [[ships/type-7-transporter]]:** the Type-7 is the next Lakon Type freighter up, but it is a
+  **large-pad** hull (the cheapest large-pad hull in the KB at 16.8 M CR) — deeper cargo and a tougher
+  hull than the Type-6, but it **cannot dock at outposts**. The Type-6 keeps the medium pad (and outpost
+  access); step to the Type-7 only when you can use large pads and want more cargo.
 - **vs [[ships/asp-explorer]]:** the next-cheapest medium-pad hull in the KB (~6.1 M), the Asp is the
   roomy multirole/explorer; the Type-6 is the pure-freight budget option roughly 7× cheaper to buy.
 - **vs [[ships/keelback]]:** the Keelback is the Type-6's **armed, fighter-capable sibling** on the same

@@ -14,8 +14,9 @@ changed_note:
 The Cobra Mk III is the **iconic affordable small-class multirole** by **Faulcon
 DeLacy** — fast, nimble, and cheap enough to be many commanders' first "real" ship.
 It carries four hardpoints and eight optional internals on a size-1 pad, fitting
-combat, light trading, and exploration alike. Its modern small-pad successor is the
-[[ships/cobra-mk-v]].
+combat, light trading, and exploration alike. Its heavier, roomier — but
+limited-availability — sibling is the [[ships/cobra-mk-iv]]; its modern small-pad
+successor is the [[ships/cobra-mk-v]].
 
 ## Overview
 
@@ -56,6 +57,15 @@ For a small, cheap hull the Cobra Mk III is unusually well-rounded: high speed/b
 a roll rate of 100 deg/s, and three class-4 optionals that allow a respectable cargo
 hold or a fuel-scoop-plus-tank explorer fit. The size-4 FSD gives decent range for the
 low hull mass — engineer it at [[engineers/felicity-farseer]] to push it further.
+
+## Cobra Mk III vs Cobra Mk IV
+
+The [[ships/cobra-mk-iv]] is the Mk III's heavier sibling on a small pad — **identical core
+internals**, but 210 t (vs 180), slower (200/300 vs 280/400) and less agile, in exchange for
+**two more optional slots** (ten, four class-4) and **one more hardpoint** (2 Medium + 3 Small =
+five mounts) plus a stronger 120 MJ shield. The catch is availability: the Mk IV was a **Horizons
+early-adoption exclusive** and is **not generally purchasable**, where the Mk III is stocked almost
+everywhere. Fly the Mk III unless you already own the limited Mk IV.
 
 ## Cobra Mk III vs Cobra Mk V
 
