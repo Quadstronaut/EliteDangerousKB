@@ -1,8 +1,48 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/eagle.json (tier: 0, type: coriolis-ship, note: COMPLETES THE EARLY-GAME SMALL-PAD FIGHTER CLUSTER seeded by the just-paged [[ships/sidewinder]]. The Eagle Mk II is Core Dynamics' cheap, ultra-agile rookie fighter — the natural "first real fighter" step up from the Sidewinder, and the small-pad agility benchmark (expect very high roll/pitch, possibly challenging the Sidewinder/Vulture's roll 110). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Core Dynamics)/class (expect 1 = SMALL pad)/hullMass (expect very low, near Sidewinder's 25-50 range)/speed-boost (expect FAST + very agile)/baseShield/baseArmour (expect thin)/hardness/heatCapacity/masslock/core-standard array (expect shallow, class ~2-3)/hardpoints array (expect 3 Small = 3 mounts, the Eagle's signature triple-small)/internal array (shallow optionals + PAS, CHECK Military slot)/costs (expect cheap, near Sidewinder/Viper range). Write -> kb/ships/eagle.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/sidewinder]] + [[ships/viper-mk-iii]] (the rookie small-pad fighter trio) + [[trunk]] Ships; RECHECK the "nimblest roll" claim on [[ships/vulture]]/[[ships/sidewinder]] if the Eagle's roll exceeds 110. CONFIRM filename via ships/index.js if eagle.json 404s - Coriolis key likely "eagle" (the Imperial Eagle is the separate key "empire_eagle").)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/empire_eagle.json (tier: 0, type: coriolis-ship, note: COMPLETES THE EAGLE PAIR seeded by the just-paged [[ships/eagle]] — the Imperial Eagle is the faster, better-shielded Imperial refinement of the Eagle Mk II (mirrors the Viper Mk III/IV and Diamondback Scout/Explorer sibling-pair pattern). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer/class (expect 1 = SMALL pad)/hullMass/speed-boost (expect FASTER than the base Eagle's 240/350)/baseShield (expect HIGHER)/baseArmour/hardness/heatCapacity/masslock/roll-pitch (CHECK vs the base Eagle's NEW class-leading roll 120 — may tie or fall short)/core-standard array/hardpoints array (expect 2-3 mounts)/internal array (CHECK Military slot like the base Eagle's class-2)/costs (CHECK rank gate — Imperial ships often need an Empire rank, unlike the no-gate base Eagle). Write -> kb/ships/imperial-eagle.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/eagle]] (bidirectional sibling note) + [[ships/viper-mk-iii]] + [[trunk]] Ships; RECHECK the Eagle's roll-120 nimblest claim if the Imperial Eagle differs. CONFIRM filename via ships/index.js if empire_eagle.json 404s — key likely 'empire_eagle' (NOT 'imperial_eagle').)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/adder.json (tier: 0, type: coriolis-ship, note: THE OTHER STARTER STEP-UP from the [[ships/sidewinder]] - the Adder is Zorgon Peterson's cheap small-pad multipurpose, famous as the budget early-game explorer/hauler with a surprisingly long jump range for its size and price. Rounds out the early small-pad tier (fighter line = Eagle/Viper; the Adder = the cheap utility/explorer alternative). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Zorgon Peterson)/class (expect 1 = SMALL pad)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/core-standard array (CHECK FSD class - the Adder's reputation is good range, so expect a relatively healthy FSD for its size)/hardpoints array (expect mix of Small + maybe 1 Medium)/internal array (optionals + PAS, CHECK Military slot)/costs (expect cheap). Write -> kb/ships/adder.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/sidewinder]] + [[ships/hauler]] (forward-ref, if/when paged) + [[ships/cobra-mk-iii]] (the multirole step up) + [[trunk]] Ships. CONFIRM filename via ships/index.js if adder.json 404s - Coriolis key likely "adder".)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/hauler.json (tier: 0, type: coriolis-ship, note: THE BUDGET CARGO COUNTERPART forward-referenced by the just-paged [[ships/adder]] — the Hauler is Zorgon Peterson's tiny, ultra-cheap small-pad dedicated freighter, famous as the cheapest way into cargo running and (engineered) one of the longest-jumping small ships. Completes the early small-pad UTILITY tier (Adder = multipurpose; Hauler = pure cargo/jump). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Zorgon Peterson)/class (expect 1 = SMALL pad)/hullMass (expect VERY LOW — may challenge the Sidewinder's 25 t lightest or the Adder's 35 t)/speed-boost/baseShield/baseArmour (expect thin)/hardness/heatCapacity/masslock/core-standard array (CHECK FSD class — the Hauler's reputation is excellent range)/hardpoints array (expect just 1 Small)/internal array (cargo-focused optionals + PAS, CHECK Military slot)/costs (expect very cheap). Write -> kb/ships/hauler.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/adder]] + [[ships/sidewinder]] + [[ships/type-8-transporter]] (the large hauler step up) + [[trunk]] Ships; RECHECK the Sidewinder's 'lightest hull (25 t)' claim if the Hauler is lighter. CONFIRM filename via ships/index.js if hauler.json 404s — key likely 'hauler'.)
+
+
+
+<!-- DONE loop 32: PAGED THE TWO QUEUED TIER-0 SMALL-PAD GAPS (Eagle Mk II + Adder), seeding the
+     rookie fighter line and the budget-utility tier off the Sidewinder. 2 new Tier-0 Coriolis ship
+     pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/eagle.md NEW (key eagle, file eagle.json resolved FIRST TRY 3247 bytes, no 404).
+     edID 128049255, eddbID 7. Core Dynamics, class 1 (SMALL pad), NO requirements block = NO rank
+     gate. hullMass 50 (ties Viper Mk III). speed 240/boost 350. baseShield 60 / **baseArmour 40 =
+     NEW LOWEST ARMOUR IN KB** (under Sidewinder 60). hardness 28, heatCapacity 165, masslock 6,
+     crew 1, pitch **50**/roll **120**/yaw 18, reservefuel 0.34. hull 10,947 / retail 44,800 =
+     **2nd-CHEAPEST HULL IN KB** (above only the free Sidewinder 4,588/32,000). Core standard
+     [2,3,3,1,2,2,2]: PP2 Thr3 FSD3 LS1 PD2 Sen2 FT2 (class-3 thrusters on a 50 t hull drive the
+     turn). Hardpoints [1,1,1,0] = **3 Small = 3 mounts (signature triple-small) + 1 utility**.
+     Optionals [3,2,1,1,1,1] = SIX (top class-3) + **ONE class-2 Military slot** (mahr/hr/scb/mrp/
+     gsrp/gmrp/ghrp — notable on so cheap a hull) + class-1 PAS. causres 0 all grades.
+     **ROLL RECORD CHANGE: roll 120 is the NEW nimblest roll in the KB**, dethroning the prior
+     Sidewinder/Vulture tie at 110; pitch 50 also the highest in KB. QUEUE-GUESS RESULTS: triple-Small
+     CONFIRMED; Military slot -> YES (class-2); roll DID exceed 110 (predicted).
+     (2) kb/ships/adder.md NEW (key adder, file adder.json resolved FIRST TRY 3030 bytes, no 404).
+     edID 128049267, eddbID 1. Zorgon Peterson, class 1 (SMALL pad), NO rank gate. **hullMass 35 =
+     2nd-LIGHTEST HULL IN KB** (between Sidewinder 25 and Eagle/Viper-III 50). speed 220/boost 320,
+     baseShield 60 / baseArmour 90, hardness 35, heatCapacity 170, masslock 7, crew 2, pitch 38/
+     roll 100/yaw 14, reservefuel 0.36. hull 40,833 / retail 87,808 (3rd-cheapest hull in KB). Core
+     standard [3,3,3,1,2,3,3]: PP3 Thr3 **FSD3** LS1 PD2 Sen3 **FT3** (class-3 FSD + class-3 fuel
+     tank on a light hull = the budget-explorer range reputation, CONFIRMED). Hardpoints [2,1,1,0,0]
+     = **1 Medium + 2 Small = 3 mounts + 2 utility** (queue 'mix of Small + maybe 1 Medium' CONFIRMED).
+     Optionals [3,3,2,2,1,1,1] = SEVEN (top class-3, two class-3) + class-1 PAS, **NO Military**.
+     causres 0 all grades.
+     CROSS-PAGE ROLL-RECORD FIXES (same discipline as the loop-29/30 cheapest/lightest corrections):
+     the Eagle's roll 120 demotes the old 110 'nimblest' holders -> (a) sidewinder.md roll line re-scoped
+     to 'second-nimblest, behind the Eagle'; (b) vulture.md intro + hull-stats roll lines re-scoped from
+     'nimblest/highest' to 'class-leading/second-highest, behind the Eagle'; (c) fer-de-lance.md Vulture
+     compare re-scoped off 'the nimblest roll in the KB'; (d) trunk.md Vulture + Sidewinder bullets both
+     re-scoped. trunk.md: +2 Ships bullets (eagle + adder after sidewinder in the small-pad cluster).
+     PATH NOTE: both bare keys (eagle / adder) resolved first try, no index.js probe. NEXT: queued two
+     reachable Tier-0 small-pad gaps at the TOP — Imperial Eagle (empire_eagle, completes the Eagle pair;
+     CHECK if it ties/beats roll 120 + whether it has an Empire rank gate) + Hauler (Zorgon Peterson
+     ultra-cheap dedicated freighter, may challenge the Sidewinder's lightest-hull claim). The Spire Site
+     stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 31: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Viper Mk IV + Sidewinder), completing the
      Viper pair and adding the universal starter baseline. 2 new Tier-0 Coriolis ship pages (both

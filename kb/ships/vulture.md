@@ -13,8 +13,8 @@ changed_note:
 
 The Vulture is **Core Dynamics' small-pad heavy fighter** — the iconic "two big guns on a small
 hull" brawler. It mounts **two Large hardpoints on a size-1 airframe**, an enormous
-firepower-to-size ratio, and backs them with a high base shield and the nimblest roll rate in the
-KB. The price is the Vulture's defining weakness: a **class-4 Power Plant** that struggles to feed
+firepower-to-size ratio, and backs them with a high base shield and a class-leading roll rate (now second only to the [[ships/eagle]]
+Mk II). The price is the Vulture's defining weakness: a **class-4 Power Plant** that struggles to feed
 two Large weapons alongside thrusters and shields, making power management (or an engineered power
 plant) essential. It is the small-pad companion to the medium-pad combat king
 [[ships/fer-de-lance]].
@@ -40,9 +40,9 @@ Source: Coriolis-data ship definition `vulture` (edID 128049309, eddbID 23).
 - **Heat capacity:** 237
 - **Mass lock factor:** 10
 - **Manoeuvrability (deg/s):** pitch 42 · **roll 110** · yaw 17. The roll rate of 110 is the
-  **highest (nimblest) of any ship paged in this KB**, tied with the featherweight starter
-  [[ships/sidewinder]] — but the Vulture pairs that roll with real firepower, out-rolling everything
-  to keep its fixed Large mounts on target.
+  **second-highest of any ship paged in this KB**, tied with the featherweight starter
+  [[ships/sidewinder]] and behind only the [[ships/eagle]] Mk II (roll 120) — but the Vulture pairs
+  that roll with real firepower, out-rolling almost everything to keep its fixed Large mounts on target.
 - **Reserve fuel:** 0.57 t
 
 ## Slot Layout
