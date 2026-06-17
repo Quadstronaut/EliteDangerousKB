@@ -3,9 +3,44 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/guardian_plasma_charger.json (tier: 0, type: coriolis, note: Guardian Plasma Charger -> kb/outfitting/guardian-plasma-charger.md (new). Completes the Guardian AX-weapon trio alongside Gauss (ggc, done L15) + Shard (gsc). Charge-up AX weapon. PATH CONFIRMED via modules/index.js key gpc -> hardpoints/guardian_plasma_charger.json (require('./x') with no extension = the .json). Parse damage/distdraw/thermload/damagedist/class+rating + Guardian-unlock.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/guardian_shard_cannon.json (tier: 0, type: coriolis, note: Guardian Shard Cannon -> kb/outfitting/guardian-shard-cannon.md (new). 3rd Guardian AX weapon; short-range shard burst. PATH CONFIRMED via modules/index.js key gsc -> hardpoints/guardian_shard_cannon.json. Parse damage/falloff/distdraw/thermload/damagedist + Guardian-unlock.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_multi_cannon.json (tier: 0, type: coriolis, note: AX Multi-Cannon -> kb/outfitting/ax-multi-cannon.md (new). The workhorse non-Guardian AX kinetic weapon vs Thargoid Interceptors/Scouts. PATH CONFIRMED via modules/index.js key axmc -> hardpoints/ax_multi_cannon.json. Other AX paths confirmed in index.js: axmce (ax_multi_cannon_enhanced), axmr/axmre (ax_missile_rack[_enhanced]), rfl (remote_release_flak_launcher), tbrfl (remote_release_flechette_launcher), tbem (enzyme_missile_rack), ntp (nanite_torpedo_pylon). Parse damage/dps/ammo/class+rating.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_multi_cannon_enhanced.json (tier: 0, type: coriolis, note: Enhanced AX Multi-Cannon -> kb/outfitting/ax-multi-cannon-enhanced.md (new) OR merge as a section into ax-multi-cannon.md. The upgraded AX MC: adds Small mounts + improved stats over the base axmc (done L16). PATH per index.js key axmce -> hardpoints/ax_multi_cannon_enhanced.json. Parse damage/clip/ammo/damagedist (likely X+K)/class+rating; note the new Small size.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_missile_rack.json (tier: 0, type: coriolis, note: AX Missile Rack -> kb/outfitting/ax-missile-rack.md (new). Dumbfire/seeking AX missiles vs Interceptors; the explosive leg of the AX kinetic/explosive mix. PATH per index.js key axmr -> hardpoints/ax_missile_rack.json (enhanced = axmre/ax_missile_rack_enhanced.json). Parse damage/ammo/clip/damagedist/class+rating.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/remote_release_flak_launcher.json (tier: 0, type: coriolis, note: Remote Release Flak Launcher -> kb/outfitting/remote-release-flak-launcher.md (new). The anti-swarm AX utility weapon — detonates flak to clear Thargoid Swarm/Scout clouds; essential AX support. PATH per index.js key rfl -> hardpoints/remote_release_flak_launcher.json. Parse damage/ammo/range/class+rating + remote-detonation note. Sibling tbrfl = remote_release_flechette_launcher.json.)
+
+<!-- DONE loop 16: completed the Guardian AX-weapon trio + seeded the standard AX kinetic line.
+     3 new Tier-0 Coriolis outfitting pages (all availability: live, source_count 1, verified false):
+     (1) kb/outfitting/guardian-plasma-charger.md NEW (grp gpc, symbol Hpt_Guardian_PlasmaLauncher_*).
+     CHARGE-UP weapon: hold to spin a plasma orb, release fires a burst expending up to the full clip
+     of 15 rounds. 100% ABSOLUTE damage (damagedist A:1 — ignores all resistances). Fixed + Turret,
+     Small/Medium/Large (C1/C2/C3) — fuller ladder than fixed-only Gauss. dmg/round 2-7, piercing
+     65->95, range 3000 (C1/C3) / 3500 (C2), high distdraw 0.68->2.6, MODEST thermload 4.2->6.4 (much
+     cooler than Gauss). clip 15 / ammo 200 / reload 3 / fireint 0.2 / shotspeed 1200 / falloff 1000.
+     Pre-eng cost-0 "Plasma Charger (OC+Foc)" = C1 Fixed D + C2 Fixed B, G1 Overcharged+Focused, locked.
+     Guardian Tech Broker unlock.
+     (2) kb/outfitting/guardian-shard-cannon.md NEW (grp gsc, symbol Hpt_Guardian_ShardCannon_*).
+     SHOTGUN: 12 shards/shot (roundspershot 12) + jitter 5; 100% THERMAL (damagedist T:1). SHORT range
+     — range==falloff==1700 (full dmg to 1700 then hard cut). Fixed+Turret, C1/C2/C3. dmg/shard
+     1.1-5.2 (x12 = 13.2-62.4/shot point-blank), piercing 30->60, VERY LOW thermload 0.6-2.2 (best
+     sustained DPS of the trio). clip 5 / ammo 180 / reload 5 / fireint 0.6 / shotspeed 1133. Note C2
+     Fixed is rating A (trio's only base-A). Pre-eng cost-0: "Shard (OC+Foc+SPen)" C1 Fixed D + C2
+     Fixed A (G1 LongRange+Focused + Super Penetrator exp, canApplyExperimental TRUE); "Shard (Long
+     Range)" C2 Fixed A (G5 LongRange, CG reward, locked). Guardian Tech Broker unlock.
+     (3) kb/outfitting/ax-multi-cannon.md NEW (grp axmc, symbol Hpt_ATMultiCannon_*). The STANDARD
+     non-Guardian AX kinetic workhorse — NO Guardian unlock (entry AX weapon). damagedist {X:1,K:1}
+     = AX + kinetic split. Sustained auto-fire: clip 100 (fixed)/90 (turret), HUGE ammo 2100. Long
+     range 4000 / falloff 2000. VERY low heat (thermload 0.1-0.3) + low power (0.46-0.64). Medium +
+     Large ONLY (no Small in base line), Fixed + Turret. dmg 1.7-6.1, piercing 17 (M)/33 (L),
+     shotspeed 1600, reload 4. Enhanced variant (axmce) noted as follow-on (adds Small + better stats).
+     trunk.md: +3 Outfitting bullets; AX/Thargoid section reworked into "AX weapons" (trio + axmc) +
+     "AX defence" (Guardian defensive trio). Bidirectional "Related AX weapons" links added across all
+     4 weapon pages (gauss <-> plasma <-> shard <-> axmc).
+     PATH NOTES: all 3 hardpoints/*.json (guardian_plasma_charger, guardian_shard_cannon,
+     ax_multi_cannon) resolved first try, no 404 — index.js keys gpc/gsc/axmc confirmed last loop.
+     Follow-ons queued (paths via index.js, require('./x')=.json): Enhanced AX MC (axmce ->
+     ax_multi_cannon_enhanced), AX Missile Rack (axmr -> ax_missile_rack; enhanced axmre), Remote
+     Release Flak Launcher (rfl -> remote_release_flak_launcher, anti-swarm utility). Remaining AX
+     paths still open: tbrfl (flechette), tbem (enzyme missile), ntp (nanite torpedo). -->
+
 
 <!-- DONE loop 15: completed the Guardian "specials" layer — 3 new Tier-0 Coriolis pages (all availability: live):
      (1) kb/outfitting/guardian-shield-reinforcement.md NEW (grp gsrp). POWERED optional internal, classes 1-5,

@@ -69,4 +69,11 @@ gather Guardian blueprint fragments and materials at a Guardian Structure site (
 site map), then unlock at a station with a Tech Broker. The cost-0 pre-engineered "HCap + RFire"
 variants are reward modules, not standard stock.
 
+## Related AX weapons
+
+The Guardian AX-weapon trio: this Gauss Cannon (long-range thermal, anti-Interceptor specialist),
+[[outfitting/guardian-plasma-charger]] (absolute-damage charge burst), and
+[[outfitting/guardian-shard-cannon]] (close-range thermal shotgun). The non-Guardian
+[[outfitting/ax-multi-cannon]] is the standard kinetic AX workhorse that needs no Guardian unlock.
+
 [[trunk]]
