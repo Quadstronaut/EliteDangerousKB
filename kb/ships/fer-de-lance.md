@@ -64,6 +64,12 @@ Bulkheads carry `causres 0` on every grade. The low heat capacity makes a
 
 ## Fer-de-Lance vs other medium combat hulls
 
+- **vs [[ships/mamba]]:** the Mamba is the Fer-de-Lance's Zorgon Peterson speed-sibling — same
+  250 t airframe, hardness 70, and an *identical* core (class-6 PD, class-4 FSD, class-3 tank).
+  The Mamba is far faster in a straight line (310/380 vs 260/350, the fastest medium-pad base
+  speed in the KB) and mounts 1 Huge + 2 Large + 2 Small, but turns worse (pitch/roll/yaw
+  27/80/10 vs 38/90/12), shields less (270 vs 300 MJ) and runs hotter (heat capacity 165 vs 224).
+  The Fer-de-Lance is the agile duellist; the Mamba is the fixed-weapon dragster.
 - **vs [[ships/python]]:** the Python spreads firepower across three Large hardpoints and
   carries far deeper optional internals (ten slots, three class-6) for a multirole/trader
   build. The Fer-de-Lance concentrates damage into one Huge mount, turns harder, and shields
