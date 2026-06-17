@@ -3,9 +3,36 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_shield_reinforcement_package.json (tier: 0, type: coriolis, note: Guardian Shield Reinforcement Package -> kb/outfitting/ (new) or merge into a shield-reinforcement page. Completes the Guardian defensive trio (HRP/MRP/SRP). PATH CONFIRMED via modules/index.js key gsrp. Powered; parse shieldreinforcement/thermres + Guardian-unlock note.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/guardian_gauss_cannon.json (tier: 0, type: coriolis, note: Guardian Gauss Cannon -> kb/outfitting/ (new ax-weapons page) -> seeds the AX weapon layer. The premier AX anti-interceptor weapon. PATH CONFIRMED via modules/index.js key ggc. Parse damage/dps/distdraw/thermload/class+rating + Guardian-unlock.)
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_fsd_booster.json (tier: 0, type: coriolis, note: Guardian FSD Booster -> kb/outfitting/ (new) or merge into frame-shift-drive.md. Flat jump-range boost by class; links FSD pages. PATH CONFIRMED via modules/index.js key gfsb. Parse jumpboost by class + Guardian-unlock note.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/guardian_plasma_charger.json (tier: 0, type: coriolis, note: Guardian Plasma Charger -> kb/outfitting/guardian-plasma-charger.md (new). Completes the Guardian AX-weapon trio alongside Gauss (ggc, done L15) + Shard (gsc). Charge-up AX weapon. PATH CONFIRMED via modules/index.js key gpc -> hardpoints/guardian_plasma_charger.json (require('./x') with no extension = the .json). Parse damage/distdraw/thermload/damagedist/class+rating + Guardian-unlock.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/guardian_shard_cannon.json (tier: 0, type: coriolis, note: Guardian Shard Cannon -> kb/outfitting/guardian-shard-cannon.md (new). 3rd Guardian AX weapon; short-range shard burst. PATH CONFIRMED via modules/index.js key gsc -> hardpoints/guardian_shard_cannon.json. Parse damage/falloff/distdraw/thermload/damagedist + Guardian-unlock.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/ax_multi_cannon.json (tier: 0, type: coriolis, note: AX Multi-Cannon -> kb/outfitting/ax-multi-cannon.md (new). The workhorse non-Guardian AX kinetic weapon vs Thargoid Interceptors/Scouts. PATH CONFIRMED via modules/index.js key axmc -> hardpoints/ax_multi_cannon.json. Other AX paths confirmed in index.js: axmce (ax_multi_cannon_enhanced), axmr/axmre (ax_missile_rack[_enhanced]), rfl (remote_release_flak_launcher), tbrfl (remote_release_flechette_launcher), tbem (enzyme_missile_rack), ntp (nanite_torpedo_pylon). Parse damage/dps/ammo/class+rating.)
+
+<!-- DONE loop 15: completed the Guardian "specials" layer — 3 new Tier-0 Coriolis pages (all availability: live):
+     (1) kb/outfitting/guardian-shield-reinforcement.md NEW (grp gsrp). POWERED optional internal, classes 1-5,
+     ratings E/D only. shieldaddition = FLAT MJ added to shield strength (shield analogue of the HRP's flat HP);
+     NOT a multiplier (unlike shield-booster) and not active recharge (unlike SCB). integrity const 36. D > E in
+     MJ at half mass / more power / ~3x cost. C1 E 44 MJ 0.35 MW -> C5 D 215 MJ 1.26 MW. Completes the Guardian
+     defensive TRIO: gsrp (shields) + ghrp (hull) + gmrp (modules). Guardian Tech Broker unlock. source_count 1,
+     verified false. Bidirectional trio links added to hull-reinforcement.md + module-reinforcement.md.
+     (2) kb/outfitting/guardian-gauss-cannon.md NEW (grp ggc) -> SEEDS THE AX-WEAPON LAYER. Fixed-mount only,
+     experimental, 100% THERMAL (damagedist T:1), piercing 140, charge-fired clip 1, range 3000. Two sizes:
+     C1 small D (dmg 22) + C2 medium B (dmg 38.5). Plus two pre-engineered cost-0 reward variants "Gauss
+     (HCap + RFire)" (G1 High Capacity + Rapid Fire, locked: not re-eng/grade-change/experimental; clip 2 ammo
+     200, lower per-shot dmg 9.6/18.3). High distdraw + thermload (pair w/ heat-sink-launcher). Guardian unlock.
+     source_count 1, verified false.
+     (3) kb/outfitting/guardian-fsd-booster.md NEW (grp gfsb). POWERED optional internal, classes 1-5, single
+     rating H. jumpboost = FLAT +LY per jump, stacks additively on the FSD (does NOT replace it). mass const 1.3t,
+     integrity const 32. C1 +4.0 LY 0.75 MW -> C5 +10.5 LY 2.14 MW; diminishing class-to-class returns. desc:
+     "...at the cost of overall fuel efficiency." INDEPENDENTLY corroborates mechanics/frame-shift-drive.md's
+     "+10.5 ly at class 5" claim -> that page source_count 2->3, stays verified true; bidirectional wikilinks
+     added there + on outfitting/frame-shift-drive.md. source_count 1, verified false.
+     trunk.md updated: 3 new Outfitting bullets + AX-weapon seed line in the AX/Thargoid section.
+     PATH NOTES: all 3 queue paths resolved first try (gsrp/ggc/gfsb, no 404). modules/index.js re-fetched to
+     confirm follow-on AX-weapon paths. Follow-ons queued (paths CONFIRMED via index.js, require('./x')=.json):
+     Guardian Plasma Charger (gpc), Guardian Shard Cannon (gsc) -> complete the Guardian AX-weapon trio; AX
+     Multi-Cannon (axmc) -> the standard AX kinetic workhorse. Other AX paths noted: axmce, axmr, axmre, rfl,
+     tbrfl, tbem, ntp. -->
+
 
 <!-- DONE loop 14: completed the Guardian AX outfitting layer + the heat-management utility.
      2 MERGES + 1 new Tier-0 Coriolis page (all availability: live):

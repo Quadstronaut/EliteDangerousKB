@@ -1,10 +1,10 @@
 ---
 source_url: https://elite-dangerous.fandom.com/wiki/Frame_Shift_Drive
-source_urls: ["https://elite-dangerous.fandom.com/wiki/Frame_Shift_Drive", "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/standard/frame_shift_drive.json"]
+source_urls: ["https://elite-dangerous.fandom.com/wiki/Frame_Shift_Drive", "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/standard/frame_shift_drive.json", "https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/internal/guardian_fsd_booster.json"]
 source_type: fandom
 source_tier: 2
 captured_at: 2026-06-01
-source_count: 2
+source_count: 3
 verified: true
 availability: live
 ---
@@ -22,7 +22,7 @@ Jump range is determined by:
 - **FSD rating and class** (A-rated gives the highest base range)
 - **Ship laden mass** (lower mass = longer jumps; engineers and lightweight modules matter)
 - **FSD grade engineering** (Increased Range blueprint from Felicity Farseer or other FSD engineers)
-- **Guardian FSD Booster** (adds a flat bonus of 10.5 ly at class 5; requires Guardian tech unlock)
+- **[[outfitting/guardian-fsd-booster|Guardian FSD Booster]]** (adds a flat bonus of 10.5 ly at class 5; requires Guardian tech unlock)
 
 A fully engineered A-rated FSD on an Asp Explorer achieves approximately 70–80+ ly per jump.
 A Neutron Star boost (via Spansh neutron plotter route) multiplies jump range by 4× for one jump.
@@ -48,6 +48,9 @@ A passive module (not a weapon) that adds +10.5 ly (class 5) to all jump ranges.
 Requires completing the Guardian tech-broker unlock: collect Guardian blueprint fragments and
 materials at a Guardian Structure site. See Canonn's Guardian site map for locations.
 
-Slots: Internal (optional). Does not replace the FSD — it stacks additively.
+Slots: Internal (optional). Does not replace the FSD — it stacks additively. For the full
+class-by-class table (jump boost, power, mass, cost) see the module reference
+[[outfitting/guardian-fsd-booster]] — its Tier-0 Coriolis data independently confirms the +10.5 LY
+class-5 figure above.
 
 [[trunk]]

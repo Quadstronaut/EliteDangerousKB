@@ -13,7 +13,8 @@ changed_note: FSD (SCO) Supercruise Overcharge variant added in Update 18 (2024)
 
 This page is the **module reference** for the Frame Shift Drive core internal — classes, ratings,
 optimal mass, fuel-per-jump and cost. For how jump range is *calculated*, engineering, neutron
-boosting and the Guardian FSD Booster, see the mechanics page [[mechanics/frame-shift-drive]].
+boosting and the [[outfitting/guardian-fsd-booster|Guardian FSD Booster]], see the mechanics page
+[[mechanics/frame-shift-drive]].
 
 The FSD is a mandatory **core internal** sized to the ship. Coriolis lists two parallel lines:
 the original **legacy FSD** and the newer **FSD (SCO)** — Supercruise Overcharge — drive.
@@ -73,5 +74,6 @@ SCO adds a class 8 (the only class-8 FSD in the game) and carries higher optimal
 Each class also comes in B/C/D/E. Lower ratings cost far less and weigh differently (D is the
 lightest, useful for shaving mass on a budget; B is heaviest/toughest) but give shorter jumps.
 For range-focused builds, A-rate the FSD and engineer it — see [[mechanics/frame-shift-drive]].
+Stack a [[outfitting/guardian-fsd-booster|Guardian FSD Booster]] on top for a flat per-jump bonus.
 
 [[trunk]]
