@@ -70,6 +70,11 @@ Bulkheads carry `causres 0` on every grade.
   the ship you fly while saving for a Type-8 (or skipping straight to a [[ships/type-9-heavy]] for bulk).
 - **vs [[ships/asp-explorer]]:** the next-cheapest medium-pad hull in the KB (~6.1 M), the Asp is the
   roomy multirole/explorer; the Type-6 is the pure-freight budget option roughly 7× cheaper to buy.
+- **vs [[ships/keelback]]:** the Keelback is the Type-6's **armed, fighter-capable sibling** on the same
+  Lakon airframe — heavier and slower, one fewer optional, but with **2 Medium + 2 Small mounts, a
+  Ship-Launched Fighter bay and roughly double the shield/armour**, for ~3 M CR (the second-cheapest
+  medium-pad hull, just above the Type-6). Fly the Type-6 to haul cheaply; step to the Keelback when you
+  want a trader that can fight back or carry a fighter.
 
 ## Build notes
 

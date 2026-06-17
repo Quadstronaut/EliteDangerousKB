@@ -16,7 +16,9 @@ The Imperial Cutter is **Gutamaya's large-pad flagship** — the Imperial counte
 is the game's premier **shield-tank and bulk trader**: it carries the **highest base shield in this
 KB (600 MJ)** and **two class-8 optional internals** for enormous cargo or shield capacity, but pays
 for it with the **least agility of any KB ship** and only **one Huge hardpoint** (vs the Corvette's
-two). Purchase is **rank-gated** behind Imperial Navy rank **Duke**.
+two). Purchase is **rank-gated** behind Imperial Navy rank **Duke**. Its lighter, far faster Gutamaya
+large-pad sibling — at a much lower rank — is the [[ships/imperial-clipper]] (300/380, Baron rank): pick
+the Clipper for speed and an easier gate, the Cutter for tank and cargo.
 
 ## Overview
 
