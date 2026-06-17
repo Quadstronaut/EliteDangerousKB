@@ -17,7 +17,8 @@ with a class-5 Frame Shift Drive and a class-6 optional bay for a large fuel sco
 class-leading jump range for explorers and Trailblazers prospecting runs. It is also strikingly
 agile for an explorer, with a roll rate close to a dedicated combat ship. Its classic, cheaper
 predecessor in the explorer role is the [[ships/asp-explorer]] — heavier and a little
-shorter-ranged, but far less costly and with deep internal room.
+shorter-ranged, but far less costly and with deep internal room. The budget, small-pad member of
+the explorer line is the cold-running [[ships/diamondback-explorer]].
 
 ## Overview
 

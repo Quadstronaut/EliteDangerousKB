@@ -1,11 +1,52 @@
 # Research Queue — next targets
 
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/diamondback_scout.json (tier: 0, type: coriolis-ship, note: COMPLETES THE DIAMONDBACK PAIR with the just-paged [[ships/diamondback-explorer]]. The Diamondback Scout (DBS) is the cheaper, lighter small-pad combat/recon sibling - Lakon's nimble entry combat ship (the explorer is the ranged variant; the scout is the cheap fighter). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Lakon)/class (expect 1 = SMALL pad)/hullMass (expect LIGHTER than DBX 260)/speed-boost/baseShield/baseArmour/hardness/heatCapacity (note whether it shares the DBX cool-running trait)/masslock/core-standard array/hardpoints array (count Large/Med/Small + utility = trailing zeros)/internal array (optionals + PAS, CHECK for a Military slot like the Vulture had)/costs. Write -> kb/ships/diamondback-scout.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/diamondback-explorer]] (bidirectional Diamondback-pair note: scout = cheaper combat/recon, explorer = ranged) + the small-pad combat hulls [[ships/vulture]] + [[ships/cobra-mk-iii]] + [[engineers/felicity-farseer]] + [[trunk]] Ships. CONFIRM filename via ships/index.js if diamondback_scout.json 404s - Coriolis key likely "diamondback_scout" or "dbs".)
+
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/viper.json (tier: 0, type: coriolis-ship, note: SMALL-PAD COMBAT-STARTER GAP - the iconic cheap, fast small-pad combat ship, companion to the just-paged [[ships/vulture]] in the small-pad combat line. The Viper Mk III is Faulcon DeLacy's fast-attack interceptor: very high top speed, light combat hull, the classic budget bounty-hunter. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Faulcon DeLacy)/class (expect 1 = SMALL pad)/hullMass/speed-boost (expect HIGH top speed - its signature trait)/baseShield/baseArmour/hardness/heatCapacity/masslock/core-standard array/hardpoints array (expect 2 Medium + 2 Small = [2,2,1,1,...] + utility trailing zeros)/internal array (shallow optionals + PAS, check Military)/costs. Write -> kb/ships/viper-mk-iii.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/vulture]] (small-pad combat step up: Viper = fast/cheap, Vulture = two-Large heavy guns) + [[ships/cobra-mk-iii]] (small-pad sibling/contrast) + [[trunk]] Ships. CONFIRM filename via ships/index.js if viper.json 404s - Coriolis key likely "viper" (Mk III) vs "viper_mk_iv" (Mk IV).)
+
+<!-- DONE loop 29: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Diamondback Explorer + Vulture), completing
+     the explorer trio and seeding the small-pad combat line. 2 new Tier-0 Coriolis ship pages (both
+     availability: live, source_count 1, verified false):
+     (1) kb/ships/diamondback-explorer.md NEW (key diamondback_explorer, resolved FIRST TRY 3139 bytes,
+     no 404 - the queue's "dbx" fallback was not needed). edID 128671831, eddbID 5. Lakon, class 1
+     (SMALL pad) - the ONLY small-pad ship of the explorer trio. NO requirements block = no rank gate.
+     hullMass 260, speed 260/boost 340, baseShield 150, baseArmour 150 (symmetrical), hardness 42 (low),
+     **heatCapacity 351 = HIGHEST in the KB** (above Type-10 335 / Anaconda 334 / Corvette 333) - the
+     data behind its famous cool-running fuel-scooping reputation, CONFIRMED. masslock 10, **crew 1
+     (single-seat - distinctive vs crew-2 Asp/Mandalay)**, pitch 35/roll 90/yaw 13, reservefuel 0.52,
+     hull 1,638,277 / retail 1,894,760 (CHEAP - between Cobra Mk III ~350k and Asp ~6.1M). Core standard
+     [4,4,5,3,4,3,5]: PP4 Thr4 **FSD5** LS3 PD4 Sen3 FT5 (class-5 FSD on a light hull = its range; modest
+     PD4 = explorer). Hardpoints [3,2,2,0,0,0,0] = **1 Large + 2 Medium = 3 weapon mounts** + **4
+     utility** (the lone Large on a small hull is unusual - lets it punch above its size). Optionals
+     4,4,3,3,2,2,1,1 (EIGHT, top class-4 - shallower than Asp's class-6) + class-1 PAS. NO Military.
+     Bulkheads causres 0 all grades. Added a 3-way "budget vs roomy vs max-range" explorer-trio compare;
+     bidirectional links added to [[ships/asp-explorer]] (renamed its compare section) + [[ships/mandalay]].
+     (2) kb/ships/vulture.md NEW (key vulture, resolved FIRST TRY 3352 bytes, no 404). edID 128049309,
+     eddbID 23. Core Dynamics, class 1 (SMALL pad), NO rank gate. hullMass 230, speed 210/boost 340,
+     **baseShield 240 (high for a small hull - shield brawler)**, baseArmour 160, hardness 55, heatcap
+     237, masslock 10, crew 2, pitch 42/**roll 110 = NIMBLEST roll in the KB** (above Cobra Mk III 100),
+     yaw 17, reservefuel 0.57, hull 4,692,214 / retail 4,925,615. Core standard [4,5,4,3,5,4,3]: **PP4**
+     Thr5 FSD4 LS3 **PD5** Sen4 FT3. Hardpoints [3,3,0,0,0,0] = **2 Large = 2 weapon mounts** (huge
+     firepower-to-size ratio) + **4 utility**. Internals 5,4,2,1,1,1,1 (SEVEN regular, top class-5) +
+     **ONE class-5 Military slot** + class-1 PAS. Bulkheads causres 0 all grades.
+     QUEUE-GUESS CORRECTIONS (Vulture): (a) queue guessed "likely NO Military" - WRONG, it HAS one
+     class-5 Military slot (eligible mahr/hr/scb/mrp/gsrp/gmrp/ghrp). (b) queue framed "the small PP/PD"
+     as the bottleneck - the Power DISTRIBUTOR is a healthy class-5; the real famous bottleneck is the
+     class-4 POWER PLANT (two Large mounts + thrusters + shields strain a class-4 generator). 2 Large
+     CONFIRMED. ENGINEER NOTE: the-dweller page still does not exist (only felicity-farseer paged);
+     [[engineers/the-dweller]] kept as a forward-ref for the PD per the established pattern.
+     PATH NOTE: both iconic small-pad keys resolved on the bare short key (diamondback_explorer / vulture),
+     no index.js probe needed. trunk.md: +2 Ships bullets (DBX after Asp in the explorer line; Vulture
+     after FDL). Cobra Mk III page checked - it does NOT claim "nimblest roll in KB" (that was only the
+     queue note), so no fix needed; the Vulture page now holds that title at roll 110.
+     NEXT: queued two reachable Tier-0 small-pad ship gaps at the TOP - Diamondback Scout (completes the
+     Diamondback pair: cheap combat/recon sibling of the DBX) + Viper Mk III (iconic fast small-pad combat
+     starter, companion to the Vulture). The Spire Site stays queued (BLOCKED) below for retry. -->
+
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/diamondback_explorer.json (tier: 0, type: coriolis-ship, note: BUDGET EXPLORER GAP — rounds out the explorer line now that [[ships/asp-explorer]] + [[ships/mandalay]] are both paged. The Diamondback Explorer (DBX) is the iconic cheap, cold-running long-range explorer (famously low heat for fuel-scooping near hot stars). Tier-0 Coriolis JSON, parse directly (no LLM): extract name/manufacturer (Lakon)/class (expect 1 = SMALL pad — the only small-pad explorer of the trio)/hullMass/reserveFuel/speed-boost/baseShield/baseArmour/hardness/masslock/heatCapacity (note its LOW heat reputation)/core-standard array/hardpoints array (count Large/Med/Small + utility = trailing zeros)/internal array (optionals + PAS, likely NO Military)/costs. Write -> kb/ships/diamondback-explorer.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/asp-explorer]] + [[ships/mandalay]] (explorer siblings — add a 3-way "budget vs roomy vs max-range" compare), [[engineers/felicity-farseer]] (FSD), [[outfitting/fuel-scoop]] + [[outfitting/guardian-fsd-booster]], [[outfitting/frame-shift-drive]], and [[trunk]] Ships. CONFIRM filename via ships/index.js if diamondback_explorer.json 404s — Coriolis key likely "diamondback_explorer" or "dbx".)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/vulture.json (tier: 0, type: coriolis-ship, note: SMALL-PAD COMBAT GAP — the combat-line companion to the just-paged [[ships/fer-de-lance]]. The Vulture is the iconic Core Dynamics small-pad heavy fighter: TWO Large hardpoints on a size-1 hull (huge firepower-to-size ratio) at the cost of a notoriously power-starved distributor/power-plant. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Core Dynamics)/class (expect 1 = SMALL pad)/hullMass/speed-boost/baseShield/baseArmour/hardness/masslock/core-standard array (note the small PP/PD — the famous power bottleneck)/hardpoints array (expect 2 Large = [3,3,...] + utility trailing zeros)/internal array (shallow optionals + PAS, likely NO Military)/costs. Write -> kb/ships/vulture.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/fer-de-lance]] (medium combat step up) + the combat hulls + [[engineers/the-dweller]] (power plant — the Vulture's defining engineering need) + [[trunk]] Ships. CONFIRM filename via ships/index.js if vulture.json 404s — Coriolis key likely "vulture".)
 
 <!-- DONE loop 28: PAGED THE TWO QUEUED FOUNDATIONAL TIER-0 SHIP GAPS (Asp Explorer + Fer-de-Lance).
      2 new Tier-0 Coriolis ship pages (both availability: live, source_count 1, verified false):
