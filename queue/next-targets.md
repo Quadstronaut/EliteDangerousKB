@@ -1,8 +1,48 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/mamba.json (tier: 0, type: coriolis-ship, note: COMPLETES THE PREMIER MEDIUM-COMBAT PAIR -- the Mamba is the Zorgon Peterson SPEED variant alongside the now-paged [[ships/fer-de-lance]] (same maker, both medium-pad combat hulls). Expect a FAST, fixed-weapon gunship: traditionally one of the highest base speeds in the game (CHECK speed/boost vs the FDL's 260/350 -- expect FASTER), a single Huge hardpoint like the FDL, and a reputation as a straight-line dragster that trades the FDL's agility for raw pace. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Zorgon Peterson)/class (expect 2 = MEDIUM pad)/hullMass/speed-boost (CHECK -- expect among the fastest in KB)/baseShield/baseArmour/hardness (expect ~70 combat)/heatCapacity/masslock/pitch-roll-yaw (CHECK -- expect LOWER agility than the FDL, the dragster trade)/core-standard array/hardpoints array (CHECK -- expect 1 Huge + Mediums like the FDL)/internal array (CHECK Military slot count)/costs + any rank gate (expect NONE -- Zorgon Peterson hulls are credit-only). Write -> kb/ships/mamba.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[ships/fer-de-lance]] (the agility sibling) + [[ships/python]] + [[trunk]] Ships; CONFIRM key 'mamba' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/orca.json (tier: 0, type: coriolis-ship, note: CONTINUES THE SAUD KRUGER LUXURY-LINER LINE just opened by [[ships/dolphin]] -- the Orca is the MIDDLE rung (Dolphin -> Orca -> Beluga Liner), the larger passenger liner that steps up from the small-pad Dolphin. Expect a bigger luxury hull with more cabin space and the same luxuryCabins:true Saud Kruger signature. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Saud Kruger)/class (CHECK -- expect 2 or 3, a step up from the Dolphin's class 1)/hullMass/speed-boost (the Orca is famously one of the faster big passenger ships -- CHECK)/baseShield/baseArmour/hardness/heatCapacity/masslock/luxuryCabins (expect true)/pitch-roll-yaw/core-standard array/hardpoints array (expect FEW/small -- a liner)/internal array (CHECK depth for passenger cabins; expect NO Military)/costs + any rank gate (expect NONE). Write -> kb/ships/orca.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link the Saud Kruger siblings [[ships/dolphin]] + [[ships/beluga-liner]] + [[trunk]] Ships; CONFIRM key 'orca' via ships/index.js if it 404s.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/dolphin.json (tier: 0, type: coriolis-ship, note: OPENS THE UNREPRESENTED SAUD KRUGER PASSENGER LINE -- the Dolphin is the small-pad luxury passenger liner, the entry rung of the Saud Kruger trio (Dolphin -> Orca -> Beluga Liner), a manufacturer with ZERO pages in the KB so far. Expect a sleek, cool-running passenger hull built for cabins not combat: low hardpoints, an emphasis on optional-internal space for passenger cabins, and a famously efficient/cool jump profile. Tier-0 Coriolis JSON, parse directly: extract name/manufacturer (Saud Kruger)/class (expect 1 = SMALL pad)/hullMass/speed-boost/baseShield/baseArmour/hardness/heatCapacity (CHECK -- Saud Kruger hulls run cool)/masslock/pitch-roll-yaw/core-standard array/hardpoints array (expect FEW/small -- a liner, not a fighter)/internal array (CHECK depth for passenger cabins; expect NO Military slot)/costs + any rank gate (expect NONE). Write -> kb/ships/dolphin.md NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link the Saud Kruger siblings [[ships/orca]] + [[ships/beluga-liner]] (forward-refs) + [[trunk]] Ships; CONFIRM key 'dolphin' via ships/index.js if it 404s.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/beluga.json (tier: 0, type: coriolis-ship, note: COMPLETES THE SAUD KRUGER LUXURY-LINER TRIO -- the Beluga Liner is the LARGE-pad flagship passenger ship (Dolphin -> Orca -> Beluga Liner), the biggest dedicated luxury liner with the MOST passenger-cabin capacity in the game. Expect a large, heavy hull with the deepest optional internals of the trio, the luxuryCabins:true signature, and token armament. Tier-0 Coriolis JSON, parse directly: extract name (Beluga Liner)/manufacturer (Saud Kruger)/class (expect 3 = LARGE pad)/hullMass (expect heavy)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/luxuryCabins (expect true)/pitch-roll-yaw/core-standard array/hardpoints array (expect FEW/small)/internal array (CHECK -- expect the DEEPEST cabin space of the trio; expect NO Military)/costs + any rank gate (expect NONE). Write -> kb/ships/beluga-liner.md NEW (source_type: coriolis, tier 0, verified false, availability: live). NOTE the file key is likely 'beluga' (display name 'Beluga Liner'); CONFIRM via ships/index.js if beluga.json 404s. Cross-link the Saud Kruger siblings [[ships/dolphin]] + [[ships/orca]] + [[trunk]] Ships.)
+
+<!-- DONE loop 38: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Mamba + Dolphin) -- completing the Zorgon
+     Peterson medium-combat pair AND opening the previously-unrepresented Saud Kruger passenger line.
+     2 new Tier-0 Coriolis ship pages (both availability: live, source_count 1, verified false):
+     (1) kb/ships/mamba.md NEW (key mamba, file mamba.json resolved FIRST TRY 3174 bytes, no 404).
+     edID 128915979, eddbID 38. Zorgon Peterson, class 2 (MEDIUM pad), NO requirements block = NO rank
+     gate (QUEUE-GUESS 'credit-only' CONFIRMED). hull 55,442,918 / retail 55,867,040. hullMass 250
+     (IDENTICAL to the [[ships/fer-de-lance]] airframe). speed 310/boost 380 = FASTEST BASE SPEED OF
+     ANY MEDIUM-PAD (class-2) HULL IN THE KB (verified vs all class-2 pages: next is the FDL at 260)
+     and 2nd-highest base speed of ANY KB ship behind only the Viper Mk III's 320 -- so the
+     viper-mk-iii.md 'highest base speed' claim STAYS TRUE, no cross-page fix. baseShield 270 (below
+     FDL 300), baseArmour 230, hardness 70 (combat, same as FDL), heatCapacity 165 (LOW -- runs hotter
+     than the FDL's 224). masslock 12, crew 2, pitch 27/roll 80/yaw 10 = LESS AGILE than the FDL
+     (38/90/12; QUEUE-GUESS 'LOWER agility, the dragster trade' CONFIRMED). reservefuel 0.5. Core
+     standard [6,5,4,4,6,4,3]: PP6 Thr5 FSD4 LS4 PD6 Sen4 FT3 = IDENTICAL CORE TO THE FER-DE-LANCE
+     (class-6 PD, weak class-4 FSD, small class-3 tank). HARDPOINTS QUEUE-GUESS CORRECTION: [4,3,3,1,1]
+     = 1 Huge + 2 LARGE + 2 SMALL = 5 mounts + 6 utility. The queue guessed '1 Huge + Mediums like the
+     FDL' -- WRONG: the Mamba carries 2 Large + 2 Small where the FDL carries 4 Medium (same 5-mount
+     count, bigger-calibre seconds). Internals [5,4,3,2,2,1] + PAS-c1 = six regular (top class-5) +
+     PAS, NO Military (same shallow six-slot shape as the FDL). causres 0 all grades.
+     (2) kb/ships/dolphin.md NEW (key dolphin, file dolphin.json resolved FIRST TRY 3168 bytes, no
+     404). edID 128049291, eddbID 31. Saud Kruger -- FIRST SAUD KRUGER HULL IN THE KB (opens the
+     Dolphin -> Orca -> Beluga luxury-liner line). class 1 (SMALL pad -- QUEUE-GUESS CONFIRMED), NO
+     rank gate (no federationRank/empireRank; carries a requirements.horizons:true game-version flag,
+     NOT a gate). hull 1,117,906 / retail 1,337,323 (cheap). luxuryCabins:true = Luxury-class cabin
+     capable (the Saud Kruger signature; first luxury-cabin hull in KB). hullMass 140, speed 250/boost
+     350, baseShield 110, baseArmour 110, hardness 35, heatCapacity 165 (modest -- QUEUE-GUESS 'Saud
+     Kruger run cool' NOT supported by the buffer stat; the cool-jump rep is thermal-load, not heat
+     capacity), masslock 9, crew 1, pitch 30/roll 100/yaw 20, reservefuel 0.5. Core standard
+     [4,5,4,4,3,3,4]: PP4 Thr5 FSD4 LS4 PD3 Sen3 FT4 (class-5 thrusters + class-4 tank on a light hull
+     = good pace/range). Hardpoints [1,1,0,0,0] = 2 SMALL + 3 utility = barely armed (QUEUE-GUESS
+     'FEW/small, a liner' CONFIRMED). Internals [5,4,4,3,2,2,2,1,1] + PAS-c1 = NINE regular (top
+     class-5) + PAS, NO Military (QUEUE-GUESS 'deep for cabins, no Military' CONFIRMED). causres 0 all.
+     CROSS-LINKS: fer-de-lance.md 'vs other medium combat hulls' section +a bidirectional 'vs Mamba'
+     bullet (the speed-sibling). trunk.md: +2 Ships bullets (mamba after fer-de-lance; dolphin in the
+     small-pad cluster before type-6-transporter).
+     PATH NOTE: both bare keys (mamba / dolphin) resolved first try, no index.js probe.
+     NEXT: queued the two Saud Kruger siblings to COMPLETE the luxury-liner line the Dolphin just
+     opened -- Orca (mid liner) + Beluga Liner (large-pad flagship). The Spire Site stays queued
+     (BLOCKED) below for retry. -->
 
 <!-- DONE loop 37: PAGED THE QUEUED TIER-0 FEDERAL ASSAULT SHIP -- COMPLETING THE FEDERAL MEDIUM
      COMBAT TRIO (base [[ships/federal-dropship]] + speed/agility [[ships/federal-assault-ship]] +
