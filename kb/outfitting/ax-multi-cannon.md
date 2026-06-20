@@ -72,8 +72,11 @@ anti-Xeno war effort (rescue megaships and stations in/near former Thargoid spac
 standard Tech Broker where stocked. No Guardian Structure visit is required, which is why it is the
 common first AX weapon.
 
-## Related AX weapons
+## Related weapons
 
+- [[outfitting/multi-cannon]] — the **standard human-combat** Multi-Cannon: same cool, ammo-fed
+  kinetic character but 100% conventional kinetic (no anti-Xeno component), in Small/Medium/Large/Huge.
+  Use that one against human ships; use this AX variant against Thargoids.
 - [[outfitting/ax-multi-cannon-enhanced]] — the gimballed, faster-firing upgrade of this weapon.
 - [[outfitting/ax-missile-rack]] — the explosive AX missile leg (pairs with this kinetic gun).
 - [[outfitting/remote-release-flak-launcher]] — anti-swarm flak support.

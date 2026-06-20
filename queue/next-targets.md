@@ -1,8 +1,42 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/beam_laser.json (tier: 0, type: coriolis-module, note: EXTENDS THE STANDARD-WEAPONS FAMILY opened by [[outfitting/pulse-laser]] in loop 41. The KB now has the Pulse Laser (efficient baseline thermal) but not the Beam Laser -- the CONTINUOUS-fire, highest-sustained-DPS thermal laser that runs HOT and HUNGRY (high thermload + high distdraw, no ammo, draw-limited). Beam completes the laser-primary picture: pulse = cheap/cool/efficient, beam = raw DPS at a heat & power cost, burst = the middle. Path modules/hardpoints/beam_laser.json (same dir as pulse_laser.json/ax_multi_cannon.json -- CONFIRMED). Parse directly: ARRAY of variants by mount (fixed/gimbal/turret) x class (1-4). Beam is a continuous beam so 'damage' is a per-second figure (NOT per-shot like the Pulse) -- handle DPS accordingly, do NOT divide by fireint. Extract per-variant: mount, class, rating, mass, power, thermload (expect HIGH), distdraw (expect HIGH), damage/dps, range, falloff, piercing, damagedist (expect T:1 thermal). Build kb/outfitting/beam-laser.md table grouped by mount+class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[outfitting/pulse-laser]] (efficiency-vs-DPS contrast: same thermal damage, beam trades heat/power for sustained DPS and needs no aiming gaps) + [[trunk]] Outfitting. thermal, strong vs shields / weak vs hull.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/burst_laser.json (tier: 0, type: coriolis-module, note: THE MIDDLE LASER -- completes the laser-primary TRIO [[outfitting/pulse-laser]] (cool/efficient) + [[outfitting/beam-laser]] (hot/high-DPS) + Burst (the middle). The Burst fires a short BURST of pulses per trigger then a gap: mid heat, mid WEP draw, mid sustained DPS between Pulse and Beam. Path modules/hardpoints/burst_laser.json (same dir as pulse_laser.json/beam_laser.json/multi_cannon.json -- CONFIRMED this loop). Parse directly: ARRAY by mount (fixed/gimbal/turret) x class (1-4, expect Huge fixed+gimbal, NO Huge turret like its siblings). BURST MECHANIC: expect burst-specific fields (burst = rounds per burst, burstrof = intra-burst rate, burstint = gap between bursts) -- sustained DPS must fold in the inter-burst gap, NOT just damage/fireint. Extract per-variant: mount, class, rating, mass, power, thermload, distdraw, damage, burst/burstrof/burstint, range, falloff, piercing, damagedist (expect T:1 thermal). Build kb/outfitting/burst-laser.md grouped by mount+class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[outfitting/pulse-laser]] + [[outfitting/beam-laser]] (the trio: pulse<burst<beam on heat/DPS) + [[trunk]] Outfitting. thermal, strong vs shields / weak vs hull.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/multi_cannon.json (tier: 0, type: coriolis-module, note: THE KINETIC HALF OF THE HUMAN-COMBAT STAPLE PAIR. The KB now has the thermal [[outfitting/pulse-laser]] (strips shields, weak vs hull) but NO baseline KINETIC gun to kill hulls. The standard Multi-Cannon is the rapid-fire kinetic workhorse -- the natural partner to a laser (laser drops shields, MC chews hull). DISTINCT from the [[outfitting/ax-multi-cannon]] already in the KB, which is the anti-Thargoid AX variant; this is the standard human-combat multi-cannon. Path modules/hardpoints/multi_cannon.json. Parse directly: ARRAY by mount (fixed/gimbal/turret) x class (1-3, MC has no Huge). Extract per-variant: mount, class, rating, mass, power (LOW), thermload (LOW -- runs cool), damage/shot, dps, rof, clip, ammo (large reserve), reload, range, falloff, piercing, damagedist (expect K:1 kinetic, maybe a small thermal split on some). Build kb/outfitting/multi-cannon.md grouped by mount+class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[outfitting/pulse-laser]] (the laser+MC combo) + [[outfitting/ax-multi-cannon]] (the AX cousin -- contrast: AX needs Thargoid targets, this is the all-purpose human kinetic) + [[trunk]]. kinetic, weak vs shields / strong vs hull.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/cannon.json (tier: 0, type: coriolis-module, note: THE HIGH-DAMAGE / LOW-RATE KINETIC primary -- completes the KINETIC pair with [[outfitting/multi-cannon]] (rapid-fire/low-per-shot/sustained). The Cannon fires big slow shells: large per-shot damage, small clip, slow RoF, projectile with travel time (lead targets) -- the kinetic burst-damage option vs the multi-cannon chip damage. Path modules/hardpoints/cannon.json. Parse directly: ARRAY by mount (fixed/gimbal/turret) x class (1-4). Extract per-variant: mount, class, rating, mass, power, thermload, distdraw, damage/shot, dps (= damage*roundspershot/fireint), clip, ammo, reload, shotspeed, range, falloff, piercing, damagedist (expect K:1 kinetic). Build kb/outfitting/cannon.md grouped by mount+class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[outfitting/multi-cannon]] (the rapid-fire kinetic sibling -- cannon trades RoF for per-shot punch) + [[trunk]]. kinetic, weak vs shields / strong vs hull.)
+
+<!-- DONE loop 42: PAGED THE TWO QUEUED TIER-0 STANDARD WEAPONS (Beam Laser + Multi-Cannon) --
+     COMPLETING THE LASER-PRIMARY PICTURE OPENED BY THE PULSE LASER (loop 41) AND ADDING THE BASELINE
+     KINETIC GUN. 2 new Tier-0 Coriolis outfitting pages (both source_count 1, verified false,
+     availability live; both keys/files resolved first try, no 404):
+     (1) kb/outfitting/beam-laser.md NEW (group bl, file modules/hardpoints/beam_laser.json 6614 bytes).
+     The CONTINUOUS-fire thermal laser: damage field IS per-second DPS (no fireint -- queue note CONFIRMED,
+     did NOT divide). 100% thermal {T:1}, strong vs shields/weak vs hull. Runs HOT + HUNGRY -- thermload/s
+     2.4->10.6 and distdraw/s 1.32->8.99, far above the Pulse (Large fixed Beam 7.2 heat/s + 5.1 WEP/s vs
+     Pulse 0.96 + 0.86). No ammo (capacitor-limited). Range 3000, falloff 600 (Pulse was 500). 11 standard
+     variants tabled S/M/L F/G/T + Huge F/G, NO Huge turret (same shape as Pulse). DPS Small fixed 9.8 ->
+     Huge fixed 41.38 (all > the equivalent Pulse: Beam is more DPS at a heat/power cost). Piercing 18->60.
+     Retributor (Edmund Mahon PP2 special, Small fixed, lower heat 2.7) noted one-line, NOT a page.
+     (2) kb/outfitting/multi-cannon.md NEW (group mc, file modules/hardpoints/multi_cannon.json 9032 bytes).
+     The baseline rapid-fire KINETIC primary -- the hull-killer partner to the shield-stripping Pulse/Beam.
+     100% kinetic {K:1}, weak vs shields/strong vs hull (the laser inverse). Per-shot damage with fireint;
+     DPS = damage*roundspershot/fireint. Runs COOL (thermload 0.04->0.51) + sips WEP (distdraw 0.03->0.37) --
+     opposite of the Beam. Ammo-comfortable: clip 90-100, 2100-round reserve, reload 4-5s. PROJECTILE
+     (shotspeed 1600, must lead). Range 4000/falloff 2000. **QUEUE-GUESS CORRECTION**: the queue said
+     "class 1-3, MC has no Huge" -- WRONG: the standard Multi-Cannon DOES have Huge (class-4) variants
+     (Fixed+Gimbal, no Huge turret; roundspershot 2 -> Huge fixed 28.0 DPS, the highest-DPS multi-cannon).
+     11 standard variants tabled. Piercing 22->68. Specials noted one-line (NOT pages): Enforcer (Pranav
+     Antal PP2, Small fixed, harder/longer-range) + the pre-engineered CG Multi-Cannon (HiCap+RapidFire+
+     Phasing, availability CG). Distinct from the AX [[outfitting/ax-multi-cannon]] (this is human-combat).
+     CROSS-LINKS: pulse-laser.md (beam sibling link in the laser-trade bullet; starter-loadout line repointed
+     to the standard [[outfitting/multi-cannon]] not the AX one; Related-weapons +beam +multi-cannon);
+     ax-multi-cannon.md (Related-weapons +standard multi-cannon cousin, AX-vs-human note); trunk.md +2
+     Outfitting bullets (beam-laser + multi-cannon after pulse-laser, keeping the standard-weapons family
+     together before the Guardian/AX block).
+     NEXT: queued the two follow-ons that finish the standard-primary set at the TOP -- Burst Laser (the
+     MIDDLE laser, completes the pulse<burst<beam trio; mind the burst-fire fields) + Cannon (the high-damage/
+     low-RoF kinetic, the burst-damage partner to the rapid-fire multi-cannon). Plasma Accelerator + Rail Gun
+     (the absolute-damage primaries) and Fragment Cannon (kinetic shotgun) remain obvious further follow-ons.
+     The Spire Site stays queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 41: PAGED THE TWO QUEUED TIER-0 TARGETS (Asp Scout ship + Pulse Laser weapon) --
      COMPLETING THE ASP PAIR and OPENING THE STANDARD-WEAPONS FAMILY. 2 new Tier-0 Coriolis pages
@@ -333,10 +367,6 @@
      the fast large-pad multirole that extends the Imperial line beyond the small-pad pair; CHECK its
      Empire rank gate). The Spire Site stays queued (BLOCKED) below for retry. -->
 
-
-
-
-
 <!-- DONE loop 33: PAGED THE TWO QUEUED TIER-0 SMALL-PAD GAPS (Imperial Eagle + Hauler), completing
      the Eagle pair and opening the dedicated-freight tier. 2 new Tier-0 Coriolis ship pages (both
      availability: live, source_count 1, verified false):
@@ -551,8 +581,6 @@
 One target per bullet. The orchestrator takes the top 1-3 each loop, dedups against
 seen.json, and processes Tier-0 first. Append follow-on targets discovered during synthesis.
 
-
-
 <!-- DONE loop 28: PAGED THE TWO QUEUED FOUNDATIONAL TIER-0 SHIP GAPS (Asp Explorer + Fer-de-Lance).
      2 new Tier-0 Coriolis ship pages (both availability: live, source_count 1, verified false):
      (1) kb/ships/asp-explorer.md NEW (KEY "asp", NOT "asp_explorer" — asp_explorer.json 404'd 14 bytes;
@@ -586,7 +614,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      still-blocked Spire Site — Diamondback Explorer (budget cold-running explorer, completes the
      Asp/Mandalay/DBX explorer trio) + Vulture (Core Dynamics small-pad heavy fighter, 2 Large on a size-1
      hull, the combat-line companion to the FDL). The Spire Site stays queued (BLOCKED) for retry. -->
-
 
 - https://elite-dangerous.fandom.com/wiki/Thargoid_Spire_Site (tier: 2, type: wiki-prose, status: BLOCKED loop 27 — Fandom is Cloudflare-JS-challenged (whole domain returns a "Just a moment..." interstitial via the Fetcher, NOT a 404) AND api.canonn.tech ConnectTimeouts (host unreachable from this env). RETRY a later loop; if Fandom stays blocked, try a non-Fandom prose source or re-probe the Canonn API (it has been intermittently up). note: PIVOT — the whole AX HULL line is now complete (medium Chieftain/Challenger/Crusader + Krait pair, large-pad trinity Corvette/Anaconda/Cutter + the Type-10 Defender armour brick), so move from AX *ships* to AX *SITE mechanics*. Target the Thargoid Spire Site (a.k.a. Spire/Robigo-style Maelstrom spire) — CURRENT, availability: live (the war narrative ended but Spire sites are accessible). This is Tier-2 PROSE: fetch via Fetcher, then SUMMARIZE via mcp__ollama-tools__summarize_text qwen3-coder:30b with the fact-extraction prompt (key claims, named entities, currency signals, OBSOLETE yes/no, per-claim availability). Extract: what a Spire site IS, how to find/approach one, the loot/objective loop (Thargoid materials, e.g. Titan Drive Component etc.), hazards (caustic, heat, Thargoid defenders), and which AX kit applies. Write -> kb/ax-thargoid/sites/thargoid-spire-site.md NEW (source_type: wiki, tier 2, verified false, availability: live). CONFIRM the slug if it 404s — try "Thargoid_Spire", "Spire_Site", or the Canonn structured API (api.canonn.tech, Tier-0 JSON: system/bodyName/lat-long/type) as a higher-trust fallback. Cross-link the AX weapon/utility/defence outfitting line + the AX hulls (esp. [[ships/type-10-defender]] as the durable site-runner) + [[trunk]] AX/Thargoid section. After this, AX site coverage could extend to Titan wrecks / AX combat-zone tactics, or Canonn structured site listings.)
 
@@ -628,7 +655,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      of the Spire block — Asp Explorer (explorer sibling of Mandalay) + Fer-de-Lance (premier medium
      combat, one Huge on a medium). The Spire Site stays queued (blocked) for retry. -->
 
-
 <!-- DONE loop 26: COMPLETED THE LARGE-PAD AX LINE — added the dedicated AX ARMOUR BRICK, finishing
      the whole AX-hull roster (medium trio + Krait pair + large trinity + this). 1 new Tier-0 Coriolis
      ship page (availability: live, source_count 1, verified false):
@@ -658,7 +684,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      75 hardness / 9 mounts, no Huge, no gate). NEXT: PIVOT from AX ships to AX SITE MECHANICS — queued
      the Thargoid Spire Site (Tier-2 wiki prose, summarize via qwen3-coder:30b; Canonn structured API as
      a higher-trust fallback). After that: Titan wrecks / AX combat-zone tactics. -->
-
 
 <!-- DONE loop 25: COMPLETED THE LARGE-PAD COMBAT TRINITY (Corvette/Anaconda/Cutter). 2 new Tier-0
      Coriolis ship pages (both availability: live, source_count 1, verified false):
@@ -695,7 +720,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      NEXT: EXTEND large-pad AX to the dedicated AX BRICK — the Type-10 Defender (Lakon flying fortress,
      no rank gate, heavy armour + many utility/hardpoints). Queued as concrete Tier-0 URL. After that,
      AX coverage could finally pivot to Spire/Titan SITE mechanics or AX combat-zone tactics. -->
-
 
 <!-- DONE loop 24: COMPLETED THE ALLIANCE AX TRIO + PIVOTED TO LARGE-PAD AX. 2 new Tier-0 Coriolis
      ship pages (both availability: live, source_count 1, verified false):
@@ -735,7 +759,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      the large-pad combat trinity (Corvette/Anaconda/Cutter). Both queued as concrete Tier-0 URLs.
      After those, AX coverage could move to Spire/Titan SITE mechanics or AX combat-zone tactics. -->
 
-
 <!-- DONE loop 23: COMPLETED THE QUEUED AX-HULL PAIR — the tankier Alliance sibling + the explorer
      Krait sibling. 2 new Tier-0 Coriolis ship pages (both availability: live, source_count 1,
      verified false):
@@ -774,7 +797,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      class-4 hardpoint, rank-gated). Both queued as concrete Tier-0 URLs. After those, large-pad AX could
      extend to the Anaconda, or AX coverage could move to Spire/Titan site mechanics. -->
 
-
 <!-- DONE loop 22: PIVOTED FROM AX MODULES TO AX HULLS — added the two iconic medium-pad AX
      platforms that carry the now-complete AX weapon/utility/defence line. 2 new Tier-0 Coriolis
      ship pages (both availability: live, source_count 1, verified false):
@@ -804,7 +826,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      coverage could extend to a large-pad AX platform (Anaconda / Federal Corvette) or Spire/Titan
      site mechanics. -->
 
-
 <!-- DONE loop 21: COMPLETED THE AX-UTILITY MODULE LINE — added the AX LIMPET leg, the last
      AX-utility module. 1 new Tier-0 Coriolis outfitting page (availability: live, source_count 1,
      verified false): kb/outfitting/decontamination-limpet-controller.md NEW (grp dtl, symbol
@@ -826,7 +847,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      defence + utilities) is complete. NEXT: pivot to AX HULLS — the platforms that carry this kit.
      Queued the Alliance Chieftain (iconic medium AX combat ship) + Krait Mk II (heavier AX
      multirole), both Tier-0 Coriolis ships/, to tie the AX module line to concrete builds. -->
-
 
 <!-- DONE loop 20: COMPLETED THE AX-UTILITY TRIO — the survival/targeting kit that turns any hull
      into a Thargoid-capable ship. 3 new Tier-0 Coriolis outfitting pages (all availability: live,
@@ -860,7 +880,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      LIMPET line (sustained caustic removal, self/ally) — queued. After that the core AX-utility set is
      complete; AX coverage could then move to AX hull/build guidance or Spire/Titan site mechanics. -->
 
-
 <!-- DONE loop 19: COMPLETED THE ENTIRE AX-WEAPON LINE — the last AX missile/torpedo-family weapon.
      1 new Tier-0 Coriolis outfitting page (availability: live, source_count 1, verified false):
      kb/outfitting/nanite-torpedo-pylon.md NEW (grp ntp, symbol Hpt_ATVentDisruptorPylon_Fixed_*).
@@ -880,7 +899,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      resolved this loop via index.js and queued as concrete URLs — csl (caustic_sink_launcher), xs
      (xeno_scanner), sfn (shutdown_field_neutraliser); dtl (decontamination_limpet_controller, internal/)
      still open after. After ntp the AX-WEAPON line is COMPLETE; AX coverage now shifts to utilities. -->
-
 
 <!-- DONE loop 18: completed the AX MISSILE family (3 new Tier-0 Coriolis outfitting pages, all
      availability: live, source_count 1, verified false):
@@ -911,7 +929,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      torpedo pylon, path CONFIRMED via index.js) = LAST AX missile-family weapon. After ntp the entire
      AX-weapon line is complete; next coverage = AX-utility modules (xeno scanner / shutdown field
      neutraliser / caustic sink launcher). -->
-
 
 <!-- DONE loop 17: completed the standard (non-Guardian) AX-weapon line — 3 new Tier-0 Coriolis
      outfitting pages (all availability: live, source_count 1, verified false):
@@ -952,7 +969,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      remote_release_flechette_launcher), Enzyme Missile Rack (tbem -> CONFIRM filename via index.js).
      Remaining AX path still open: ntp (nanite torpedo pylon). -->
 
-
 <!-- DONE loop 16: completed the Guardian AX-weapon trio + seeded the standard AX kinetic line.
      3 new Tier-0 Coriolis outfitting pages (all availability: live, source_count 1, verified false):
      (1) kb/outfitting/guardian-plasma-charger.md NEW (grp gpc, symbol Hpt_Guardian_PlasmaLauncher_*).
@@ -987,7 +1003,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      Release Flak Launcher (rfl -> remote_release_flak_launcher, anti-swarm utility). Remaining AX
      paths still open: tbrfl (flechette), tbem (enzyme missile), ntp (nanite torpedo). -->
 
-
 <!-- DONE loop 15: completed the Guardian "specials" layer — 3 new Tier-0 Coriolis pages (all availability: live):
      (1) kb/outfitting/guardian-shield-reinforcement.md NEW (grp gsrp). POWERED optional internal, classes 1-5,
      ratings E/D only. shieldaddition = FLAT MJ added to shield strength (shield analogue of the HRP's flat HP);
@@ -1014,7 +1029,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      Multi-Cannon (axmc) -> the standard AX kinetic workhorse. Other AX paths noted: axmce, axmr, axmre, rfl,
      tbrfl, tbem, ntp. -->
 
-
 <!-- DONE loop 14: completed the Guardian AX outfitting layer + the heat-management utility.
      2 MERGES + 1 new Tier-0 Coriolis page (all availability: live):
      (1) kb/outfitting/hull-reinforcement.md MERGED Guardian Hull Reinforcement (grp ghrp) as a full
@@ -1040,7 +1054,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      (paths pre-confirmed via index.js): Guardian Shield Reinforcement (gsrp), Guardian Gauss Cannon
      (ggc, seeds AX weapons), Guardian FSD Booster (gfsb). -->
 
-
 <!-- DONE loop 13: completed the module-protection / shield-recovery layer. 2 new Tier-0 Coriolis pages
      + 1 MERGE (all availability: live):
      (1) kb/outfitting/shield-cell-bank.md NEW (grp scb). Active-recharge: restores ACTIVE shields only
@@ -1064,7 +1077,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      meta_alloy_hull_reinforcement_package) resolved first try, no 404. Follow-ons queued: Guardian HRP,
      Guardian MRP, Heat Sink Launcher (the latter directly referenced by the new SCB page). -->
 
-
 <!-- DONE loop 12: completed the defence trio. 1 MERGE + 2 new Tier-0 Coriolis pages (all availability: live):
      (1) kb/outfitting/shield-generator.md — MERGED Prismatic Shield Generator (grp psg) as a full H2 +
      3-way "which to fit" section. Powerplay reward (Aisling Duval), A-rating ONLY across C1-8, optmul
@@ -1084,7 +1096,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      (typo upstream). shield_booster is under hardpoints/ not internal/. hull_reinforcement_package path OK.
      Follow-ons queued: shield_cell_bank (scb), module_reinforcement_package (mrp), meta_alloy_hrp (mahr). -->
 
-
 <!-- DONE loop 11: 2 new Tier-0 Coriolis outfitting pages (all availability: live):
      (1) kb/outfitting/shield-generator.md — MERGED standard (grp sg) + Bi-Weave (grp bsg).
      Core concept documented: shield strength is a MULTIPLIER on ship base shield, interpolated
@@ -1102,7 +1113,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      PATH NOTE: internal/shield_generator.json, bi_weave_shield_generator.json, cargo_rack.json all
      resolved first try (no 404). -->
 
-
 <!-- DONE loop 10: completed the mining loop with 2 new Tier-0 Coriolis pages (all availability: live):
      (1) kb/outfitting/limpet-controllers.md — merged Prospector + Collector controllers.
      Prospector (group pc): class sets simultaneous limpets C1=1/C3=2/C5=4/C7=8; A-rated range
@@ -1114,7 +1124,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      Both linked into trunk.md Outfitting section; mining-tools.md back-linked (plain refs ->
      [[wikilinks]]). PATH NOTE held: internal/*.json paths all resolved first try (no 404).
      Follow-ons queued: shield_generator + bi_weave_shield_generator + cargo_rack. -->
-
 
 <!-- DONE loop 9: seeded kb/outfitting/ (was empty) with 3 Tier-0 Coriolis module pages, all availability: live:
      (1) kb/outfitting/mining-tools.md — full mining toolkit: Pulse Wave Analyser (utility C0, A-E),
@@ -1131,7 +1140,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      PATH FIX (carry-forward): modules/index.js require('./x') with NO extension = .json file, not .js.
      The .js URLs all 404'd; refetched correct .json paths. -->
 
-
 <!-- DONE loop 8: 3 Coriolis Tier-0 ship hulls created (all current, availability: live):
      (1) kb/ships/type-11-prospector.md — Lakon, class 2/MEDIUM pad, dedicated miner. 320t hull,
      275 MJ shield, 350 armour, hardness 58, PD class 7 (sustains mining tools). 8 hardpoints =
@@ -1146,7 +1154,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      CONFIRMED via ships/index.js: filenames type_11_prospector / mandalay / type_9_heavy all match
      queue paths (no stale-slug 404 this loop). -->
 
-
 <!-- DONE loop 7: (1) Coriolis Panther Clipper Mk II hull -> kb/ships/panther-clipper-mk-ii.md
      (Zorgon Peterson, class 3/Large pad, 1200t hull, 350 MJ shield, 620 armour, hardness 70,
      PP/Thr C8, FSD C7, twin C8 + twin C7 optionals incl. 2 cargo-restricted = largest cargo ship,
@@ -1157,7 +1164,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      (Lakon, class 2/Medium pad, 400t hull, 228 MJ shield, 440 armour, FSD C5, C7+3xC6 optionals =
      best medium-pad hauler, 1M+5S hardpoints, 4 utility, crew 1). Both linked in trunk.md. -->
 
-
 <!-- DONE loop 6: (1) EDSM api-system-v1/stations/outfitting for Garay Terminal (marketId 3229756160).
      653 module SKUs / 107 families. Full core internals to C8; FSD + FSD(SCO) to C7; Shield & Bi-Weave
      to C8; limpets/refinery/AFMU; weapons capped ~C4; NO Guardian modules (expected). Merged H3
@@ -1166,13 +1172,11 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      dist/ships.json 404s (dist/index.json is build-generated, not committed); correct Tier-0 path is
      ships/<slug>.json (Cobra Mk V = ships/cobra_mk_v.json, export key "cobramkv"). -->
 
-
 <!-- DONE loop 5: EDSM api-system-v1/stations/shipyard enumerated for Garay Terminal (marketId 3229756160).
      Findings: 17 hulls stocked, incl. recent Type-8 Transporter, Cobra Mk V, Panther Clipper Mk II,
      Type-11 Prospector (confirms current post-2024 roster). Largest: Type-9 Heavy & Panther Clipper Mk II.
      Third independent EDSM endpoint confirming Garay carries a Shipyard -> merged H3 "Garay Terminal —
      shipyard stock" into kb/locations/deciat.md, source_count 2->3, verified true. -->
-
 
 <!-- DONE loop 4: EDSM api-system-v1/stations enumerated for Deciat (id64 6681123623626).
      Findings: Garay Terminal (Coriolis Starport, marketId 3229756160) is the ONLY large-pad
@@ -1180,7 +1184,6 @@ seen.json, and processes Tier-0 first. Append follow-on targets discovered durin
      shipyard hub for Farseer visitors. Matteucci Dock & Carson Hub are medium-pad Outposts
      (Market+Outfitting, no shipyard); Kirtley Vision/Hasse Point are Planetary Outposts at ~62 ls.
      Merged into kb/locations/deciat.md new H2 "Station Services — large-pad & outfit ports". -->
-
 
 <!-- DONE loop 3: EDSM Farseer Inc stations/market corroborated -> kb/locations/deciat.md (source_count 2,
      verified) + kb/engineers/felicity-farseer.md aligned. Findings: Farseer Inc market is SELL-ONLY
