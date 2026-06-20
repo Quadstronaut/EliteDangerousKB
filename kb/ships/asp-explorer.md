@@ -69,6 +69,11 @@ as an affordable, roomy first explorer; the Mandalay when you want maximum range
 cheaper **small-pad** option, the [[ships/diamondback-explorer]] is the coldest-running of the
 three (ideal for tight fuel-scooping) but carries shallower internals and a single seat.
 
+On the same Asp airframe is the cheaper budget sibling, the [[ships/asp-scout]] — lighter (150 t)
+and a touch nimbler, but with a smaller class-4 FSD, shallower internals (seven optionals, top
+class-5) and fewer mounts (4 vs 6). The Scout is the cut-down economy version; for exploration the
+Explorer's bigger drive and deeper internals win, so the Scout is rarely the better buy here.
+
 ## Build notes
 
 A standard exploration fit pairs an engineered class-5 FSD with a class-6 fuel scoop, an
