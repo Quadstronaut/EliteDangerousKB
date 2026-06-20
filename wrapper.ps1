@@ -25,12 +25,41 @@ param(
     [int]   $MaxRetries     = 3,
     [int]   $BaseBackoffSec = 30,
     [int]   $MaxLoops       = 0,
-    [switch]$SkipPermissions
+    [switch]$SkipPermissions,
+    [switch]$Help
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 $RepoRoot = $PSScriptRoot   # wrapper.ps1 lives at repo root
+
+# ---------------------------------------------------------------------------
+# Usage. -Help / -help / --help / -h all bind to $Help; bare 'help' lands in $args.
+# ---------------------------------------------------------------------------
+function Show-Usage {
+    Write-Output @"
+ED Research Loop daemon - runs the autonomous KB-builder loop.
+
+USAGE:
+    .\wrapper.ps1 [-PromptFile <path>] [-LogFile <path>] [-MaxRetries <n>]
+                  [-BaseBackoffSec <n>] [-MaxLoops <n>] [-SkipPermissions] [-Help]
+
+PARAMETERS:
+    -PromptFile <path>     Loop prompt fed to claude -p. Default: ed-research-prompt.md
+    -LogFile <path>        Append log here. Default: journal\daemon.log
+    -MaxRetries <n>        Attempts per loop before backoff/abort. Default: 3
+    -BaseBackoffSec <n>    Base for exponential retry backoff (sec). Default: 30
+    -MaxLoops <n>          Stop after n successful loops. 0 = run until halt=true. Default: 0
+    -SkipPermissions       Pass --dangerously-skip-permissions to nested claude (unattended).
+    -Help, -help, --help   Show this help and exit.
+
+EXAMPLES:
+    .\wrapper.ps1 -MaxLoops 3 -SkipPermissions   # prove the loop, bounded
+    .\wrapper.ps1 -SkipPermissions               # run unbounded until halt=true
+"@
+}
+# Bare 'help' binds positionally to $PromptFile (position 0), so check there too.
+if ($Help -or ($args -contains 'help') -or ($PromptFile -eq 'help')) { Show-Usage; exit 0 }
 
 # ---------------------------------------------------------------------------
 # Logging
