@@ -30,9 +30,9 @@ Guardian weapons it needs **no unlock** and is sold at standard outfitting every
   past medium range.
 - Available in **fixed, gimballed and turret** mounts across **Small, Medium and Large**, plus
   **fixed and gimballed Huge** (there is **no Huge turret** Pulse Laser).
-- The trade vs its laser siblings: a Pulse Laser does **less raw DPS than a Burst or Beam Laser**
-  but runs cooler and sips less power, so it is the easy, sustainable choice — especially on
-  power-starved or beginner builds.
+- The trade vs its laser siblings: a Pulse Laser does **less raw DPS than a Burst or
+  [[outfitting/beam-laser|Beam Laser]]** but runs cooler and sips less power, so it is the easy,
+  sustainable choice — especially on power-starved or beginner builds.
 
 ## Variants and stats
 
@@ -81,8 +81,8 @@ stale, so follow current PP2 pledge mechanics). The standard Pulse Lasers above 
   and power-cheap, it mixes freely with shields, other weapons and utilities on almost any build —
   it is the safe default when a hull is short on power or distributor capacity.
 - A common **starter loadout** is all Pulse Lasers (cheap, forgiving, low heat) before graduating
-  to higher-DPS [[outfitting/ax-multi-cannon|multi-cannons]], Burst/Beam Lasers or specialised
-  weapons. Lasers strip shields; bring a kinetic or absolute weapon for hulls.
+  to higher-DPS [[outfitting/multi-cannon|multi-cannons]], Burst/[[outfitting/beam-laser|Beam]]
+  Lasers or specialised weapons. Lasers strip shields; bring a kinetic or absolute weapon for hulls.
 - Manage heat with a [[outfitting/heat-sink-launcher]] only if you stack many high-output weapons;
   a Pulse-Laser-only build rarely needs it.
 
@@ -94,6 +94,10 @@ is the baseline every other primary weapon is compared against.
 
 ## Related weapons
 
+- [[outfitting/beam-laser]] — the continuous, higher-DPS thermal sibling that runs hotter and
+  hungrier (efficiency vs sustained DPS; same 100% thermal damage).
+- [[outfitting/multi-cannon]] — the standard kinetic partner: the Pulse strips shields, the
+  multi-cannon chews the hull underneath.
 - [[outfitting/ax-multi-cannon]] — the standard AX kinetic workhorse (for Thargoid targets;
   contrast: the Pulse Laser is the all-purpose **human-combat** baseline, weak against Thargoids).
 - The Guardian AX trio [[outfitting/guardian-gauss-cannon]], [[outfitting/guardian-plasma-charger]],

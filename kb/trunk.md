@@ -79,6 +79,8 @@ See [[outfitting/module-reinforcement]] for the Module Reinforcement Package (pr
 See [[outfitting/cargo-rack]] for Cargo Racks (capacity by class; corrosion-resistant & expanded variants).
 See [[outfitting/heat-sink-launcher]] for the Heat Sink Launcher (utility-mount heat venting; pairs with SCBs, AX & silent running).
 See [[outfitting/pulse-laser]] for the Pulse Laser (the baseline human-combat primary weapon; cheap, cool, power-efficient 100% thermal laser in fixed/gimbal/turret across Small–Huge, no unlock — the reference point all other weapons are compared against; strong vs shields, weak vs hull).
+See [[outfitting/beam-laser]] for the Beam Laser (the continuous-fire, highest-sustained-DPS thermal laser; the hot/hungry sibling of the Pulse — more DPS at a steep heat & WEP-draw cost, no unlock, fixed/gimbal/turret across Small–Huge; strong vs shields, weak vs hull).
+See [[outfitting/multi-cannon]] for the Multi-Cannon (the baseline rapid-fire 100% kinetic primary; cool, power-cheap, 2100-round ammo, the hull-killing partner to the shield-stripping Pulse/Beam — lasers drop shields, the MC chews hull; distinct from the AX multi-cannon).
 See [[outfitting/guardian-gauss-cannon]] for the Guardian Gauss Cannon (fixed AX anti-Interceptor weapon; thermal, charge-fired).
 See [[outfitting/guardian-plasma-charger]] for the Guardian Plasma Charger (charge-up AX weapon; absolute damage, fixed/turret).
 See [[outfitting/guardian-shard-cannon]] for the Guardian Shard Cannon (close-range AX shotgun; thermal, 12-shard burst).
