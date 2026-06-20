@@ -1,8 +1,44 @@
 # Research Queue — next targets
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/ships/asp_scout.json (tier: 0, type: coriolis-ship, note: COMPLETES THE ASP PAIR -- the KB has [[ships/asp-explorer]] (the classic affordable medium-pad long-range explorer) but NOT its budget sibling the Asp Scout, the cheaper/lighter combat-recon variant on the same Asp airframe. Expect a class-2 (MEDIUM pad) hull, NO rank gate, LIGHTER than the Explorer with a smaller core / shallower optionals and a weaker FSD (the Scout is the cut-down cheap version). Tier-0 Coriolis JSON, parse directly: extract name/manufacturer/class (expect 2)/hullMass (expect LIGHTER than the Explorer)/speed-boost/baseShield/baseArmour/hardness/heatCapacity/masslock/pitch-roll-yaw/core-standard array (CHECK FSD class vs the Explorer's class-5)/hardpoints array/internal array (expect SHALLOWER than the Explorer; CHECK Military)/costs + rank gate (expect NONE). Write -> kb/ships/asp-scout.md NEW (source_type: coriolis, tier 0, verified false, availability: live). KEY: try asp_scout.json first (the Asp Explorer key is 'asp' / file asp.json; the Scout should be 'asp_scout'); CONFIRM via ships/index.js if it 404s. Cross-link [[ships/asp-explorer]] + [[trunk]] Ships -- note which is cheaper/lighter and the FSD/optional differences.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/beam_laser.json (tier: 0, type: coriolis-module, note: EXTENDS THE STANDARD-WEAPONS FAMILY opened by [[outfitting/pulse-laser]] in loop 41. The KB now has the Pulse Laser (efficient baseline thermal) but not the Beam Laser -- the CONTINUOUS-fire, highest-sustained-DPS thermal laser that runs HOT and HUNGRY (high thermload + high distdraw, no ammo, draw-limited). Beam completes the laser-primary picture: pulse = cheap/cool/efficient, beam = raw DPS at a heat & power cost, burst = the middle. Path modules/hardpoints/beam_laser.json (same dir as pulse_laser.json/ax_multi_cannon.json -- CONFIRMED). Parse directly: ARRAY of variants by mount (fixed/gimbal/turret) x class (1-4). Beam is a continuous beam so 'damage' is a per-second figure (NOT per-shot like the Pulse) -- handle DPS accordingly, do NOT divide by fireint. Extract per-variant: mount, class, rating, mass, power, thermload (expect HIGH), distdraw (expect HIGH), damage/dps, range, falloff, piercing, damagedist (expect T:1 thermal). Build kb/outfitting/beam-laser.md table grouped by mount+class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[outfitting/pulse-laser]] (efficiency-vs-DPS contrast: same thermal damage, beam trades heat/power for sustained DPS and needs no aiming gaps) + [[trunk]] Outfitting. thermal, strong vs shields / weak vs hull.)
 
-- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/pulse_laser.json (tier: 0, type: coriolis-module, note: GLARING STANDARD-WEAPON GAP -- the KB has extensive AX/Guardian weapons ([[outfitting/ax-multi-cannon]], the Guardian trio, missiles) but NOT a single BASELINE primary weapon. The Pulse Laser is the most fundamental: the cheap, low-power, efficient thermal staple nearly every combat ship mounts. This OPENS the standard-weapons family (beam_laser, burst_laser, multi_cannon, cannon, etc. as follow-ons). Tier-0 Coriolis MODULE JSON at modules/hardpoints/pulse_laser.json (path CONFIRMED -- same dir as ax_multi_cannon.json). Parse directly: it is an ARRAY of variants by mount (fixed/gimballed/turret) x class (1-4) x rating. Extract per-variant: mount, class, rating, mass, power draw, thermalload, distdraw, damage, dps, range, rof, falloff. Build a kb/outfitting/pulse-laser.md table grouped by mount + class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[trunk]] Outfitting + the AX weapons for contrast (AX weapons need Thargoid targets; the Pulse Laser is the all-purpose human-combat baseline). Damage type = thermal, strong vs shields / weak vs hull.)
+- https://raw.githubusercontent.com/EDCD/coriolis-data/master/modules/hardpoints/multi_cannon.json (tier: 0, type: coriolis-module, note: THE KINETIC HALF OF THE HUMAN-COMBAT STAPLE PAIR. The KB now has the thermal [[outfitting/pulse-laser]] (strips shields, weak vs hull) but NO baseline KINETIC gun to kill hulls. The standard Multi-Cannon is the rapid-fire kinetic workhorse -- the natural partner to a laser (laser drops shields, MC chews hull). DISTINCT from the [[outfitting/ax-multi-cannon]] already in the KB, which is the anti-Thargoid AX variant; this is the standard human-combat multi-cannon. Path modules/hardpoints/multi_cannon.json. Parse directly: ARRAY by mount (fixed/gimbal/turret) x class (1-3, MC has no Huge). Extract per-variant: mount, class, rating, mass, power (LOW), thermload (LOW -- runs cool), damage/shot, dps, rof, clip, ammo (large reserve), reload, range, falloff, piercing, damagedist (expect K:1 kinetic, maybe a small thermal split on some). Build kb/outfitting/multi-cannon.md grouped by mount+class. Write NEW (source_type: coriolis, tier 0, verified false, availability: live). Cross-link [[outfitting/pulse-laser]] (the laser+MC combo) + [[outfitting/ax-multi-cannon]] (the AX cousin -- contrast: AX needs Thargoid targets, this is the all-purpose human kinetic) + [[trunk]]. kinetic, weak vs shields / strong vs hull.)
+
+<!-- DONE loop 41: PAGED THE TWO QUEUED TIER-0 TARGETS (Asp Scout ship + Pulse Laser weapon) --
+     COMPLETING THE ASP PAIR and OPENING THE STANDARD-WEAPONS FAMILY. 2 new Tier-0 Coriolis pages
+     (both source_count 1, verified false, availability live):
+     (1) kb/ships/asp-scout.md NEW (key asp_scout, file asp_scout.json resolved FIRST TRY 3062
+     bytes, no 404, no index.js probe). edID 128672276, eddbID 24. Lakon, class 2 (MEDIUM pad),
+     NO requirements block = NO rank gate. hull 3,819,823 / retail 3,961,154 (CHEAPER than the
+     Asp Explorer's 6,145,793). hullMass 150 = MUCH LIGHTER than the Explorer's 280 (~half;
+     QUEUE-GUESS 'lighter' CONFIRMED). speed 220/boost 300 (slower than Explorer 250/340).
+     baseShield 120, baseArmour 180, hardness 52 (same as Explorer), heatCapacity 210, masslock 8,
+     crew 2, pitch 40/roll 110/yaw 15 (NIMBLER than the Explorer's 38/100/10), reservefuel 0.47.
+     Core standard [4,4,4,3,4,4,4] = PP4 Thr4 **FSD4** LS3 PD4 Sen4 FT4 -- the **class-4 FSD is one
+     smaller than the Explorer's class-5** (QUEUE CHECK confirmed: weaker FSD); whole core one class
+     shallower than the Explorer. Hardpoints [2,2,1,1,0,0] = 2 Medium + 2 Small = 4 mounts + 2
+     utility (FEWER than the Explorer's 2M+4S/6 mounts + 4 utility). Internals [5,4,3,3,2,2,1] +
+     PAS-c1 = 7 regular (top class-5) + PAS, NO Military (Explorer has 8, top class-6 -- Scout
+     shallower; QUEUE-GUESS 'shallower, no Military' CONFIRMED). causres 0 all. Added a Scout-vs-
+     Explorer comparison table. Cross-linked asp-explorer.md (back-link to the budget sibling) +
+     trunk Ships bullet. The ASP PAIR (Explorer + Scout) is now COMPLETE.
+     (2) kb/outfitting/pulse-laser.md NEW (group pl, file modules/hardpoints/pulse_laser.json 6826
+     bytes). The FIRST baseline standard primary weapon in the KB (previously only AX/Guardian
+     weapons existed). 100% THERMAL (damagedist {T:1}) on every variant -- strong vs shields, weak
+     vs hull. Range 3000 m, falloff from 500 m. 11 standard variants tabled by mount x class:
+     Small/Medium/Large F/G/T + Huge F/G (NO Huge turret). DPS = damage/fireint computed per
+     variant (Small Fixed 7.9 -> Huge Fixed 27.0). Mount trade: Fixed = top damage/cheap, Gimbal =
+     tracking for a damage cut, Turret = auto-track but lowest DPS + far priciest. Piercing 20->65
+     by size. Noted the Pulse Disruptor Powerplay special (Felicia Winters, PP2 -- old PP1 guides
+     stale) as a one-line note, NOT a separate page. Cross-linked [[outfitting/ax-multi-cannon]]
+     (the AX cousin contrast) + trunk Outfitting bullet (inserted after heat-sink-launcher).
+     PATH NOTE: both keys resolved first try. NEXT: queued the two strongest standard-weapons-family
+     follow-ons at the TOP -- Beam Laser (the continuous high-DPS hot/hungry thermal sibling of the
+     Pulse, completes the laser-primary picture) + Multi-Cannon (the baseline KINETIC primary, the
+     hull-killing partner to the shield-stripping Pulse Laser; distinct from the AX multi-cannon).
+     Burst Laser + Cannon remain obvious further follow-ons. Ship lines are now largely exhausted
+     (Asp pair done); the standard-weapons family is the new growth vector. The Spire Site stays
+     queued (BLOCKED) below for retry. -->
 
 <!-- DONE loop 40: PAGED THE TWO QUEUED TIER-0 SHIP GAPS (Type-7 Transporter + Cobra Mk IV) --
      COMPLETING BOTH THE LAKON TYPE FREIGHTER LINE AND THE COBRA LINE. 2 new Tier-0 Coriolis

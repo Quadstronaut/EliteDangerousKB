@@ -22,6 +22,7 @@ See [[ships/cobra-mk-iv]] for the Cobra Mk IV (Faulcon DeLacy's heavier small-pa
 See [[ships/cobra-mk-v]] for the Cobra Mk V (small multirole, stocked at Deciat).
 See [[ships/mandalay]] for the Mandalay (light medium-pad long-range explorer).
 See [[ships/asp-explorer]] for the Asp Explorer (classic affordable medium-pad long-range explorer; class-5 FSD, eight optionals, no rank gate — the cheaper, roomier companion to the Mandalay).
+See [[ships/asp-scout]] for the Asp Scout (Lakon's cheaper, lighter budget sibling of the Asp Explorer on the same airframe; 150 t, class-4 FSD, 2 Medium + 2 Small hardpoints + 2 utility, seven optionals (top class-5), no Military slot, no rank gate — the cut-down economy Asp, nimbler (roll 110) but shorter-legged and lighter-armed than the Explorer).
 See [[ships/diamondback-explorer]] for the Diamondback Explorer (budget small-pad long-range explorer; highest heat capacity in the KB for cool fuel-scooping, 1 Large + 2 Medium hardpoints, single seat, no rank gate — the cheap small-pad member of the explorer trio).
 See [[ships/diamondback-scout]] for the Diamondback Scout (cheap, light small-pad combat/recon ship; 2 Medium + 2 Small hardpoints + 4 utility, heat capacity 346 — 2nd-highest in KB, single seat, no Military slot, no rank gate — the budget combat/recon sibling of the Diamondback Explorer).
 See [[ships/type-8-transporter]] for the Type-8 Transporter (best medium-pad hauler).
@@ -77,6 +78,7 @@ See [[outfitting/hull-reinforcement]] for the Hull Reinforcement Package (flat a
 See [[outfitting/module-reinforcement]] for the Module Reinforcement Package (protects modules; E/D capacity-vs-absorption trade; incl. powered Guardian AX variant).
 See [[outfitting/cargo-rack]] for Cargo Racks (capacity by class; corrosion-resistant & expanded variants).
 See [[outfitting/heat-sink-launcher]] for the Heat Sink Launcher (utility-mount heat venting; pairs with SCBs, AX & silent running).
+See [[outfitting/pulse-laser]] for the Pulse Laser (the baseline human-combat primary weapon; cheap, cool, power-efficient 100% thermal laser in fixed/gimbal/turret across Small–Huge, no unlock — the reference point all other weapons are compared against; strong vs shields, weak vs hull).
 See [[outfitting/guardian-gauss-cannon]] for the Guardian Gauss Cannon (fixed AX anti-Interceptor weapon; thermal, charge-fired).
 See [[outfitting/guardian-plasma-charger]] for the Guardian Plasma Charger (charge-up AX weapon; absolute damage, fixed/turret).
 See [[outfitting/guardian-shard-cannon]] for the Guardian Shard Cannon (close-range AX shotgun; thermal, 12-shard burst).
