@@ -81,8 +81,6 @@ indexes = "indexes"
 cmdr_profile = "cmdr/duvrazh.md"
 
 [loop]
-verification_tier = 1               # 1=capture, 2=consensus, 3=currency-purge
-git_commit_every_loop = true
 deep_analysis_after_empty_loops = 5
 
 # Local council-v2-style fact verification (verify.py). Cloud escalation is manual.
