@@ -44,19 +44,6 @@ def load_golden(path: str | Path | None = None) -> list[dict]:
 # Core metric helpers
 # ---------------------------------------------------------------------------
 
-def _is_hit(result: RetrievalResult, record: dict) -> bool:
-    """True if ANY expected kb_path or chunk_substring appears in the result."""
-    expected_paths = set(record.get("expect_kb_paths", []))
-    expected_subs = record.get("expect_chunk_substrings", [])
-
-    for chunk in result.chunks:
-        if chunk.kb_path in expected_paths:
-            return True
-        if any(sub.lower() in chunk.text.lower() for sub in expected_subs):
-            return True
-    return False
-
-
 def _rank_of_hit(result: RetrievalResult, record: dict) -> int | None:
     """Return the 1-based rank of the first hit, or None if no hit found."""
     expected_paths = set(record.get("expect_kb_paths", []))
