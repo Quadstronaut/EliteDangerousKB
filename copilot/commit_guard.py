@@ -201,23 +201,6 @@ def discarded_source_keys(seen_path: Optional[str]) -> set[str]:
     return loop_state.discarded_source_keys(seen_path)
 
 
-# Deprecated journal-text path. RETAINED as an inert no-op for back-compat: it
-# is NOT consulted by find_stranded_urls — the seen.json "discarded" marker is
-# AUTHORITATIVE (HC-6). Kept so any external caller importing it still resolves.
-_LOOP_LOG_RE = re.compile(r"loop-\d+\.md$")
-
-
-def discarded_or_logged_urls(
-    *,
-    repo_root: Optional[Path] = None,
-    journal_dir: Optional[Path] = None,
-) -> set[str]:
-    """DEPRECATED no-op. The discard signal is the seen.json "discarded" marker
-    (HC-6), not journal text. Returns an empty set; not consulted by the guard.
-    """
-    return set()
-
-
 # ---------------------------------------------------------------------------
 # Public guard
 # ---------------------------------------------------------------------------
